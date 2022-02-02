@@ -14,6 +14,8 @@ class ClassifierViewer : public QMainWindow {
  private:
   QWidget *mainWidget;
   QVBoxLayout *mainLayout;
+
+  void settingMenu(ClassifierViewer *classifierViewer);
   
 };
 
