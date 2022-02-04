@@ -26,10 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        classifier_viewer.cpp
+        classifier_viewer.cpp \
+        image_label.cpp \
+        image_collection.cpp
         
 HEADERS += \
-        classifier_viewer.h
+        classifier_viewer.h \
+        image_label.h \
+        image_collection.h
 
 LIBS += \
         -ldcmdata \
