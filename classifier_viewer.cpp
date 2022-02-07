@@ -46,8 +46,9 @@ ClassificationTrainingTab::ClassificationTrainingTab(QWidget *parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout();
     
-    QPushButton *button = new QPushButton("Load classification model");
-    mainLayout->addWidget(button);
+    QPushButton *loadModelButton = new QPushButton("Load classification model");
+    connect(loadModelButton, &QPushButton::released, this, &ClassifierViewer::handleLoadModelButton);
+    mainLayout->addWidget(loadModelButton);
 
     setLayout(mainLayout);
 }
@@ -57,4 +58,35 @@ ExperimentationTab::ExperimentationTab(QWidget *parent)
 {
     QVBoxLayout *layout = new QVBoxLayout;
     setLayout(layout);
+}
+
+void ClassifierViewer::handleLoadModelButton()
+{
+    QString pathToModel = QFileDialog::getOpenFileName(this, "Select files to open", "PT (*.pt)");
+    if (pathToModel == NULL){
+        printf("loading problem\n");
+        return;
+    }
+    QByteArray ba = pathToModel.toLocal8Bit();
+    const char *c_pathToModel = ba.data();
+
+    QString pathToLabels = QFileDialog::getOpenFileName(this, "Select files to open", "TXT (*.txt)");
+    if (pathToLabels == NULL){
+        printf("loading problem\n");
+        return;
+    }
+    ba = pathToLabels.toLocal8Bit();
+    const char *c_pathToLabels = ba.data();
+
+    QString pathToImage = QFileDialog::getOpenFileName(this, "Select files to open", "JPEG, JPG, PNG (*.jpeg, *.jpg, *.png)");
+    if (pathToImage == NULL){
+        printf("loading problem\n");
+        return;
+    }
+    ba = pathToImage.toLocal8Bit();
+    const char *c_pathToImage = ba.data();
+
+    ModelRunner model = new ModelRunner();
+    model.run(c_pathToModel, c_pathToLabels, c_pathToImage);
+
 }

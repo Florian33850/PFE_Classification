@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QVBoxLayout>
 
+#include "model_runner.h"
+
 class ClassifierViewer : public QMainWindow {
   Q_OBJECT
 
