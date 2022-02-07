@@ -17,5 +17,5 @@ class ModelRunner
     std::vector<double> norm_std = {0.229, 0.224, 0.225};
 
     public :
-    int run(char* classificationModel, char* classificationLabels, char* classificationImage);
-}
+    void run(const char* classificationModel, const char* classificationLabels, const char* classificationImage);
+};
