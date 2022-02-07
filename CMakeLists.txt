@@ -17,5 +17,5 @@ endif()
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 #add the executable
-add_executable(classifier_viewer main.cpp classifier_viewer.cpp)
+add_executable(classifier_viewer main.cpp classifier_viewer.cpp image_label.cpp image_collection.cpp)
 target_link_libraries(classifier_viewer Qt5::Widgets)
