@@ -5,17 +5,23 @@
 #include <QFileDialog>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QPushButton>
 
 ClassifierViewer::ClassifierViewer(QWidget *parent)
   : QMainWindow(parent){
-
+  
   settingMenu(this);
-  imgCollection = new ImageCollection();
 
-  mainLayout = new QVBoxLayout();
-  mainWidget = new QWidget();
-  setCentralWidget(mainWidget);
-  mainWidget->setLayout(mainLayout);
+  QWidget *widget = new QWidget();
+  setCentralWidget(widget);
+  QTabWidget *tabWidget = new QTabWidget();
+  tabWidget->addTab(new DataloaderTab(), tr("Dataloader"));
+  tabWidget->addTab(new ClassificationTrainingTab(), tr("Classification Training"));
+    tabWidget->addTab(new ExperimentationTab(), tr("Experimentation"));
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  mainLayout->addWidget(tabWidget);
+  widget->setLayout(mainLayout);
+  setWindowTitle(tr("Classifier"));
 }
 
 ClassifierViewer::~ClassifierViewer() {}
@@ -23,18 +29,22 @@ ClassifierViewer::~ClassifierViewer() {}
 void ClassifierViewer::settingMenu(ClassifierViewer *classifierViewer)
 {
   QMenu *fileMenu = menuBar()->addMenu("&File");
-  openDataBaseButton(fileMenu);
   QAction *helpAction = menuBar()->addAction("&Help");
 }
 
-void ClassifierViewer::openDataBaseButton(QMenu *menu /*=NULL*/)
+DataloaderTab::DataloaderTab(QWidget *parent)
+    : QWidget(parent)
 {
-  QAction *openDataBaseAction = menu->addAction("&Open database");
-  QObject::connect(openDataBaseAction, SIGNAL(triggered()), this,
-                   SLOT(selectDataBaseFiles()));
+    imgCollection = new ImageCollection();
+    mainLayout = new QVBoxLayout;
+
+    QPushButton *loadDataBaseButton = new QPushButton("Load database");
+    connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::loadDataBaseFiles);
+    mainLayout->addWidget(loadDataBaseButton);    
+    setLayout(mainLayout);
 }
 
-void ClassifierViewer::selectDataBaseFiles()
+void DataloaderTab::loadDataBaseFiles()
 {
   QStringList pathToImages = QFileDialog::getOpenFileNames(this, "Select files to open", "JPG (*.jpg)");
   if (pathToImages.size() == 0){
@@ -43,6 +53,28 @@ void ClassifierViewer::selectDataBaseFiles()
   }
   imgCollection->setPathToImages(pathToImages);
   imgCollection->loadCollection();
-  mainLayout->addWidget(imgCollection->getImageFromDataBase(0));
-  mainLayout->addWidget(imgCollection->getImageFromDataBase(1));
+    displayDataBaseImages();
+}
+
+void DataloaderTab::displayDataBaseImages()
+{
+    for(int img_number=0; img_number < imgCollection->getDataBaseSize(); img_number++)
+    {
+        mainLayout->addWidget(imgCollection->getImageFromDataBase(img_number));
+    }
+}
+
+ClassificationTrainingTab::ClassificationTrainingTab(QWidget *parent)
+    : QWidget(parent)
+{
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addStretch(1);
+    setLayout(mainLayout);
+}
+
+ExperimentationTab::ExperimentationTab(QWidget *parent)
+    : QWidget(parent)
+{
+    QVBoxLayout *layout = new QVBoxLayout;
+    setLayout(layout);
 }

@@ -30,3 +30,8 @@ ImageLabel* ImageCollection::getImageFromDataBase(int index)
 {
     return imageDataBase.at(index);
 }
+
+int ImageCollection::getDataBaseSize()
+{
+    return imageDataBase.size();
+}
