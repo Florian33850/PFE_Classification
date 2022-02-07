@@ -19,4 +19,27 @@ class ClassifierViewer : public QMainWindow {
   
 };
 
+class DataloaderTab : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit DataloaderTab( QWidget *parent = nullptr);
+};
+
+class ClassificationTrainingTab : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ClassificationTrainingTab(QWidget *parent = nullptr);
+};
+
+class ExperimentationTab : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ExperimentationTab(QWidget *parent = nullptr);
+};
 #endif // CLASSIFIER_VIEWER_H
