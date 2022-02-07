@@ -12,13 +12,13 @@ class ImageCollection {
   public:
     ImageCollection();
 
-    void loadCollection(QStringList pathToImages);
-    ImageLabel *imgLabel;
+    void loadCollection();
+    void setPathToImages(QStringList newPathToImages);
+    ImageLabel* getImageFromDataBase(int index);
 
   private:
-    QImage qImg;
-
-    std::vector<QImage> imageDataBase;
+    QStringList pathToImages;
+    std::vector<ImageLabel*> imageDataBase;
 };
 
 #endif // IMAGE_COLLECTION_H

@@ -27,8 +27,6 @@ private:
 
   void settingMenu(ClassifierViewer *classifierViewer);
   void openDataBaseButton(QMenu *menu = NULL);
-  void updateImage();
-  
 };
 
 #endif // CLASSIFIER_VIEWER_H

@@ -11,6 +11,7 @@ ClassifierViewer::ClassifierViewer(QWidget *parent)
 
   settingMenu(this);
   imgCollection = new ImageCollection();
+
   mainLayout = new QVBoxLayout();
   mainWidget = new QWidget();
   setCentralWidget(mainWidget);
@@ -40,6 +41,8 @@ void ClassifierViewer::selectDataBaseFiles()
     printf("loading problem\n");
     return;
   }
-  imgCollection->loadCollection(pathToImages);
-  mainLayout->addWidget(imgCollection->imgLabel);
+  imgCollection->setPathToImages(pathToImages);
+  imgCollection->loadCollection();
+  mainLayout->addWidget(imgCollection->getImageFromDataBase(0));
+  mainLayout->addWidget(imgCollection->getImageFromDataBase(1));
 }

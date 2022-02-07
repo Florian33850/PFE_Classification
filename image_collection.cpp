@@ -4,14 +4,29 @@
 
 ImageCollection::ImageCollection()
 {
-    imgLabel = new ImageLabel();
 }
 
-void ImageCollection::loadCollection(QStringList pathToImages)
+void ImageCollection::loadCollection()
 {
-    if(qImg.load(pathToImages.at(0)) == false){
-        std::cout << "Cannot open image" << std::endl;
+    for(int fileNum=0; fileNum<pathToImages.length(); fileNum++)
+    {
+        QImage qImg;
+        if(qImg.load(pathToImages.at(fileNum)) == false)
+        {
+            std::cout << "Cannot open image\n" << std::endl;
+        }
+        ImageLabel *imageLabel = new ImageLabel();
+        imageLabel->setImg(qImg);
+        imageDataBase.push_back(imageLabel);
     }
-    imgLabel->setImg(qImg);
 }
 
+void ImageCollection::setPathToImages(QStringList newPathToImages)
+{
+    pathToImages = newPathToImages;
+}
+
+ImageLabel* ImageCollection::getImageFromDataBase(int index)
+{
+    return imageDataBase.at(index);
+}
