@@ -35,6 +35,8 @@ class ClassificationTrainingTab : public QWidget
 
 public:
     explicit ClassificationTrainingTab(QWidget *parent = nullptr);
+private:
+    void handleLoadModelButton();
 };
 
 class ExperimentationTab : public QWidget
