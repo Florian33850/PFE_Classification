@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QPushButton>
 
 ClassifierViewer::ClassifierViewer(QWidget *parent)
   : QMainWindow(parent){
@@ -16,7 +17,7 @@ ClassifierViewer::ClassifierViewer(QWidget *parent)
   QTabWidget *tabWidget = new QTabWidget();
   tabWidget->addTab(new DataloaderTab(), tr("Dataloader"));
   tabWidget->addTab(new ClassificationTrainingTab(), tr("Classification Training"));
-    tabWidget->addTab(new ExperimentationTab(), tr("Experimentation"));
+  tabWidget->addTab(new ExperimentationTab(), tr("Experimentation"));
   QVBoxLayout *mainLayout = new QVBoxLayout;
   mainLayout->addWidget(tabWidget);
   widget->setLayout(mainLayout);
@@ -43,8 +44,11 @@ DataloaderTab::DataloaderTab(QWidget *parent)
 ClassificationTrainingTab::ClassificationTrainingTab(QWidget *parent)
     : QWidget(parent)
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addStretch(1);
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    
+    QPushButton *button = new QPushButton("Load classification model");
+    mainLayout->addWidget(button);
+
     setLayout(mainLayout);
 }
 
