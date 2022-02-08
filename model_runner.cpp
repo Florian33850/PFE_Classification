@@ -1,8 +1,14 @@
 #include "model_runner.h"
 
-void ModelRunner::run(const char* classificationModel, const char* classificationLabels, const char* classificationImage)
+ModelRunner::ModelRunner(const char* cModel, const char* cLabels, const char* cImage)
 {
-    // std::cout << classificationModel << std::endl;
+    classificationModel = cModel;
+    classificationLabels = cLabels;
+    classificationImage = cImage;
+}
+
+void ModelRunner::run()
+{
     auto model = torch::jit::load(classificationModel);
     model.eval();
 
@@ -22,10 +28,8 @@ void ModelRunner::run(const char* classificationModel, const char* classificatio
     auto probability = prob.accessor<float,1>();
     auto idx = index.accessor<long,1>();
 
-    std::cout << "Class: " << labels[idx[0]] << std::endl;
-    std::cout << "Probability: " << probability[0] << std::endl;
-
-    cv::waitKey(0);
+    labelImageClassify = labels[idx[0]];
+    probabilityImageClassify = probability[0];
 }
 
 std::vector<std::string> ModelRunner::load_labels(const std::string& fileName)
@@ -52,14 +56,12 @@ torch::Tensor ModelRunner::read_image(const std::string& imageName)
 {
     cv::Mat img = cv::imread(imageName);
     img = crop_center(img);
-    cv::resize(img, img, cv::Size(32,32));
-
-    cv::imshow("image", img);
-
-    if (img.channels()==1)
-        cv::cvtColor(img, img, cv::COLOR_GRAY2RGB);
-    else
-        cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
+    // cv::resize(img, img, cv::Size(224,224));
+    
+    // if (img.channels()==1)
+    //     cv::cvtColor(img, img, cv::COLOR_GRAY2RGB);
+    // else
+    //     cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
 
     img.convertTo( img, CV_32FC3, 1/255.0 );
 
@@ -70,12 +72,13 @@ torch::Tensor ModelRunner::read_image(const std::string& imageName)
     img_tensor = torch::data::transforms::Normalize<>(norm_mean, norm_std)(img_tensor);
 
     return img_tensor.clone();
+    return torch::Tensor();
 }
 
 cv::Mat ModelRunner::crop_center(const cv::Mat &img)
 {
     const int rows = img.rows;
-    const int cols = img.cols;
+     const int cols = img.cols;
 
     const int cropSize = std::min(rows,cols);
     const int offsetW = (cols - cropSize) / 2;
@@ -83,4 +86,14 @@ cv::Mat ModelRunner::crop_center(const cv::Mat &img)
     const cv::Rect roi(offsetW, offsetH, cropSize, cropSize);
 
     return img(roi);
+}
+
+std::string ModelRunner::getLabelImageClassify()
+{
+    return labelImageClassify;
+}
+
+float ModelRunner::getProbabilityImageClassify()
+{
+    return probabilityImageClassify;
 }

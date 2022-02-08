@@ -33,7 +33,7 @@ class DataloaderTab : public QWidget
 public:
     explicit DataloaderTab( QWidget *parent = nullptr);
     void displayDataBaseImages();
-public slots:
+public Q_SLOTS:
     void loadDataBaseFiles();
 private:
     ImageCollection *imgCollection;
@@ -48,6 +48,15 @@ public:
     explicit ClassificationTrainingTab(QWidget *parent = nullptr);
 private:
     void handleLoadModelButton();
+    void handleLaunchModelButton();
+
+    void printClassificationResults(ModelRunner model);
+    
+    QVBoxLayout *mainLayout;
+    QString pathToModel;
+    QString pathToLabels;
+    QString pathToImage;
+    bool modelLoad = false;
 };
 
 class ExperimentationTab : public QWidget
