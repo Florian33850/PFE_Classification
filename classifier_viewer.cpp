@@ -26,19 +26,42 @@ ClassifierViewer::ClassifierViewer(QWidget *parent)
 
 ClassifierViewer::~ClassifierViewer() {}
 
-void ClassifierViewer::settingMenu(ClassifierViewer *classifierViewer){
+void ClassifierViewer::settingMenu(ClassifierViewer *classifierViewer)
+{
   QMenu *fileMenu = menuBar()->addMenu("&File");
-  QAction *openAction = fileMenu->addAction("&Open");
   QAction *helpAction = menuBar()->addAction("&Help");
 }
-
 
 DataloaderTab::DataloaderTab(QWidget *parent)
     : QWidget(parent)
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addStretch(1);
+    imgCollection = new ImageCollection();
+    mainLayout = new QVBoxLayout;
+
+    QPushButton *loadDataBaseButton = new QPushButton("Load database");
+    connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::loadDataBaseFiles);
+    mainLayout->addWidget(loadDataBaseButton);    
     setLayout(mainLayout);
+}
+
+void DataloaderTab::loadDataBaseFiles()
+{
+  QStringList pathToImages = QFileDialog::getOpenFileNames(this, "Select files to open", "JPG (*.jpg)");
+  if (pathToImages.size() == 0){
+    printf("loading problem\n");
+    return;
+  }
+  imgCollection->setPathToImages(pathToImages);
+  imgCollection->loadCollection();
+    displayDataBaseImages();
+}
+
+void DataloaderTab::displayDataBaseImages()
+{
+    for(int img_number=0; img_number < imgCollection->getDataBaseSize(); img_number++)
+    {
+        mainLayout->addWidget(imgCollection->getImageFromDataBase(img_number));
+    }
 }
 
 ClassificationTrainingTab::ClassificationTrainingTab(QWidget *parent)
@@ -49,8 +72,6 @@ ClassificationTrainingTab::ClassificationTrainingTab(QWidget *parent)
     QPushButton *loadModelButton = new QPushButton("Load classification model");
     connect(loadModelButton, &QPushButton::released, this, &ClassificationTrainingTab::handleLoadModelButton);
     mainLayout->addWidget(loadModelButton);
-
-    setLayout(mainLayout);
 }
 
 ExperimentationTab::ExperimentationTab(QWidget *parent)
