@@ -17,8 +17,9 @@ public:
   ~ClassifierViewer();
   
 private:
-  QWidget *mainWidget;
   QVBoxLayout *mainLayout;
+  QWidget *mainWidget;
+  QTabWidget *tabWidget;
 
 
   void settingMenu(ClassifierViewer *classifierViewer);
@@ -29,13 +30,20 @@ class DataloaderTab : public QWidget
 {
     Q_OBJECT
 public:
+    int maxNumberOfImageToDisplay;
+
     explicit DataloaderTab( QWidget *parent = nullptr);
     void displayDataBaseImages();
+    bool selectDataBasePath();
+
 public slots:
-    void loadDataBaseFiles();
+    void handleLoadDataBaseButton();
+
 private:
     ImageCollection *imgCollection;
-    QVBoxLayout *mainLayout; 
+    QVBoxLayout *mainLayout;
+
+    void updateWindow();
 };
 
 class ClassificationTrainingTab : public QWidget

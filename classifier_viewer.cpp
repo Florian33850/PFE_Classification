@@ -11,17 +11,18 @@ ClassifierViewer::ClassifierViewer(QWidget *parent)
   : QMainWindow(parent){
   
   settingMenu(this);
+  setWindowTitle(tr("Classifier"));
 
-  QWidget *widget = new QWidget();
-  setCentralWidget(widget);
-  QTabWidget *tabWidget = new QTabWidget();
+  mainWidget = new QWidget();
+  setCentralWidget(mainWidget);
+  mainLayout = new QVBoxLayout;
+  mainWidget->setLayout(mainLayout);
+
+  tabWidget = new QTabWidget();
   tabWidget->addTab(new DataloaderTab(), tr("Dataloader"));
   tabWidget->addTab(new ClassificationTrainingTab(), tr("Classification Training"));
-    tabWidget->addTab(new ExperimentationTab(), tr("Experimentation"));
-  QVBoxLayout *mainLayout = new QVBoxLayout;
+  tabWidget->addTab(new ExperimentationTab(), tr("Experimentation"));
   mainLayout->addWidget(tabWidget);
-  widget->setLayout(mainLayout);
-  setWindowTitle(tr("Classifier"));
 }
 
 ClassifierViewer::~ClassifierViewer() {}
@@ -37,35 +38,48 @@ DataloaderTab::DataloaderTab(QWidget *parent)
 {
     imgCollection = new ImageCollection();
     mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
 
     QPushButton *loadDataBaseButton = new QPushButton("Load database");
-    connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::loadDataBaseFiles);
-    mainLayout->addWidget(loadDataBaseButton);    
-    setLayout(mainLayout);
+    connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::handleLoadDataBaseButton);
+    mainLayout->addWidget(loadDataBaseButton);
+
+    maxNumberOfImageToDisplay = 10;
 }
 
-void DataloaderTab::loadDataBaseFiles()
+void DataloaderTab::handleLoadDataBaseButton()
 {
-  QStringList pathToImages = QFileDialog::getOpenFileNames(this, "Select files to open", "JPG (*.jpg)");
-  if (pathToImages.size() == 0){
-    printf("loading problem\n");
-    return;
+  selectDataBasePath();
+  imgCollection->eraseCollectionIfNotEmpty();
+  imgCollection->loadCollection();
+  displayDataBaseImages();
+}
+
+bool DataloaderTab::selectDataBasePath()
+{
+  QStringList pathToImages = QFileDialog::getOpenFileNames(this, "Select images to open", tr("Images (*.jpg *.jpeg *.png *.tiff)"));
+  if (pathToImages.size() == 0)
+  {
+    printf("Loading problem, cannot open selected files.\n");
+    return false;
   }
   imgCollection->setPathToImages(pathToImages);
-  imgCollection->loadCollection();
-    displayDataBaseImages();
+  return true;
 }
 
 void DataloaderTab::displayDataBaseImages()
 {
-    for(int img_number=0; img_number < imgCollection->getDataBaseSize(); img_number++)
+  for(int imgNumber=0; imgNumber < imgCollection->getDataBaseSize(); imgNumber++)
+  {
+    if(imgNumber >= maxNumberOfImageToDisplay)
     {
-        mainLayout->addWidget(imgCollection->getImageFromDataBase(img_number));
+      break;
     }
+    mainLayout->addWidget(imgCollection->getImageFromDataBase(imgNumber));
+  }
 }
 
-ClassificationTrainingTab::ClassificationTrainingTab(QWidget *parent)
-    : QWidget(parent)
+ClassificationTrainingTab::ClassificationTrainingTab(QWidget *parent): QWidget(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addStretch(1);
