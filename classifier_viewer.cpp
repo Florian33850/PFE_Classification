@@ -47,7 +47,8 @@ DataloaderTab::DataloaderTab(QWidget *parent)
 void DataloaderTab::loadDataBaseFiles()
 {
   QStringList pathToImages = QFileDialog::getOpenFileNames(this, "Select files to open", "JPG (*.jpg)");
-  if (pathToImages.size() == 0){
+  if (pathToImages.size() == 0)
+  {
     printf("loading problem\n");
     return;
   }
@@ -90,19 +91,22 @@ ExperimentationTab::ExperimentationTab(QWidget *parent)
 void ClassificationTrainingTab::handleLoadModelButton()
 {
     pathToModel = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION MODEL to LOAD"), "../data", tr("PT (*.pt)"));
-    if (pathToModel == NULL){
+    if (pathToModel == NULL)
+    {
         printf("model loading problem\n");
         return;
     }
 
     pathToLabels = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION LABELS to LOAD"), "../data", tr("TXT (*.txt)"));
-    if (pathToLabels == NULL){
+    if (pathToLabels == NULL)
+    {
         printf("labels loading problem\n");
         return;
     }
 
     pathToImage = QFileDialog::getOpenFileName(this, tr("Select IMAGE to CLASSIFY"), "../data", tr("JPEG (*.jpeg, *.jpg);;PNG(*.png)"));
-    if (pathToImage == NULL){
+    if (pathToImage == NULL)
+    {
         printf("image loading problem\n");
         return;
     }

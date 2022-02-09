@@ -78,7 +78,7 @@ torch::Tensor ModelRunner::read_image(const std::string& imageName)
 cv::Mat ModelRunner::crop_center(const cv::Mat &img)
 {
     const int rows = img.rows;
-     const int cols = img.cols;
+    const int cols = img.cols;
 
     const int cropSize = std::min(rows,cols);
     const int offsetW = (cols - cropSize) / 2;
