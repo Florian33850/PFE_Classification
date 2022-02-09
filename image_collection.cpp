@@ -6,6 +6,7 @@ ImageCollection::ImageCollection()
 {
 }
 
+
 void ImageCollection::loadCollection()
 {
     for(int fileNum=0; fileNum<pathToImages.length(); fileNum++)
@@ -18,6 +19,14 @@ void ImageCollection::loadCollection()
         ImageLabel *imageLabel = new ImageLabel();
         imageLabel->setImg(qImg);
         imageDataBase.push_back(imageLabel);
+    }
+}
+
+void ImageCollection::eraseCollectionIfNotEmpty()
+{
+    if(!imageDataBase.empty())
+    {
+        imageDataBase.clear();
     }
 }
 
