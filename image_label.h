@@ -12,7 +12,7 @@ public:
   void setImg(QImage img);
   void updateContent();
 
-protected slots:
+protected Q_SLOTS:
   void resizeEvent(QResizeEvent *event) override;
 
 private:

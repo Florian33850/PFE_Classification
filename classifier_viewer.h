@@ -9,6 +9,8 @@
 #include <QImage>
 #include <QLabel>
 
+#include "model_runner.h"
+
 class ClassifierViewer : public QMainWindow {
   Q_OBJECT
 
@@ -36,7 +38,7 @@ public:
     void displayDataBaseImages();
     bool selectDataBasePath();
 
-public slots:
+public Q_SLOTS:
     void handleLoadDataBaseButton();
 
 private:
@@ -52,6 +54,18 @@ class ClassificationTrainingTab : public QWidget
 
 public:
     explicit ClassificationTrainingTab(QWidget *parent = nullptr);
+
+private:
+    QVBoxLayout *mainLayout;
+    QString pathToModel;
+    QString pathToLabels;
+    QString pathToImage;
+    bool modelLoad = false;
+
+    void handleLoadModelButton();
+    void handleLaunchModelButton();
+
+    void printClassificationResults(ModelRunner model);
 };
 
 class ExperimentationTab : public QWidget
