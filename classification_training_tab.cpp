@@ -41,7 +41,7 @@ void ClassificationTrainingTab::handleLoadModelButton()
     QImage qImg;
     qImg.load(pathToImage);
     ImageLabel *imageLabel = new ImageLabel();
-    imageLabel->setImg(qImg);
+    imageLabel->setImage(qImg);
     mainLayout->addWidget(imageLabel);
 
     modelLoad = true;

@@ -7,7 +7,9 @@ class DataloaderTab : public Tab
 {
     Q_OBJECT
 public:
-    int maxNumberOfImageToDisplay;
+    int maximumNumberOfImagesToDisplay;
+    int maximumRowsOfImages;
+    int maximumCollumnsOfImages;
 
     explicit DataloaderTab( Tab *parent = nullptr);
     void displayDataBaseImages();
@@ -17,8 +19,8 @@ public Q_SLOTS:
     void handleLoadDataBaseButton();
 
 private:
-    ImageCollection *imgCollection;
-    QVBoxLayout *mainLayout;
+    ImageCollection *imageCollection;
+    QGridLayout *mainLayout;
 
     void updateWindow();
 };

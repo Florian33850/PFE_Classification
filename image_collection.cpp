@@ -6,7 +6,6 @@ ImageCollection::ImageCollection()
 {
 }
 
-
 void ImageCollection::loadCollection()
 {
     for(int fileNum=0; fileNum<pathToImages.length(); fileNum++)
@@ -17,7 +16,7 @@ void ImageCollection::loadCollection()
             std::cout << "Cannot open image\n" << std::endl;
         }
         ImageLabel *imageLabel = new ImageLabel();
-        imageLabel->setImg(qImg);
+        imageLabel->setImage(qImg);
         imageDataBase.push_back(imageLabel);
     }
 }
