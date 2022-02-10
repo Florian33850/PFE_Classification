@@ -22,8 +22,8 @@ void ImageLabel::updateContent()
   {
     return;
   }
-  QPixmap tmpPixmap = QPixmap::fromImage(rawImage);
-  pixmap = tmpPixmap.scaled(this->size(), Qt::KeepAspectRatio);
+  pixmap = QPixmap::fromImage(rawImage);
+  pixmap = pixmap.scaled(this->size(), Qt::KeepAspectRatio);
   setPixmap(pixmap);
 }
 

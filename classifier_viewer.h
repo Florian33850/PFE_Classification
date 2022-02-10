@@ -13,19 +13,18 @@
 #include <QMessageBox>
 
 class ClassifierViewer : public QMainWindow {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  ClassifierViewer(QWidget * parent = 0);
-  ~ClassifierViewer();
+    ClassifierViewer(QWidget * parent = 0);
+    ~ClassifierViewer();
   
 private:
-  QVBoxLayout *mainLayout;
-  QWidget *mainWidget;
-  QTabWidget *tabWidget;
+    QVBoxLayout *mainLayout;
+    QWidget *mainWidget;
+    QTabWidget *tabWidget;
 
-
-  void settingMenu(ClassifierViewer *classifierViewer);
-  void openDataBaseButton(QMenu *menu = NULL);
+    void settingMenu(ClassifierViewer *classifierViewer);
+    void openDataBaseButton(QMenu *menu = NULL);
 };
 #endif // CLASSIFIER_VIEWER_H
