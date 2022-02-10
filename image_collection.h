@@ -13,8 +13,9 @@ class ImageCollection {
     ImageCollection();
 
     void loadCollection();
-    void setPathToImages(QStringList newPathToImages);
     void eraseCollectionIfNotEmpty();
+
+    void setPathToImages(QStringList newPathToImages);
     ImageLabel* getImageFromDataBase(int index);
     int getDataBaseSize();
 

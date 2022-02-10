@@ -36,15 +36,20 @@ void ClassifierViewer::settingMenu(ClassifierViewer *classifierViewer)
 DataloaderTab::DataloaderTab(QWidget *parent)
     : QWidget(parent)
 {
-    imgCollection = new ImageCollection();
-    mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
+  imgCollection = new ImageCollection();
+  mainLayout = new QGridLayout;
+  void setLayoutParameters();
+  mainLayout->setSpacing(1);
+  mainLayout->setMargin(0);
+  setLayout(mainLayout);
 
-    QPushButton *loadDataBaseButton = new QPushButton("Load database");
-    connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::handleLoadDataBaseButton);
-    mainLayout->addWidget(loadDataBaseButton);
+  QPushButton *loadDataBaseButton = new QPushButton("Load database");
+  connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::handleLoadDataBaseButton);
+  mainLayout->addWidget(loadDataBaseButton, 0, 0, 1, 5);
 
-    maxNumberOfImageToDisplay = 10;
+  maxNumberOfImagesToDisplay = 10;
+  maxRowOfImages = 4;
+  maxColOfImages = 5;
 }
 
 void DataloaderTab::handleLoadDataBaseButton()
@@ -69,13 +74,20 @@ bool DataloaderTab::selectDataBasePath()
 
 void DataloaderTab::displayDataBaseImages()
 {
-  for(int imgNumber=0; imgNumber < imgCollection->getDataBaseSize(); imgNumber++)
+  int imgNumber = 0;
+  int imageDataBaseSize = imgCollection->getDataBaseSize();
+  for(int row=1; row<maxRowOfImages; row++)
   {
-    if(imgNumber >= maxNumberOfImageToDisplay)
+    for(int col=0; col<maxColOfImages; col++)
     {
-      break;
+      if(imgNumber >= maxNumberOfImagesToDisplay || imgNumber >= imageDataBaseSize)
+      {
+        break;
+      }
+      //printf("imgNumber: %d, row: %d, col: %d\n",imgNumber, row, col);
+      mainLayout->addWidget(imgCollection->getImageFromDataBase(imgNumber), row, col);
+      imgNumber++;
     }
-    mainLayout->addWidget(imgCollection->getImageFromDataBase(imgNumber));
   }
 }
 
@@ -127,7 +139,7 @@ void ClassificationTrainingTab::handleLoadModelButton()
     QImage qImg;
     qImg.load(pathToImage);
     ImageLabel *imageLabel = new ImageLabel();
-    imageLabel->setImg(qImg);
+    imageLabel->setImage(qImg);
     mainLayout->addWidget(imageLabel);
 
     modelLoad = true;

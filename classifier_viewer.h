@@ -32,7 +32,9 @@ class DataloaderTab : public QWidget
 {
     Q_OBJECT
 public:
-    int maxNumberOfImageToDisplay;
+    int maxNumberOfImagesToDisplay;
+    int maxRowOfImages;
+    int maxColOfImages;
 
     explicit DataloaderTab( QWidget *parent = nullptr);
     void displayDataBaseImages();
@@ -43,8 +45,9 @@ public Q_SLOTS:
 
 private:
     ImageCollection *imgCollection;
-    QVBoxLayout *mainLayout;
+    QGridLayout *mainLayout;
 
+    void setLayoutParameters();
     void updateWindow();
 };
 

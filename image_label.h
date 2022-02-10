@@ -9,14 +9,14 @@ public:
   ImageLabel(QWidget *parent = 0);
   ~ImageLabel();
 
-  void setImg(QImage img);
+  void setImage(QImage image);
   void updateContent();
 
 protected Q_SLOTS:
   void resizeEvent(QResizeEvent *event) override;
 
 private:
-  QImage raw_img;
+  QImage rawImage;
   QPixmap pixmap;
 };
 
