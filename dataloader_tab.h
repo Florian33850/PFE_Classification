@@ -3,13 +3,13 @@
 
 #include "tab.h"
 
-class DataloaderTab : public QWidget
+class DataloaderTab : public Tab
 {
     Q_OBJECT
 public:
     int maxNumberOfImageToDisplay;
 
-    explicit DataloaderTab( QWidget *parent = nullptr);
+    explicit DataloaderTab( Tab *parent = nullptr);
     void displayDataBaseImages();
     bool selectDataBasePath();
 
