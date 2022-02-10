@@ -12,6 +12,8 @@
 #include <QMenuBar>
 #include <QMessageBox>
 
+#include "model_runner.h"
+
 class ClassifierViewer : public QMainWindow {
   Q_OBJECT
 
