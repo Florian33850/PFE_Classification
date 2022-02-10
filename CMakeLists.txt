@@ -23,5 +23,6 @@ find_package(OpenCV REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3 ${TORCH_CXX_FLAGS}")
 
 #add the executable
-add_executable(classifier_viewer main.cpp classifier_viewer.cpp model_runner.cpp image_label.cpp image_collection.cpp)
+add_executable(classifier_viewer main.cpp classifier_viewer.cpp model_runner.cpp image_label.cpp image_collection.cpp
+dataloader_tab.cpp classification_training_tab.cpp result_tab.cpp tab.cpp)
 target_link_libraries(classifier_viewer Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS})
