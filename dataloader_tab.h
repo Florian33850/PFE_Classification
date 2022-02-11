@@ -2,12 +2,13 @@
 #define DATALOADER_TAB_H
 
 #include "tab.h"
+#include "preprocessing_viewer.h"
 
 class DataloaderTab : public Tab
 {
     Q_OBJECT
 public:
-    int maxNumberOfImageToDisplay;
+    int maxNumberOfImagesToDisplay;
 
     explicit DataloaderTab( Tab *parent = nullptr);
     void displayDataBaseImages();

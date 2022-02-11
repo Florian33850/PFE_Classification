@@ -11,7 +11,9 @@ DataloaderTab::DataloaderTab(Tab *parent)
     connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::handleLoadDataBaseButton);
     mainLayout->addWidget(loadDataBaseButton);
 
-    maxNumberOfImageToDisplay = 10;
+    maxNumberOfImagesToDisplay = 10;
+
+    mainLayout->addWidget(new PreprocessingViewer());
 }
 
 void DataloaderTab::handleLoadDataBaseButton()
@@ -35,13 +37,13 @@ bool DataloaderTab::selectDataBasePath()
 }
 
 void DataloaderTab::displayDataBaseImages()
-{
+{   
   for(int imgNumber=0; imgNumber < imgCollection->getDataBaseSize(); imgNumber++)
   {
-    if(imgNumber >= maxNumberOfImageToDisplay)
+    if(imgNumber >= maxNumberOfImagesToDisplay)
     {
       break;
     }
-    mainLayout->addWidget(imgCollection->getImageFromDataBase(imgNumber));
+    mainLayout->addWidget(imgCollection->getImageLabelFromDataBase(imgNumber));
   }
 }
