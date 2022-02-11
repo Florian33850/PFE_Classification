@@ -16,11 +16,6 @@ execute_process(
   )
 
 list(APPEND CMAKE_PREFIX_PATH "${libtorch_local_path}")
-message(${CMAKE_PREFIX_PATH})
-
-if(CMAKE_VERSION VERSION_LESS "3.7.0")
-    set(CMAKE_INCLUDE_CURRENT_DIR ON)
-endif()
 
 ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
 
