@@ -17,9 +17,15 @@ class Preprocessing
 };
 
 class Mirrored : public Preprocessing
-{
+{   
     public:
         explicit Mirrored( Preprocessing *parent = nullptr);
+
+        bool horizontalMirror;
+        bool verticalMirror;
+        
+        void changeHorizontalMirrorMode();
+        void changeVerticalMirrorMode();
 
     private:
         void runPreprocess(ImageCollection *imageCollection);

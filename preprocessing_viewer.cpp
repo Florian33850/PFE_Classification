@@ -40,8 +40,18 @@ void PreprocessingViewer::handleAddPreprocessingComboBox()
 
 void PreprocessingViewer::handleMirrored()
 {
-    qWidgetList.push_back(new Mirrored());
-    QLabel *label = new QLabel(this);
-    label->setText("Mirrored");
-    mainLayout->addWidget(label);
+    Mirrored *newMirrorPreprocess = new Mirrored();
+    qWidgetList.push_back(newMirrorPreprocess);
+    QGroupBox *mirrorProcessViewer = new QGroupBox(tr("Mirror"));
+
+    QCheckBox *horizontalMirrorCheckBox = new QCheckBox("Horizontal", this);
+    connect(horizontalMirrorCheckBox, &QCheckBox::toggled, [=](){newMirrorPreprocess->changeHorizontalMirrorMode();});
+    QCheckBox *verticalMirrorCheckBox = new QCheckBox("Vertical", this);
+    connect(verticalMirrorCheckBox, &QCheckBox::toggled, [=](){newMirrorPreprocess->changeVerticalMirrorMode();});
+
+    QVBoxLayout *mirrorProcessLayout = new QVBoxLayout();
+    mirrorProcessLayout->addWidget(horizontalMirrorCheckBox);
+    mirrorProcessLayout->addWidget(verticalMirrorCheckBox);
+    mirrorProcessViewer->setLayout(mirrorProcessLayout);
+    mainLayout->addWidget(mirrorProcessViewer);
 }

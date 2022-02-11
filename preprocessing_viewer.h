@@ -11,6 +11,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QComboBox>
+#include <QGroupBox>
 
 class PreprocessingViewer : public QWidget
 {
@@ -27,5 +28,6 @@ class PreprocessingViewer : public QWidget
         void handleLaunchPreprocessingButton();
         void handleAddPreprocessingComboBox();
         void handleMirrored();
+    
 };
 #endif // PREPROCESSING_VIEWER_H
