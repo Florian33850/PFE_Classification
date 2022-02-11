@@ -17,7 +17,7 @@ DataloaderTab::DataloaderTab(Tab *parent)
     maximumRowsOfImages = 3;
     maximumCollumnsOfImages = 5;
 
-    mainLayout->addWidget(new PreprocessingViewer(), 0, 5, maximumRowsOfImages, 1);
+    mainLayout->addWidget(new PreprocessingViewer(imageCollection), 0, 5, maximumRowsOfImages, 1);
 }
 
 void DataloaderTab::handleLoadDataBaseButton()
@@ -56,4 +56,9 @@ void DataloaderTab::displayDataBaseImages()
             imageIndex++;
         }
     }
+}
+
+void DataloaderTab::updateWindow()
+{
+    
 }

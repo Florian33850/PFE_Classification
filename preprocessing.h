@@ -11,8 +11,9 @@
 
 class Preprocessing
 {
-    private:
+    public:
         virtual void runPreprocess(ImageCollection *imageCollection) = 0;
+    private:
 };
 
 class Mirrored : public Preprocessing

@@ -8,6 +8,7 @@ void Mirrored::runPreprocess(ImageCollection *imageCollection)
 {
     for(int imgNumber=0; imgNumber < imageCollection->getDataBaseSize(); imgNumber++)
     {
-        imageCollection->getImageLabelFromDataBase(imgNumber)->getQImage().mirrored();
+        QImage mirroredImage = imageCollection->getImageLabelFromDataBase(imgNumber)->getQImage().mirrored();
+        imageCollection->getImageLabelFromDataBase(imgNumber)->setImage(mirroredImage);
     }
 }

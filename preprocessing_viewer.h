@@ -15,13 +15,14 @@
 class PreprocessingViewer : public QWidget
 {
     public:
-        explicit PreprocessingViewer(QWidget *parent = nullptr);
+        explicit PreprocessingViewer(ImageCollection *imageCollection, QWidget *parent = nullptr);
 
     private:
         QVBoxLayout *mainLayout;
         std::vector<Preprocessing*> qWidgetList;
         QPushButton *launchPreprocessingButton;
         QComboBox *addPreprocessingComboBox;
+        ImageCollection *imageCollection;
 
         void handleLaunchPreprocessingButton();
         void handleAddPreprocessingComboBox();

@@ -1,12 +1,14 @@
 #include "preprocessing_viewer.h"
 
-PreprocessingViewer::PreprocessingViewer(QWidget *parent)
+PreprocessingViewer::PreprocessingViewer(ImageCollection *imageCollection, QWidget *parent)
     : QWidget(parent)
 {
     mainLayout = new QVBoxLayout;
     this->setLayout(mainLayout);
     mainLayout->setSpacing(1);
     mainLayout->setMargin(1);
+
+    this->imageCollection = imageCollection;
 
     launchPreprocessingButton = new QPushButton("Launch preprocessing");
     connect(launchPreprocessingButton, &QPushButton::released, this, &PreprocessingViewer::handleLaunchPreprocessingButton);
@@ -21,10 +23,10 @@ PreprocessingViewer::PreprocessingViewer(QWidget *parent)
 
 void PreprocessingViewer::handleLaunchPreprocessingButton()
 {
-    // // for(Preprocessing preprocessing : qWidgetList)
-    // {
-    //     // preprocessing.runPreprocess();
-    // }
+    for(Preprocessing *preprocessing : qWidgetList)
+    {
+        preprocessing->runPreprocess(imageCollection);
+    }
 }
 
 void PreprocessingViewer::handleAddPreprocessingComboBox()
