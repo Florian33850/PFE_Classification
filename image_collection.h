@@ -9,18 +9,19 @@
 
 class ImageCollection {
 
-  public:
-    ImageCollection();
+    public:
+        ImageCollection();
 
-    void loadCollection();
-    void setPathToImages(QStringList newPathToImages);
-    void eraseCollectionIfNotEmpty();
-    ImageLabel* getImageFromDataBase(int index);
-    int getDataBaseSize();
+        void loadCollection();
+        void eraseCollectionIfNotEmpty();
 
-  private:
-    QStringList pathToImages;
-    std::vector<ImageLabel*> imageDataBase;
+        void setPathToImages(QStringList newPathToImages);
+        ImageLabel* getImageFromDataBase(int index);
+        int getDataBaseSize();
+
+    private:
+        QStringList pathToImages;
+        std::vector<ImageLabel*> imageDataBase;
 };
 
 #endif // IMAGE_COLLECTION_H
