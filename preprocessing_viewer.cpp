@@ -5,6 +5,8 @@ PreprocessingViewer::PreprocessingViewer(QWidget *parent)
 {
     mainLayout = new QVBoxLayout;
     this->setLayout(mainLayout);
+    mainLayout->setSpacing(1);
+    mainLayout->setMargin(1);
 
     launchPreprocessingButton = new QPushButton("Launch preprocessing");
     connect(launchPreprocessingButton, &QPushButton::released, this, &PreprocessingViewer::handleLaunchPreprocessingButton);

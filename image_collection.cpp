@@ -34,7 +34,7 @@ void ImageCollection::setPathToImages(QStringList newPathToImages)
     pathToImages = newPathToImages;
 }
 
-ImageLabel* ImageCollection::getImageFromDataBase(int index)
+ImageLabel* ImageCollection::getImageLabelFromDataBase(int index)
 {
     return imageDataBase.at(index);
 }
