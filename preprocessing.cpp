@@ -6,22 +6,14 @@ Mirrored::Mirrored(Preprocessing *parent)
     verticalMirror = false;
 }
 
-void Mirrored::displayUI(QLayout *layout, QWidget *parentWidget)
+void Mirrored::changeHorizontalMirrorMode()
 {
-    QGroupBox *mirrorProcessViewer = new QGroupBox();
-    mirrorProcessViewer->setTitle("&Mirror");
+    horizontalMirror = !horizontalMirror;
+}
 
-    QCheckBox *horizontalMirrorCheckBox = new QCheckBox("Horizontal", parentWidget);
-    parentWidget->connect(horizontalMirrorCheckBox, &QCheckBox::toggled, [=](){this->changeHorizontalMirrorMode();});
-    QCheckBox *verticalMirrorCheckBox = new QCheckBox("Vertical", parentWidget);
-    parentWidget->connect(verticalMirrorCheckBox, &QCheckBox::toggled, [=](){this->changeVerticalMirrorMode();});
-
-    QVBoxLayout *mirrorProcessLayout = new QVBoxLayout();
-    mirrorProcessLayout->addWidget(horizontalMirrorCheckBox);
-    mirrorProcessLayout->addWidget(verticalMirrorCheckBox);
-    mirrorProcessViewer->setLayout(mirrorProcessLayout);
-
-    layout->addWidget(mirrorProcessViewer);
+void Mirrored::changeVerticalMirrorMode()
+{
+    verticalMirror = !verticalMirror;
 }
 
 void Mirrored::runPreprocess(ImageCollection *imageCollection)
@@ -33,27 +25,11 @@ void Mirrored::runPreprocess(ImageCollection *imageCollection)
     }
 }
 
-void Mirrored::changeHorizontalMirrorMode()
-{
-    horizontalMirror = !horizontalMirror;
-}
-
-void Mirrored::changeVerticalMirrorMode()
-{
-    verticalMirror = !verticalMirror;
-}
 
 
 Grayscale::Grayscale(Preprocessing *parent)
 {
 
-}
-
-void Grayscale::displayUI(QLayout *layout, QWidget *parentWidget)
-{
-    QGroupBox *grayscaleProcessViewer = new QGroupBox();
-    grayscaleProcessViewer->setTitle("&Grayscale");
-    layout->addWidget(grayscaleProcessViewer);
 }
 
 void Grayscale::runPreprocess(ImageCollection *imageCollection)

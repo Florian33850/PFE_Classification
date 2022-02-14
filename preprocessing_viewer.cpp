@@ -23,7 +23,7 @@ PreprocessingViewer::PreprocessingViewer(ImageCollection *imageCollection, QWidg
 
 void PreprocessingViewer::handleLaunchPreprocessingButton()
 {
-    for(Preprocessing *preprocessing : qWidgetList)
+    for(Preprocessing *preprocessing : preprocessingList)
     {
         preprocessing->runPreprocess(imageCollection);
     }
@@ -44,15 +44,18 @@ void PreprocessingViewer::handleAddPreprocessingComboBox()
 
 void PreprocessingViewer::handleMirrored()
 {
-    Mirrored *newMirrorPreprocess = new Mirrored();
-    qWidgetList.push_back(newMirrorPreprocess);
-    newMirrorPreprocess->displayUI(mainLayout, this);
+    Mirrored *newMirroredPreprocess = new Mirrored();
+    preprocessingList.push_back(newMirroredPreprocess);
+    MirroredWidget *newMirroredWidget = new MirroredWidget(mainLayout, this, newMirroredPreprocess);
+    preprocessingWidgetList.push_back(newMirroredWidget);
+    newMirroredWidget->displayUI();
 }
 
 void PreprocessingViewer::handleGrayscale()
 {
     Grayscale *newGrayscalePreprocess = new Grayscale();
-    qWidgetList.push_back(newGrayscalePreprocess);
-    newGrayscalePreprocess->displayUI(mainLayout, this);
+    preprocessingList.push_back(newGrayscalePreprocess);
+    GrayscaleWidget *newGrayscaleWidget = new GrayscaleWidget(mainLayout, this, newGrayscalePreprocess);
+    preprocessingWidgetList.push_back(newGrayscaleWidget);
+    newGrayscaleWidget->displayUI();
 }
-

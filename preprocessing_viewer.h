@@ -4,6 +4,7 @@
 #include "image_collection.h"
 #include "image_label.h"
 #include "preprocessing.h"
+#include "preprocessing_widget.h"
 
 #include <iostream>
 
@@ -19,7 +20,9 @@ class PreprocessingViewer : public QWidget
 
     private:
         QVBoxLayout *mainLayout;
-        std::vector<Preprocessing*> qWidgetList;
+        std::vector<PreprocessingWidget*> preprocessingWidgetList;
+        std::vector<Preprocessing*> preprocessingList;
+
         QPushButton *launchPreprocessingButton;
         QComboBox *addPreprocessingComboBox;
         ImageCollection *imageCollection;
@@ -27,7 +30,6 @@ class PreprocessingViewer : public QWidget
         void handleLaunchPreprocessingButton();
         void handleAddPreprocessingComboBox();
         void handleMirrored();
-        void handleGrayscale();
-    
+        void handleGrayscale();    
 };
 #endif // PREPROCESSING_VIEWER_H
