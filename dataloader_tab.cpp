@@ -43,6 +43,7 @@ void DataloaderTab::displayDataBaseImages()
 {
     int imageIndex = 0;
     int imageDataBaseSize = imageCollection->getDataBaseSize();
+
     for(int row=1; row<maximumRowsOfImages; row++)
     {
         for(int col=0; col<maximumCollumnsOfImages; col++)
@@ -51,6 +52,12 @@ void DataloaderTab::displayDataBaseImages()
             {
                 break;
             }
+        
+            QLayoutItem *item= mainLayout->itemAtPosition(row,col);
+            if (item && item->widget()){
+                item->widget()->deleteLater();
+            }
+                   
             mainLayout->addWidget(imageCollection->getImageFromDataBase(imageIndex), row, col);
             imageIndex++;
         }

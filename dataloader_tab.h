@@ -21,6 +21,7 @@ public Q_SLOTS:
 private:
     ImageCollection *imageCollection;
     QGridLayout *mainLayout;
+    bool isCurrentImageCollection;
 
     void updateWindow();
 };
