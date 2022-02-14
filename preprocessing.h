@@ -8,10 +8,13 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QCheckBox>
+#include <QGroupBox>
+
 
 class Preprocessing
 {
     public:
+        void displayUI(QLayout *layout, QWidget *parent);
         virtual void runPreprocess(ImageCollection *imageCollection) = 0;
     private:
 };
@@ -19,7 +22,7 @@ class Preprocessing
 class Mirrored : public Preprocessing
 {   
     public:
-        explicit Mirrored( Preprocessing *parent = nullptr);
+        explicit Mirrored(Preprocessing *parent = nullptr);
 
         bool horizontalMirror;
         bool verticalMirror;
@@ -27,6 +30,19 @@ class Mirrored : public Preprocessing
         void changeHorizontalMirrorMode();
         void changeVerticalMirrorMode();
 
+        void displayUI(QLayout *layout, QWidget *parent);
+
+    private:
+        void runPreprocess(ImageCollection *imageCollection);
+};
+
+class Grayscale : public Preprocessing
+{
+    public:
+        explicit Grayscale(Preprocessing *parent = nullptr);
+
+        void displayUI(QLayout *layout, QWidget *parent);
+    
     private:
         void runPreprocess(ImageCollection *imageCollection);
 };
