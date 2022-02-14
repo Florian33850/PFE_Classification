@@ -17,6 +17,7 @@ class PreprocessingWidget : public QWidget
         
     protected:
         QGroupBox *mainWidgetGroupBox;
+        QPushButton *deleteButton;
         QLayout *parentLayout;
         QWidget *parentWidget;
 };

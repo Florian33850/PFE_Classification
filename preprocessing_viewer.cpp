@@ -13,12 +13,14 @@ PreprocessingViewer::PreprocessingViewer(ImageCollection *imageCollection, QWidg
     launchPreprocessingButton = new QPushButton("Launch preprocessing");
     connect(launchPreprocessingButton, &QPushButton::released, this, &PreprocessingViewer::handleLaunchPreprocessingButton);
     mainLayout->addWidget(launchPreprocessingButton);
+    mainLayout->setAlignment(launchPreprocessingButton, Qt::AlignTop);
 
     QStringList preprocessingList = {"Add Preprocessing", "Mirrored", "Blur", "Grayscale"};
     addPreprocessingComboBox = new QComboBox();
     addPreprocessingComboBox->addItems(preprocessingList);
-    connect(addPreprocessingComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PreprocessingViewer::handleAddPreprocessingComboBox);
+    connect(addPreprocessingComboBox, QOverload<int>::of(&QComboBox::activated), this, &PreprocessingViewer::handleAddPreprocessingComboBox);
     mainLayout->addWidget(addPreprocessingComboBox);
+    mainLayout->setAlignment(addPreprocessingComboBox, Qt::AlignTop);
 }
 
 void PreprocessingViewer::handleLaunchPreprocessingButton()

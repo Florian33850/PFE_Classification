@@ -8,6 +8,8 @@ MirroredWidget::MirroredWidget(QLayout *parentLayout, QWidget *parentWidget, Mir
     this->mainWidgetGroupBox = new QGroupBox();
     this->horizontalMirrorCheckBox = new QCheckBox("Horizontal", parentWidget);
     this->verticalMirrorCheckBox = new QCheckBox("Vertical", parentWidget);
+
+    mainWidgetGroupBox->setMaximumHeight(100);
 }
 
 void MirroredWidget::displayUI()
@@ -33,6 +35,8 @@ GrayscaleWidget::GrayscaleWidget(QLayout *parentLayout, QWidget *parentWidget, G
     this->parentWidget = parentWidget;
     this->grayscale = grayscale;
     this->mainWidgetGroupBox = new QGroupBox();
+
+    mainWidgetGroupBox->setMaximumHeight(50);
 }
 
 void GrayscaleWidget::displayUI()
