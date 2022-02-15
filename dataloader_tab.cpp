@@ -39,10 +39,27 @@ bool DataloaderTab::selectDataBasePath()
     return true;
 }
 
+void clearLayout(QLayout *layout)
+{
+    QLayoutItem *item;
+    while ((item = layout->takeAt(1)))
+    {
+        if (item->layout())
+        {
+            clearLayout(item->layout());
+            delete item->layout();
+        }
+        delete item->widget();
+        delete item;
+    }
+}
+
 void DataloaderTab::displayDataBaseImages()
 {
     int imageIndex = 0;
     int imageDataBaseSize = imageCollection->getDataBaseSize();
+
+    clearLayout(mainLayout);
 
     for(int row=1; row<maximumRowsOfImages; row++)
     {
@@ -52,14 +69,10 @@ void DataloaderTab::displayDataBaseImages()
             {
                 break;
             }
-        
-            QLayoutItem *item= mainLayout->itemAtPosition(row,col);
-            if (item && item->widget()){
-                item->widget()->deleteLater();
-            }
                    
             mainLayout->addWidget(imageCollection->getImageFromDataBase(imageIndex), row, col);
             imageIndex++;
         }
     }
 }
+
