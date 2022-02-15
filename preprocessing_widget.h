@@ -2,24 +2,31 @@
 #define PREPROCESSING_WIDGET_H
 
 #include "preprocessing.h"
-
 #include <QWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QCheckBox>
 #include <QGroupBox>
+#include <QUuid>
 
 
 class PreprocessingWidget : public QWidget
 {
     public:
+        QUuid *quuid;
+        
         virtual void displayUI() = 0;
+        QPushButton* getDeletePreprocessingWidgetButton();
+        
+        void deleteMainWidgetGroupBox();
         
     protected:
         QGroupBox *mainWidgetGroupBox;
-        QPushButton *deleteButton;
+        QPushButton *deletePreprocessingWidgetButton;
         QLayout *parentLayout;
         QWidget *parentWidget;
+
+        void connectWidgetDeleteButton();
 };
 
 class MirroredWidget : public PreprocessingWidget

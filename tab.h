@@ -2,7 +2,6 @@
 #define TAB_H
 
 #include "image_collection.h"
-#include "image_label.h"
 
 #include <QWidget>
 #include <QPushButton>

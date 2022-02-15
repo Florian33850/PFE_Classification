@@ -1,9 +1,6 @@
 #ifndef PREPROCESSING_VIEWER_H
 #define PREPROCESSING_VIEWER_H
 
-#include "image_collection.h"
-#include "image_label.h"
-#include "preprocessing.h"
 #include "preprocessing_widget.h"
 
 #include <iostream>
@@ -29,7 +26,10 @@ class PreprocessingViewer : public QWidget
 
         void handleLaunchPreprocessingButton();
         void handleAddPreprocessingComboBox();
-        void handleMirrored();
-        void handleGrayscale();    
+        void connectWidgetDeleteButton(QPushButton* deleteWidgetButton, PreprocessingWidget* preprocessingWidgetToDelete);
+        void handleDeletePreprocessingWidgetButton(PreprocessingWidget* preprocessingWidget);
+        MirroredWidget* handleMirrored();
+        GrayscaleWidget* handleGrayscale();    
 };
+
 #endif // PREPROCESSING_VIEWER_H

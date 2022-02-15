@@ -2,7 +2,6 @@
 #define PREPROCESSING_H
 
 #include "image_collection.h"
-#include "image_label.h"
 
 class Preprocessing
 {
