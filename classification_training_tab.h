@@ -3,6 +3,12 @@
 
 #include "tab.h"
 #include "model_runner.h"
+#include "image_label.h"
+
+#include <QLabel>
+#include <QFileDialog>
+#include <QPushButton>
+
 
 class ClassificationTrainingTab : public Tab
 {

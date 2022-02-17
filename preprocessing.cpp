@@ -1,38 +1,37 @@
 #include "preprocessing.h"
 
-Mirrored::Mirrored(Preprocessing *parent)
+MirrorPreprocess::MirrorPreprocess()
 {
     horizontalMirror = false;
     verticalMirror = false;
 }
 
-void Mirrored::changeHorizontalMirrorMode()
+void MirrorPreprocess::changeHorizontalMirrorMode()
 {
     horizontalMirror = !horizontalMirror;
 }
 
-void Mirrored::changeVerticalMirrorMode()
+void MirrorPreprocess::changeVerticalMirrorMode()
 {
     verticalMirror = !verticalMirror;
 }
 
-void Mirrored::runPreprocess(ImageCollection *imageCollection)
+void MirrorPreprocess::runPreprocess(ImageCollection *imageCollection)
 {
     for(int imgNumber=0; imgNumber < imageCollection->getDataBaseSize(); imgNumber++)
     {
-        QImage mirroredImage = imageCollection->getImageLabelFromDataBase(imgNumber)->getQImage().mirrored(horizontalMirror, verticalMirror);
-        imageCollection->getImageLabelFromDataBase(imgNumber)->setImage(mirroredImage);
+        QImage mirrorImage = imageCollection->getImageLabelFromDataBase(imgNumber)->getQImage().mirrored(horizontalMirror, verticalMirror);
+        imageCollection->getImageLabelFromDataBase(imgNumber)->setImage(mirrorImage);
     }
 }
 
 
 
-Grayscale::Grayscale(Preprocessing *parent)
+GrayscalePreprocess::GrayscalePreprocess()
 {
-
 }
 
-void Grayscale::runPreprocess(ImageCollection *imageCollection)
+void GrayscalePreprocess::runPreprocess(ImageCollection *imageCollection)
 {
     for(int imgNumber=0; imgNumber < imageCollection->getDataBaseSize(); imgNumber++)
     {

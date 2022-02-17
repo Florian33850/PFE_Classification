@@ -11,10 +11,10 @@ class Preprocessing
     private:
 };
 
-class Mirrored : public Preprocessing
+class MirrorPreprocess : public Preprocessing
 {   
     public:
-        explicit Mirrored(Preprocessing *parent = nullptr);
+        explicit MirrorPreprocess();
 
         bool horizontalMirror;
         bool verticalMirror;
@@ -26,10 +26,10 @@ class Mirrored : public Preprocessing
         void runPreprocess(ImageCollection *imageCollection);
 };
 
-class Grayscale : public Preprocessing
+class GrayscalePreprocess : public Preprocessing
 {
     public:
-        explicit Grayscale(Preprocessing *parent = nullptr);
+        explicit GrayscalePreprocess();
     
     private:
         void runPreprocess(ImageCollection *imageCollection);

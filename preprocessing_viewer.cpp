@@ -14,7 +14,7 @@ PreprocessingViewer::PreprocessingViewer(ImageCollection *imageCollection, QWidg
     connect(launchPreprocessingButton, &QPushButton::released, this, &PreprocessingViewer::handleLaunchPreprocessingButton);
     mainLayout->addWidget(launchPreprocessingButton);
 
-    QStringList preprocessingList = {"Add Preprocessing", "Mirrored", "Blur", "Grayscale"};
+    QStringList preprocessingList = {"Add Preprocessing", "Mirror", "Grayscale"};
     addPreprocessingComboBox = new QComboBox();
     addPreprocessingComboBox->addItems(preprocessingList);
     connect(addPreprocessingComboBox, QOverload<int>::of(&QComboBox::activated), this, &PreprocessingViewer::handleAddPreprocessingComboBox);
@@ -35,13 +35,13 @@ void PreprocessingViewer::handleAddPreprocessingComboBox()
 {
     QString newPreprocessing = addPreprocessingComboBox->currentText();
     PreprocessingWidget *preprocessingWidget;
-    if(newPreprocessing.compare("Mirrored") == 0)
+    if(newPreprocessing.compare("Mirror") == 0)
     {
-        preprocessingWidget = handleMirrored();
+        preprocessingWidget = addMirrorPreprocess();
     }
     else if(newPreprocessing.compare("Grayscale") == 0)
     {
-        preprocessingWidget = handleGrayscale();
+        preprocessingWidget = addGrayscalePreprocess();
     }
     connectWidgetDeleteButton(preprocessingWidget->getDeletePreprocessingWidgetButton(), preprocessingWidget);
 }
@@ -61,25 +61,24 @@ void PreprocessingViewer::handleDeletePreprocessingWidgetButton(PreprocessingWid
             preprocessingList.erase(preprocessingList.begin() + index);
             preprocessingWidgetList.erase(preprocessingWidgetList.begin() + index);
             preprocessingWidget->deleteMainWidgetGroupBox();
-            //should we delete the two objects ?
         }
         index++;
     }
 }
 
-MirroredWidget* PreprocessingViewer::handleMirrored()
+MirrorWidget* PreprocessingViewer::addMirrorPreprocess()
 {
-    Mirrored *newMirroredPreprocess = new Mirrored();
-    preprocessingList.push_back(newMirroredPreprocess);
-    MirroredWidget *newMirroredWidget = new MirroredWidget(mainLayout, this, newMirroredPreprocess);
-    preprocessingWidgetList.push_back(newMirroredWidget);
-    newMirroredWidget->displayUI();
-    return newMirroredWidget;
+    MirrorPreprocess *newMirrorPreprocess = new MirrorPreprocess();
+    preprocessingList.push_back(newMirrorPreprocess);
+    MirrorWidget *newMirrorWidget = new MirrorWidget(mainLayout, this, newMirrorPreprocess);
+    preprocessingWidgetList.push_back(newMirrorWidget);
+    newMirrorWidget->displayUI();
+    return newMirrorWidget;
 }
 
-GrayscaleWidget* PreprocessingViewer::handleGrayscale()
+GrayscaleWidget* PreprocessingViewer::addGrayscalePreprocess()
 {
-    Grayscale *newGrayscalePreprocess = new Grayscale();
+    GrayscalePreprocess *newGrayscalePreprocess = new GrayscalePreprocess();
     preprocessingList.push_back(newGrayscalePreprocess);
     GrayscaleWidget *newGrayscaleWidget = new GrayscaleWidget(mainLayout, this, newGrayscalePreprocess);
     preprocessingWidgetList.push_back(newGrayscaleWidget);

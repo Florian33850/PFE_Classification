@@ -2,6 +2,7 @@
 #define IMAGE_LABEL_H
 
 #include <QLabel>
+#include <QImage>
 
 class ImageLabel : public QLabel {
   Q_OBJECT

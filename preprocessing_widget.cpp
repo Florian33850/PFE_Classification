@@ -1,8 +1,11 @@
 #include "preprocessing_widget.h"
 
-QPushButton* PreprocessingWidget::getDeletePreprocessingWidgetButton()
+PreprocessingWidget::PreprocessingWidget(QLayout *mainLayout, QWidget *parentWidget)
 {
-    return deletePreprocessingWidgetButton;
+    this->mainLayout = mainLayout;
+    this->parentWidget = parentWidget;
+    this->mainWidgetGroupBox = new QGroupBox();
+    this->deletePreprocessingWidgetButton = new QPushButton("x");
 }
 
 void PreprocessingWidget::deleteMainWidgetGroupBox()
@@ -10,53 +13,46 @@ void PreprocessingWidget::deleteMainWidgetGroupBox()
     delete this->mainWidgetGroupBox;
 }
 
-// QLabel PreprocessingWidget::createTextLabel(QString titleName)
-// {
-//     QLabel title = new QL
-// }
-
-MirroredWidget::MirroredWidget(QLayout *parentLayout, QWidget *parentWidget, Mirrored *mirrored)
+QPushButton* PreprocessingWidget::getDeletePreprocessingWidgetButton()
 {
-    this->parentLayout = parentLayout;
-    this->parentWidget = parentWidget;
-    this->mirrored = mirrored;
-    this->quuid = new QUuid();
-    this->mainWidgetGroupBox = new QGroupBox();
-    this->deletePreprocessingWidgetButton = new QPushButton("x");
+    return deletePreprocessingWidgetButton;
+}
+
+
+MirrorWidget::MirrorWidget(QLayout *mainLayout, QWidget *parentWidget, MirrorPreprocess *mirrorPreprocess)
+ : PreprocessingWidget(mainLayout, parentWidget)
+{
+    this->mirror = mirrorPreprocess;
     this->horizontalMirrorCheckBox = new QCheckBox("Horizontal", parentWidget);
     this->verticalMirrorCheckBox = new QCheckBox("Vertical", parentWidget);
 
-    mainWidgetGroupBox->setMaximumHeight(100);
+    mainWidgetGroupBox->setMaximumHeight(MIRRORED_WIDGET_MAXIMUM_HEIGHT);
 }
 
-void MirroredWidget::displayUI()
+void MirrorWidget::displayUI()
 {
-    mainWidgetGroupBox->setTitle("&Mirror");
-    parentWidget->connect(horizontalMirrorCheckBox, &QCheckBox::toggled, [=](){this->mirrored->changeHorizontalMirrorMode();});
-    parentWidget->connect(verticalMirrorCheckBox, &QCheckBox::toggled, [=](){this->mirrored->changeVerticalMirrorMode();});
+    parentWidget->connect(horizontalMirrorCheckBox, &QCheckBox::toggled, [=](){this->mirror->changeHorizontalMirrorMode();});
+    parentWidget->connect(verticalMirrorCheckBox, &QCheckBox::toggled, [=](){this->mirror->changeVerticalMirrorMode();});
 
     QGridLayout *mirrorLayout = new QGridLayout();
-    mirrorLayout->addWidget(horizontalMirrorCheckBox, 0, 0, 1, 1);
-    mirrorLayout->addWidget(verticalMirrorCheckBox, 1, 0, 1, 1);
+    QLabel *mirrorWidgetTitle = new QLabel("Mirror");
+    mirrorLayout->addWidget(mirrorWidgetTitle, 0, 0, 1, 1);
+    mirrorLayout->addWidget(horizontalMirrorCheckBox, 1, 0, 1, 1);
+    mirrorLayout->addWidget(verticalMirrorCheckBox, 2, 0, 1, 1);
     mirrorLayout->addWidget(deletePreprocessingWidgetButton, 0, 1, 1, 1);
-    mainWidgetGroupBox->setLayout(mirrorLayout);
 
-    parentLayout->addWidget(mainWidgetGroupBox);
+    mainWidgetGroupBox->setLayout(mirrorLayout);
+    mainLayout->addWidget(mainWidgetGroupBox);
 }
 
 
 
-
-GrayscaleWidget::GrayscaleWidget(QLayout *parentLayout, QWidget *parentWidget, Grayscale *grayscale)
+GrayscaleWidget::GrayscaleWidget(QLayout *mainLayout, QWidget *parentWidget, GrayscalePreprocess *grayscalePreprocessing)
+ : PreprocessingWidget(mainLayout, parentWidget)
 {
-    this->parentLayout = parentLayout;
-    this->parentWidget = parentWidget;
-    this->grayscale = grayscale;
-    this->quuid = new QUuid();
-    this->mainWidgetGroupBox = new QGroupBox();
-    this->deletePreprocessingWidgetButton = new QPushButton("x");
+    this->grayscale = grayscalePreprocessing;
 
-    mainWidgetGroupBox->setMaximumHeight(65);
+    mainWidgetGroupBox->setMaximumHeight(GRAYSCALE_WIDGET_MAXIMUM_HEIGHT);
 }
 
 void GrayscaleWidget::displayUI()
@@ -67,5 +63,5 @@ void GrayscaleWidget::displayUI()
     grayscaleLayout->addWidget(grayscaleWidgetTitle);
     grayscaleLayout->addWidget(deletePreprocessingWidgetButton);
 
-    parentLayout->addWidget(mainWidgetGroupBox);
+    mainLayout->addWidget(mainWidgetGroupBox);
 }

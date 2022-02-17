@@ -4,6 +4,8 @@
 #include "tab.h"
 #include "preprocessing_viewer.h"
 
+#include <QFileDialog>
+
 class DataloaderTab : public Tab
 {
     Q_OBJECT

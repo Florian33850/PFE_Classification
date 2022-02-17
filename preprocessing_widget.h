@@ -2,56 +2,56 @@
 #define PREPROCESSING_WIDGET_H
 
 #include "preprocessing.h"
+
 #include <QWidget>
 #include <QPushButton>
-#include <QVBoxLayout>
 #include <QCheckBox>
 #include <QGroupBox>
-#include <QUuid>
+#include <QGridLayout>
 
+#define MIRRORED_WIDGET_MAXIMUM_HEIGHT 110
+#define GRAYSCALE_WIDGET_MAXIMUM_HEIGHT 65
 
 class PreprocessingWidget : public QWidget
 {
     public:
-        QUuid *quuid;
-        
+        PreprocessingWidget(QLayout *mainLayout, QWidget *parentWidget);
+
         virtual void displayUI() = 0;
-        QPushButton* getDeletePreprocessingWidgetButton();
-        
         void deleteMainWidgetGroupBox();
+        QPushButton* getDeletePreprocessingWidgetButton();
         
     protected:
         QGroupBox *mainWidgetGroupBox;
         QPushButton *deletePreprocessingWidgetButton;
-        QLayout *parentLayout;
+        QLayout *mainLayout;
         QWidget *parentWidget;
 
         void connectWidgetDeleteButton();
 };
 
-class MirroredWidget : public PreprocessingWidget
+class MirrorWidget : public PreprocessingWidget
 {
     public:
-        MirroredWidget(QLayout *parentLayout, QWidget *parentWidget, Mirrored *mirrored);
+        MirrorWidget(QLayout *mainLayout, QWidget *parentWidget, MirrorPreprocess *mirrorPreprocessing);
 
         void displayUI();
     
     private:
         QCheckBox *horizontalMirrorCheckBox;
         QCheckBox *verticalMirrorCheckBox;
-        Mirrored *mirrored;
+        MirrorPreprocess *mirror;
 };
 
 class GrayscaleWidget : public PreprocessingWidget
 {
     public:
-        GrayscaleWidget(QLayout *parentLayout, QWidget *parentWidget, Grayscale *grayscale);
+        GrayscaleWidget(QLayout *mainLayout, QWidget *parentWidget, GrayscalePreprocess *grayscale);
 
         void displayUI();
     
     private:
-        Grayscale *grayscale;
+        GrayscalePreprocess *grayscale;
 };
 
-
-#endif // P_WIDGET_H
+#endif // PREPROCESSING_WIDGET_H

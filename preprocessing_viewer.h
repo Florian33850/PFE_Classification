@@ -4,9 +4,6 @@
 #include "preprocessing_widget.h"
 
 #include <iostream>
-
-#include <QWidget>
-#include <QPushButton>
 #include <QVBoxLayout>
 #include <QComboBox>
 
@@ -28,8 +25,8 @@ class PreprocessingViewer : public QWidget
         void handleAddPreprocessingComboBox();
         void connectWidgetDeleteButton(QPushButton* deleteWidgetButton, PreprocessingWidget* preprocessingWidgetToDelete);
         void handleDeletePreprocessingWidgetButton(PreprocessingWidget* preprocessingWidget);
-        MirroredWidget* handleMirrored();
-        GrayscaleWidget* handleGrayscale();    
+        MirrorWidget* addMirrorPreprocess();
+        GrayscaleWidget* addGrayscalePreprocess();    
 };
 
 #endif // PREPROCESSING_VIEWER_H
