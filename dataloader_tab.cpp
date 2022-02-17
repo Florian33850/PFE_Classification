@@ -5,9 +5,8 @@ DataloaderTab::DataloaderTab(Tab *parent)
 {
     imageCollection = new ImageCollection();
     mainLayout = new QGridLayout();
-    void setLayoutParameters();
     mainLayout->setSpacing(1);
-    mainLayout->setMargin(0);
+    mainLayout->setMargin(1);
     setLayout(mainLayout);
 
     QPushButton *loadDataBaseButton = new QPushButton("Load database");
@@ -15,8 +14,10 @@ DataloaderTab::DataloaderTab(Tab *parent)
     mainLayout->addWidget(loadDataBaseButton, 0, 0, 1, 5);
 
     maximumNumberOfImagesToDisplay = 10;
-    maximumRowsOfImages = 4;
+    maximumRowsOfImages = 3;
     maximumCollumnsOfImages = 5;
+
+    mainLayout->addWidget(new PreprocessingViewer(imageCollection), 0, 5, maximumRowsOfImages, 1);
 }
 
 void DataloaderTab::handleLoadDataBaseButton()
@@ -69,10 +70,13 @@ void DataloaderTab::displayDataBaseImages()
             {
                 break;
             }
-                   
-            mainLayout->addWidget(imageCollection->getImageFromDataBase(imageIndex), row, col);
+            mainLayout->addWidget(imageCollection->getImageLabelFromDataBase(imageIndex), row, col);
             imageIndex++;
         }
     }
 }
 
+void DataloaderTab::updateWindow()
+{
+    
+}

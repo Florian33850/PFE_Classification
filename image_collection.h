@@ -2,10 +2,7 @@
 #define IMAGE_COLLECTION_H
 
 #include "image_label.h"
-
-#include <QMainWindow>
-#include <QVBoxLayout>
-
+#include <QStringList>
 
 class ImageCollection {
 
@@ -16,7 +13,7 @@ class ImageCollection {
         void eraseCollectionIfNotEmpty();
 
         void setPathToImages(QStringList newPathToImages);
-        ImageLabel* getImageFromDataBase(int index);
+        ImageLabel* getImageLabelFromDataBase(int index);
         int getDataBaseSize();
 
     private:

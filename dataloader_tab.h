@@ -2,6 +2,9 @@
 #define DATALOADER_TAB_H
 
 #include "tab.h"
+#include "preprocessing_viewer.h"
+
+#include <QFileDialog>
 
 class DataloaderTab : public Tab
 {
