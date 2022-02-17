@@ -2,6 +2,7 @@
 #define IMAGE_LABEL_H
 
 #include <QLabel>
+#include <QImage>
 
 class ImageLabel : public QLabel {
   Q_OBJECT
@@ -9,8 +10,9 @@ public:
   ImageLabel(QWidget *parent = 0);
   ~ImageLabel();
 
-  void setImage(QImage image);
   void updateContent();
+  void setImage(QImage image);
+  QImage getQImage();
 
 protected Q_SLOTS:
   void resizeEvent(QResizeEvent *event) override;

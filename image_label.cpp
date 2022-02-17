@@ -10,11 +10,6 @@ ImageLabel::ImageLabel(QWidget *parent) : QLabel(parent) {
 
 ImageLabel::~ImageLabel() {}
 
-void ImageLabel::setImage(QImage image)
-{
-  rawImage = image;
-  updateContent();
-}
 
 void ImageLabel::updateContent()
 {
@@ -31,4 +26,15 @@ void ImageLabel::resizeEvent(QResizeEvent *event)
 {
   (void)event;
   updateContent();
+}
+
+void ImageLabel::setImage(QImage image)
+{
+  rawImage = image;
+  updateContent();
+}
+
+QImage ImageLabel::getQImage()
+{
+    return rawImage;
 }
