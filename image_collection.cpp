@@ -4,29 +4,75 @@
 
 ImageCollection::ImageCollection()
 {
+    indexPathToImagesList = 0;
+    maxNumberOfImagesToLoad = 5;
 }
 
-void ImageCollection::loadCollection()
+void ImageCollection::loadPreview()
 {
-    for(int fileNum=0; fileNum<pathToImages.length(); fileNum++)
+    if(indexPathToImagesList >= pathToImages.size())
     {
-        QImage qImg;
-        if(qImg.load(pathToImages.at(fileNum)) == false)
+        printf("No more images to load.\n");
+    }
+    else
+    {
+        erasePreviewIfNotEmpty();
+        for(int fileNum=indexPathToImagesList; fileNum<indexPathToImagesList+maxNumberOfImagesToLoad; fileNum++)
         {
-            std::cout << "Cannot open image\n" << std::endl;
+            if(fileNum == pathToImages.size())
+            {
+                break;
+            }
+            QImage qImg;
+            if(qImg.load(pathToImages.at(fileNum)) == false)
+            {
+                std::cout << "Cannot open image\n" << std::endl;
+            }
+            ImageLabel *imageLabel = new ImageLabel();
+            imageLabel->setImage(qImg);
+            imageDataBasePreview.push_back(imageLabel);
         }
-        ImageLabel *imageLabel = new ImageLabel();
-        imageLabel->setImage(qImg);
-        imageDataBase.push_back(imageLabel);
+        indexPathToImagesList += maxNumberOfImagesToLoad;
+        printf("index: %d\n", indexPathToImagesList);
     }
 }
 
-void ImageCollection::eraseCollectionIfNotEmpty()
+void ImageCollection::erasePreviewIfNotEmpty()
 {
-    if(!imageDataBase.empty())
+    if(!imageDataBasePreview.empty())
     {
-        imageDataBase.clear();
+        imageDataBasePreview.clear();
     }
+}
+
+void ImageCollection::loadPreviousPreview()
+{
+    int previousIndex = indexPathToImagesList - 2*maxNumberOfImagesToLoad;
+    if(previousIndex < 0)
+    {
+        std::cout << "No more images to load" << std::endl;
+    }
+    else
+    {
+        erasePreviewIfNotEmpty();
+        for(int fileNum=previousIndex; fileNum<indexPathToImagesList-maxNumberOfImagesToLoad; fileNum++)
+        {
+            QImage qImg;
+            if(qImg.load(pathToImages.at(fileNum)) == false)
+            {
+                std::cout << "Cannot open image\n" <<std::endl;
+            }
+            ImageLabel *imageLabel = new ImageLabel();
+            imageLabel->setImage(qImg);
+            imageDataBasePreview.push_back(imageLabel);
+        }
+        indexPathToImagesList -= maxNumberOfImagesToLoad;
+    }
+}
+
+bool ImageCollection::pathListToImagesIsEmpty()
+{
+    return pathToImages.empty();
 }
 
 void ImageCollection::setPathToImages(QStringList newPathToImages)
@@ -36,10 +82,10 @@ void ImageCollection::setPathToImages(QStringList newPathToImages)
 
 ImageLabel* ImageCollection::getImageLabelFromDataBase(int index)
 {
-    return imageDataBase.at(index);
+    return imageDataBasePreview.at(index);
 }
 
-int ImageCollection::getDataBaseSize()
+int ImageCollection::getPreviewListSize()
 {
-    return imageDataBase.size();
+    return imageDataBasePreview.size();
 }

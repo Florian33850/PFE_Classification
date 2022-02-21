@@ -3,6 +3,10 @@
 
 #include "tab.h"
 #include "model_runner.h"
+#include "image_label.h"
+
+#include <QPushButton>
+#include <QFileDialog>
 
 class ResultTab : public Tab
 {

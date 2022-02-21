@@ -37,8 +37,8 @@ void MirrorWidget::displayUI()
     QGridLayout *mirrorLayout = new QGridLayout();
     QLabel *mirrorWidgetTitle = new QLabel("Mirror");
     mirrorLayout->addWidget(mirrorWidgetTitle, 0, 0, 1, 1);
-    mirrorLayout->addWidget(horizontalMirrorCheckBox, 1, 0, 1, 1);
-    mirrorLayout->addWidget(verticalMirrorCheckBox, 2, 0, 1, 1);
+    mirrorLayout->addWidget(horizontalMirrorCheckBox, 1, 0, 2, 1);
+    mirrorLayout->addWidget(verticalMirrorCheckBox, 2, 0, 2, 1);
     mirrorLayout->addWidget(deletePreprocessingWidgetButton, 0, 1, 1, 1);
 
     mainWidgetGroupBox->setLayout(mirrorLayout);
