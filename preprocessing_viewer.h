@@ -12,6 +12,7 @@ class PreprocessingViewer : public QWidget
     public:
         explicit PreprocessingViewer(ImageCollection *imageCollection, QWidget *parent = nullptr);
 
+        void launchActivatedPreprocesses();
     private:
         QVBoxLayout *mainLayout;
         std::vector<PreprocessingWidget*> preprocessingWidgetList;

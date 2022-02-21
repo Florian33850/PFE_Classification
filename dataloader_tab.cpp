@@ -3,29 +3,25 @@
 DataloaderTab::DataloaderTab(Tab *parent)
     : Tab(parent)
 {
-    imageCollection = new ImageCollection();
     mainLayout = new QGridLayout();
     mainLayout->setSpacing(1);
     mainLayout->setMargin(1);
     setLayout(mainLayout);
 
-    QPushButton *loadDataBaseButton = new QPushButton("Load database");
-    connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::handleLoadDataBaseButton);
-    mainLayout->addWidget(loadDataBaseButton, 0, 0, 1, 5);
-
-    maximumNumberOfImagesToDisplay = 10;
+    imageCollection = new ImageCollection();
     maximumRowsOfImages = 3;
     maximumCollumnsOfImages = 5;
+    preprocessingViewer = new PreprocessingViewer(imageCollection);
+    mainLayout->addWidget(preprocessingViewer, 0, 5, maximumRowsOfImages, 1);
 
-    mainLayout->addWidget(new PreprocessingViewer(imageCollection), 0, 5, maximumRowsOfImages, 1);
+    addLoadDataBaseButton();
 }
 
-void DataloaderTab::handleLoadDataBaseButton()
+void DataloaderTab::addLoadDataBaseButton()
 {
-    selectDataBasePath();
-    imageCollection->eraseCollectionIfNotEmpty();
-    imageCollection->loadCollection();
-    displayDataBaseImages();
+    QPushButton *loadDataBaseButton = new QPushButton("Load database");
+    connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::handleLoadDataBaseButton);
+    mainLayout->addWidget(loadDataBaseButton, 0, 0, 1, 5); 
 }
 
 bool DataloaderTab::selectDataBasePath()
@@ -40,15 +36,15 @@ bool DataloaderTab::selectDataBasePath()
     return true;
 }
 
-void DataloaderTab::displayDataBaseImages()
+void DataloaderTab::displayDataBasePreview()
 {
     int imageIndex = 0;
-    int imageDataBaseSize = imageCollection->getDataBaseSize();
+    int previewListSize = imageCollection->getPreviewListSize();
     for(int row=1; row<maximumRowsOfImages; row++)
     {
         for(int col=0; col<maximumCollumnsOfImages; col++)
         {
-            if(imageIndex >= maximumNumberOfImagesToDisplay || imageIndex >= imageDataBaseSize)
+            if(imageIndex >= imageCollection->maxNumberOfImagesToLoad || imageIndex >= previewListSize)
             {
                 break;
             }
@@ -58,7 +54,36 @@ void DataloaderTab::displayDataBaseImages()
     }
 }
 
-void DataloaderTab::updateWindow()
+void DataloaderTab::addPreviousNextButtons()
 {
-    
+    QPushButton *previousDataBasePreview = new QPushButton("Prev");
+    connect(previousDataBasePreview, &QPushButton::released, this, &DataloaderTab::handleLoadPreviousPreviewButton);
+    mainLayout->addWidget(previousDataBasePreview, 6, 0, 1, 1);
+
+    QPushButton *nextDataBasePreview = new QPushButton("Next");
+    connect(nextDataBasePreview, &QPushButton::released, this, &DataloaderTab::handleLoadNextPreviewButton);
+    mainLayout->addWidget(nextDataBasePreview, 6, 2, 1, 1);  
+}
+
+void DataloaderTab::handleLoadDataBaseButton()
+{
+    selectDataBasePath();
+    imageCollection->erasePreviewIfNotEmpty();
+    imageCollection->loadPreview();
+    displayDataBasePreview();
+    addPreviousNextButtons();
+}
+
+void DataloaderTab::handleLoadNextPreviewButton()
+{
+    imageCollection->loadPreview();
+    preprocessingViewer->launchActivatedPreprocesses();
+    displayDataBasePreview();
+}
+
+void DataloaderTab::handleLoadPreviousPreviewButton()
+{
+    imageCollection->loadPreviousPreview();
+    preprocessingViewer->launchActivatedPreprocesses();
+    displayDataBasePreview();
 }
