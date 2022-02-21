@@ -6,14 +6,14 @@
 
 #include <QFileDialog>
 
-class DataloaderTab : public Tab
+class PreprocessingTab : public Tab
 {
     Q_OBJECT
 public:
     int maximumRowsOfImages;
     int maximumCollumnsOfImages;
 
-    explicit DataloaderTab( Tab *parent = nullptr);
+    explicit PreprocessingTab( Tab *parent = nullptr);
     void displayDataBasePreview();
     bool selectDataBasePath();
     void addPreviousNextButtons();

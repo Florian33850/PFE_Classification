@@ -1,8 +1,8 @@
-#ifndef CLASSIFIER_VIEWER_H
-#define CLASSIFIER_VIEWER_H
+#ifndef APPLICATION_VIEWER_H
+#define APPLICATION_VIEWER_H
 
 #include "classification_training_tab.h"
-#include "dataloader_tab.h"
+#include "preprocessing_tab.h"
 #include "result_tab.h"
 
 #include <iostream>
@@ -12,19 +12,19 @@
 #include <QMenuBar>
 #include <QMessageBox>
 
-class ClassifierViewer : public QMainWindow {
+class ApplicationViewer : public QMainWindow {
     Q_OBJECT
 
 public:
-    ClassifierViewer(QWidget * parent = 0);
-    ~ClassifierViewer();
+    ApplicationViewer(QWidget * parent = 0);
+    ~ApplicationViewer();
   
 private:
     QVBoxLayout *mainLayout;
     QWidget *mainWidget;
     QTabWidget *tabWidget;
 
-    void settingMenu(ClassifierViewer *classifierViewer);
+    void settingMenu(ApplicationViewer *applicationViewer);
     void openDataBaseButton(QMenu *menu = NULL);
 };
-#endif // CLASSIFIER_VIEWER_H
+#endif // APPLICATION_VIEWER_H

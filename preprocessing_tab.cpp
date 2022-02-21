@@ -1,6 +1,6 @@
-#include "dataloader_tab.h"
+#include "preprocessing_tab.h"
 
-DataloaderTab::DataloaderTab(Tab *parent)
+PreprocessingTab::PreprocessingTab(Tab *parent)
     : Tab(parent)
 {
     mainLayout = new QGridLayout();
@@ -17,14 +17,14 @@ DataloaderTab::DataloaderTab(Tab *parent)
     addLoadDataBaseButton();
 }
 
-void DataloaderTab::addLoadDataBaseButton()
+void PreprocessingTab::addLoadDataBaseButton()
 {
     QPushButton *loadDataBaseButton = new QPushButton("Load database");
-    connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::handleLoadDataBaseButton);
+    connect(loadDataBaseButton, &QPushButton::released, this, &PreprocessingTab::handleLoadDataBaseButton);
     mainLayout->addWidget(loadDataBaseButton, 0, 0, 1, 5); 
 }
 
-bool DataloaderTab::selectDataBasePath()
+bool PreprocessingTab::selectDataBasePath()
 {
     QStringList pathToImages = QFileDialog::getOpenFileNames(this, "Select images to open", tr("Images (*.jpg *.jpeg *.png *.tiff)"));
     if (pathToImages.size() == 0)
@@ -36,7 +36,7 @@ bool DataloaderTab::selectDataBasePath()
     return true;
 }
 
-void DataloaderTab::displayDataBasePreview()
+void PreprocessingTab::displayDataBasePreview()
 {
     int imageIndex = 0;
     int previewListSize = imageCollection->getPreviewListSize();
@@ -54,18 +54,18 @@ void DataloaderTab::displayDataBasePreview()
     }
 }
 
-void DataloaderTab::addPreviousNextButtons()
+void PreprocessingTab::addPreviousNextButtons()
 {
     QPushButton *previousDataBasePreview = new QPushButton("Prev");
-    connect(previousDataBasePreview, &QPushButton::released, this, &DataloaderTab::handleLoadPreviousPreviewButton);
+    connect(previousDataBasePreview, &QPushButton::released, this, &PreprocessingTab::handleLoadPreviousPreviewButton);
     mainLayout->addWidget(previousDataBasePreview, 6, 0, 1, 1);
 
     QPushButton *nextDataBasePreview = new QPushButton("Next");
-    connect(nextDataBasePreview, &QPushButton::released, this, &DataloaderTab::handleLoadNextPreviewButton);
+    connect(nextDataBasePreview, &QPushButton::released, this, &PreprocessingTab::handleLoadNextPreviewButton);
     mainLayout->addWidget(nextDataBasePreview, 6, 2, 1, 1);  
 }
 
-void DataloaderTab::handleLoadDataBaseButton()
+void PreprocessingTab::handleLoadDataBaseButton()
 {
     selectDataBasePath();
     imageCollection->erasePreviewIfNotEmpty();
@@ -74,14 +74,14 @@ void DataloaderTab::handleLoadDataBaseButton()
     addPreviousNextButtons();
 }
 
-void DataloaderTab::handleLoadNextPreviewButton()
+void PreprocessingTab::handleLoadNextPreviewButton()
 {
     imageCollection->loadPreview();
     preprocessingViewer->launchActivatedPreprocesses();
     displayDataBasePreview();
 }
 
-void DataloaderTab::handleLoadPreviousPreviewButton()
+void PreprocessingTab::handleLoadPreviousPreviewButton()
 {
     imageCollection->loadPreviousPreview();
     preprocessingViewer->launchActivatedPreprocesses();
