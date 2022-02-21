@@ -30,10 +30,6 @@ void PreprocessingViewer::handleLaunchPreprocessingButton()
         preprocessingWidget->isActivated = true;
     }
     launchActivatedPreprocesses();
-    // for(Preprocessing *preprocessing : preprocessingList)
-    // {
-    //     preprocessing->runPreprocess(imageCollection);
-    // }
 }
 
 void PreprocessingViewer::launchActivatedPreprocesses()
@@ -77,6 +73,7 @@ void PreprocessingViewer::handleDeletePreprocessingWidgetButton(PreprocessingWid
             preprocessingList.erase(preprocessingList.begin() + index);
             preprocessingWidgetList.erase(preprocessingWidgetList.begin() + index);
             preprocessingWidget->deleteMainWidgetGroupBox();
+            delete preprocessingWidget;
         }
         index++;
     }

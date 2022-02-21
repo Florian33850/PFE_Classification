@@ -24,6 +24,9 @@ class ImageCollection {
         QStringList pathToImages;
         int indexPathToImagesList;
         std::vector<ImageLabel*> imageDataBasePreview;
+        
+        QImage loadImageFromFile(QString pathToImage);
+        void addImageToImageDataBasePreview(QImage qImage);
 };
 
 #endif // IMAGE_COLLECTION_H
