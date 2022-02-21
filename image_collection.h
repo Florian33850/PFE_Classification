@@ -9,16 +9,24 @@ class ImageCollection {
     public:
         ImageCollection();
 
-        void loadCollection();
-        void eraseCollectionIfNotEmpty();
+        int maxNumberOfImagesToLoad;
 
+        void loadPreview();
+        void erasePreviewIfNotEmpty();
+        void loadPreviousPreview();
+
+        bool pathListToImagesIsEmpty();
         void setPathToImages(QStringList newPathToImages);
         ImageLabel* getImageLabelFromDataBase(int index);
-        int getDataBaseSize();
+        int getPreviewListSize();
 
     private:
         QStringList pathToImages;
-        std::vector<ImageLabel*> imageDataBase;
+        int indexPathToImagesList;
+        std::vector<ImageLabel*> imageDataBasePreview;
+        
+        QImage loadImageFromFile(QString pathToImage);
+        void addImageToImageDataBasePreview(QImage qImage);
 };
 
 #endif // IMAGE_COLLECTION_H

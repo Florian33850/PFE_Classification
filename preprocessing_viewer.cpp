@@ -25,9 +25,21 @@ PreprocessingViewer::PreprocessingViewer(ImageCollection *imageCollection, QWidg
 
 void PreprocessingViewer::handleLaunchPreprocessingButton()
 {
-    for(Preprocessing *preprocessing : preprocessingList)
+    for(PreprocessingWidget *preprocessingWidget : preprocessingWidgetList)
     {
-        preprocessing->runPreprocess(imageCollection);
+        preprocessingWidget->isActivated = true;
+    }
+    launchActivatedPreprocesses();
+}
+
+void PreprocessingViewer::launchActivatedPreprocesses()
+{
+    for(PreprocessingWidget *preprocessingWidget : preprocessingWidgetList)
+    {
+        if(preprocessingWidget->isActivated)
+        {
+            preprocessingWidget->preprocess->runPreprocess(imageCollection);
+        }
     }
 }
 
@@ -61,6 +73,7 @@ void PreprocessingViewer::handleDeletePreprocessingWidgetButton(PreprocessingWid
             preprocessingList.erase(preprocessingList.begin() + index);
             preprocessingWidgetList.erase(preprocessingWidgetList.begin() + index);
             preprocessingWidget->deleteMainWidgetGroupBox();
+            delete preprocessingWidget;
         }
         index++;
     }
