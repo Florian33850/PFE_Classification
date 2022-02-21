@@ -5,7 +5,7 @@
 ImageCollection::ImageCollection()
 {
     indexPathToImagesList = 0;
-    maxNumberOfImagesToLoad = 5;
+    maxNumberOfImagesToLoad = 10;
 }
 
 void ImageCollection::loadPreview()
@@ -33,7 +33,6 @@ void ImageCollection::loadPreview()
             imageDataBasePreview.push_back(imageLabel);
         }
         indexPathToImagesList += maxNumberOfImagesToLoad;
-        printf("index: %d\n", indexPathToImagesList);
     }
 }
 

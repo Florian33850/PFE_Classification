@@ -25,9 +25,25 @@ PreprocessingViewer::PreprocessingViewer(ImageCollection *imageCollection, QWidg
 
 void PreprocessingViewer::handleLaunchPreprocessingButton()
 {
-    for(Preprocessing *preprocessing : preprocessingList)
+    for(PreprocessingWidget *preprocessingWidget : preprocessingWidgetList)
     {
-        preprocessing->runPreprocess(imageCollection);
+        preprocessingWidget->isActivated = true;
+    }
+    launchActivatedPreprocesses();
+    // for(Preprocessing *preprocessing : preprocessingList)
+    // {
+    //     preprocessing->runPreprocess(imageCollection);
+    // }
+}
+
+void PreprocessingViewer::launchActivatedPreprocesses()
+{
+    for(PreprocessingWidget *preprocessingWidget : preprocessingWidgetList)
+    {
+        if(preprocessingWidget->isActivated)
+        {
+            preprocessingWidget->preprocess->runPreprocess(imageCollection);
+        }
     }
 }
 

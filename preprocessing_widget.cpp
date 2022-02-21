@@ -6,6 +6,7 @@ PreprocessingWidget::PreprocessingWidget(QLayout *mainLayout, QWidget *parentWid
     this->parentWidget = parentWidget;
     this->mainWidgetGroupBox = new QGroupBox();
     this->deletePreprocessingWidgetButton = new QPushButton("x");
+    this->isActivated = false;
 }
 
 void PreprocessingWidget::deleteMainWidgetGroupBox()
@@ -22,7 +23,7 @@ QPushButton* PreprocessingWidget::getDeletePreprocessingWidgetButton()
 MirrorWidget::MirrorWidget(QLayout *mainLayout, QWidget *parentWidget, MirrorPreprocess *mirrorPreprocess)
  : PreprocessingWidget(mainLayout, parentWidget)
 {
-    this->mirror = mirrorPreprocess;
+    this->preprocess = mirrorPreprocess;
     this->horizontalMirrorCheckBox = new QCheckBox("Horizontal", parentWidget);
     this->verticalMirrorCheckBox = new QCheckBox("Vertical", parentWidget);
 
@@ -31,8 +32,8 @@ MirrorWidget::MirrorWidget(QLayout *mainLayout, QWidget *parentWidget, MirrorPre
 
 void MirrorWidget::displayUI()
 {
-    parentWidget->connect(horizontalMirrorCheckBox, &QCheckBox::toggled, [=](){this->mirror->changeHorizontalMirrorMode();});
-    parentWidget->connect(verticalMirrorCheckBox, &QCheckBox::toggled, [=](){this->mirror->changeVerticalMirrorMode();});
+    parentWidget->connect(horizontalMirrorCheckBox, &QCheckBox::toggled, [=](){static_cast<MirrorPreprocess*>(this->preprocess)->changeHorizontalMirrorMode();});
+    parentWidget->connect(verticalMirrorCheckBox, &QCheckBox::toggled, [=](){static_cast<MirrorPreprocess*>(this->preprocess)->changeVerticalMirrorMode();});
 
     QGridLayout *mirrorLayout = new QGridLayout();
     QLabel *mirrorWidgetTitle = new QLabel("Mirror");
@@ -50,7 +51,7 @@ void MirrorWidget::displayUI()
 GrayscaleWidget::GrayscaleWidget(QLayout *mainLayout, QWidget *parentWidget, GrayscalePreprocess *grayscalePreprocessing)
  : PreprocessingWidget(mainLayout, parentWidget)
 {
-    this->grayscale = grayscalePreprocessing;
+    this->preprocess = grayscalePreprocessing;
 
     mainWidgetGroupBox->setMaximumHeight(GRAYSCALE_WIDGET_MAXIMUM_HEIGHT);
 }

@@ -3,20 +3,25 @@
 DataloaderTab::DataloaderTab(Tab *parent)
     : Tab(parent)
 {
-    imageCollection = new ImageCollection();
     mainLayout = new QGridLayout();
     mainLayout->setSpacing(1);
     mainLayout->setMargin(1);
     setLayout(mainLayout);
 
+    imageCollection = new ImageCollection();
+    maximumRowsOfImages = 3;
+    maximumCollumnsOfImages = 5;
+    preprocessingViewer = new PreprocessingViewer(imageCollection);
+    mainLayout->addWidget(preprocessingViewer, 0, 5, maximumRowsOfImages, 1);
+
+    addLoadDataBaseButton();
+}
+
+void DataloaderTab::addLoadDataBaseButton()
+{
     QPushButton *loadDataBaseButton = new QPushButton("Load database");
     connect(loadDataBaseButton, &QPushButton::released, this, &DataloaderTab::handleLoadDataBaseButton);
     mainLayout->addWidget(loadDataBaseButton, 0, 0, 1, 5); 
-
-    maximumRowsOfImages = 3;
-    maximumCollumnsOfImages = 5;
-
-    mainLayout->addWidget(new PreprocessingViewer(imageCollection), 0, 5, maximumRowsOfImages, 1);
 }
 
 bool DataloaderTab::selectDataBasePath()
@@ -71,15 +76,14 @@ void DataloaderTab::handleLoadDataBaseButton()
 
 void DataloaderTab::handleLoadNextPreviewButton()
 {
-    if(!imageCollection->pathListToImagesIsEmpty())
-    {
-        imageCollection->loadPreview();
-        displayDataBasePreview();
-    }
+    imageCollection->loadPreview();
+    preprocessingViewer->launchActivatedPreprocesses();
+    displayDataBasePreview();
 }
 
 void DataloaderTab::handleLoadPreviousPreviewButton()
 {
     imageCollection->loadPreviousPreview();
+    preprocessingViewer->launchActivatedPreprocesses();
     displayDataBasePreview();
 }

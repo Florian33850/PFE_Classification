@@ -17,13 +17,15 @@ public:
     void displayDataBasePreview();
     bool selectDataBasePath();
     void addPreviousNextButtons();
+    void addLoadDataBaseButton();
 
     void handleLoadDataBaseButton();
     void handleLoadPreviousPreviewButton();
     void handleLoadNextPreviewButton();
 
 private:
-    ImageCollection *imageCollection;
     QGridLayout *mainLayout;
+    ImageCollection *imageCollection;
+    PreprocessingViewer *preprocessingViewer;
 };
 #endif // DATALOADER_TAB_H
