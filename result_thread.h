@@ -1,8 +1,6 @@
 #ifndef RESULT_THREAD_H
 #define RESULT_THREAD_H
 
-#include <iostream>
-
 #include <QProcess>
 #include <QCoreApplication>
 #include <QTextCodec>
@@ -13,6 +11,7 @@ class ResultThread : public QThread
     Q_OBJECT
     public:
         explicit ResultThread(QString pathToPredictionFile, QString pathToModel, QString pathToImage);
+        
         void run();
     
     private:

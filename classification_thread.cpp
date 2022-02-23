@@ -15,22 +15,7 @@ ClassificationThread::ClassificationThread(QString pathToClassifier)
 void ClassificationThread::run()
 {
     QProcess process;
-    process.setStandardOutputFile("../data/output/outputTraining.txt", QIODevice::WriteOnly);
-    process.setStandardErrorFile("../data/output/errorTraining.txt", QIODevice::WriteOnly);
-
-    std::cout << process.state() << std::endl;
-
+    process.setStandardOutputFile("../data/output/outputTraining.txt", QIODevice::ReadWrite);
+    process.setStandardErrorFile("../data/output/errorTraining.txt", QIODevice::ReadWrite);
     process.start("python3" ,{this->pathToClassifier, this->pathToTrainingSet, this->pathToTestingSet});
-
-    std::cout << process.state() << std::endl;
-
-    if (!process.waitForStarted())
-        printf("false1\n");
-
-    std::cout << process.state() << std::endl;
-
-    if (!process.waitForFinished(-1))
-        printf("false2\n");
-
-    std::cout << process.state() << std::endl;
 }

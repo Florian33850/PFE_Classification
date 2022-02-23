@@ -1,8 +1,6 @@
 #ifndef CLASSIFICATION_THREAD_H
 #define CLASSIFICATION_THREAD_H
 
-#include <iostream>
-
 #include <QProcess>
 #include <QCoreApplication>
 #include <QTextCodec>
@@ -12,8 +10,9 @@ class ClassificationThread : public QThread
 {
     Q_OBJECT
     public:
-        explicit ClassificationThread(QString pathToClassifier, QString pathToTrainingSet, QString pathToTestingSet);
-        explicit ClassificationThread(QString pathToClassifier);
+        ClassificationThread(QString pathToClassifier, QString pathToTrainingSet, QString pathToTestingSet);
+        ClassificationThread(QString pathToClassifier);
+
         void run();
     
     private:

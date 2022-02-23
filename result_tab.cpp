@@ -2,123 +2,143 @@
 
 ResultTab::ResultTab(Tab *parent): Tab(parent)
 {
-    mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
+    this->mainLayout = new QVBoxLayout;
+    this->setLayout(this->mainLayout);
 
-    modelH5CheckBox = new QCheckBox("Model (*.h5)", this);
-    modelH5CheckBox->setCheckState(Qt::Checked);
-    modelPtCheckBox = new QCheckBox("Model (*.pt)", this);
-    buttonGroup = new QButtonGroup(this);
-    buttonGroup->setExclusive(true);
-    buttonGroup->addButton(modelH5CheckBox);
-    buttonGroup->addButton(modelPtCheckBox);
-    typeOfModelLayout = new QVBoxLayout;
-    typeOfModelLayout->addWidget(modelH5CheckBox);
-    typeOfModelLayout->addWidget(modelPtCheckBox);
-    QGroupBox *groupBox = new QGroupBox("Type of classification model");
-    groupBox->setLayout(typeOfModelLayout);
-    mainLayout->addWidget(groupBox);
+    addModelGroupBox();
+    addLoadModelButton();
+    addLaunchModelButton();
 
-    loadModelButton = new QPushButton("Load classification model");
-    connect(loadModelButton, &QPushButton::released, this, &ResultTab::handleLoadModelButton);
-    mainLayout->addWidget(loadModelButton);
+    this->mainLayout->addStretch();
 
-    launchModelButton = new QPushButton("Launch classification model");
-    connect(launchModelButton, &QPushButton::released, this, &ResultTab::handleLaunchModelButton);
-    mainLayout->addWidget(launchModelButton);
-
-    mainLayout->addStretch();
-
-    isModelLoad = false;
+    this->isModelLoad = false;
 }
- 
+
+void ResultTab::printClassificationResults(ModelRunner model)
+{
+    QLabel *classificationResultsLabel = new QLabel(this);
+    classificationResultsLabel->setText("Image label : " + QString::fromUtf8(model.getLabelImageClassify().c_str()) + " Classification probability : " + QString::number(model.getProbabilityImageClassify()));
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, classificationResultsLabel);
+}
+
+void ResultTab::addModelGroupBox()
+{
+    this->modelH5CheckBox = new QCheckBox("Model (*.h5)", this);
+    this->modelH5CheckBox->setCheckState(Qt::Checked);
+    this->modelPtCheckBox = new QCheckBox("Model (*.pt)", this);
+
+    this->modelButtonGroup = new QButtonGroup(this);
+    this->modelButtonGroup->setExclusive(true);
+    this->modelButtonGroup->addButton(this->modelH5CheckBox);
+    this->modelButtonGroup->addButton(this->modelPtCheckBox);
+
+    this->typeOfModelLayout = new QVBoxLayout;
+    this->typeOfModelLayout->addWidget(this->modelH5CheckBox);
+    this->typeOfModelLayout->addWidget(this->modelPtCheckBox);
+
+    this->modelGroupBox = new QGroupBox("Type of classification model");
+
+    this->modelGroupBox->setLayout(this->typeOfModelLayout);
+    this->mainLayout->addWidget(this->modelGroupBox);
+}
+
+void ResultTab::addLoadModelButton()
+{
+    this->loadModelButton = new QPushButton("Load classification model");
+    connect(this->loadModelButton, &QPushButton::released, this, &ResultTab::handleLoadModelButton);
+    this->mainLayout->addWidget(this->loadModelButton);
+}
+
+void ResultTab::addLaunchModelButton()
+{
+    this->launchModelButton = new QPushButton("Launch classification model");
+    connect(this->launchModelButton, &QPushButton::released, this, &ResultTab::handleLaunchModelButton);
+    this->mainLayout->addWidget(this->launchModelButton);
+}
+
 void ResultTab::handleLoadModelButton()
 {
-    pathToModel = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION MODEL to LOAD"), "../data/models");
-    if (pathToModel == NULL)
+    this->pathToModel = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION MODEL to LOAD"), "../data/models");
+    if (this->pathToModel == NULL)
     {
         printf("model loading problem\n");
         return;
     }
 
-    if(modelPtCheckBox->checkState() == Qt::Checked)
+    if(this->modelPtCheckBox->checkState() == Qt::Checked)
     {
-        pathToLabels = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION LABELS to LOAD"), "../data/labels", tr("TXT (*.txt)"));
-        if (pathToLabels == NULL)
+        this->pathToLabels = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION LABELS to LOAD"), "../data/labels", tr("TXT (*.txt)"));
+        if (this->pathToLabels == NULL)
         {
             printf("labels loading problem\n");
             return;
         }
     }
-    else if(modelH5CheckBox->checkState() == Qt::Checked)
+    else if(this->modelH5CheckBox->checkState() == Qt::Checked)
     {
-        pathToPredictionFile = QFileDialog::getOpenFileName(this, tr("Select PREDICTION PYTHON FILE"), "../data/code/prediction", tr("PY (*.py)"));
-        if (pathToPredictionFile == NULL)
+        this->pathToPredictionFile = QFileDialog::getOpenFileName(this, tr("Select PREDICTION PYTHON FILE"), "../data/code/prediction", tr("PY (*.py)"));
+        if (this->pathToPredictionFile == NULL)
         {
             printf("prediction file loading problem\n");
             return;
         }
     }
 
-    pathToImage = QFileDialog::getOpenFileName(this, tr("Select IMAGE to CLASSIFY"), "../data/images", tr("JPEG (*.jpeg, *.jpg);;PNG (*.png)"));
-    if (pathToImage == NULL)
+    this->pathToImage = QFileDialog::getOpenFileName(this, tr("Select IMAGE to CLASSIFY"), "../data/images", tr("JPEG (*.jpeg, *.jpg);;PNG (*.png)"));
+    if (this->pathToImage == NULL)
     {
         printf("image loading problem\n");
         return;
     }
 
-    QImage qImg;
-    qImg.load(pathToImage);
+    QImage image;
+    image.load(this->pathToImage);
     ImageLabel *imageLabel = new ImageLabel();
-    imageLabel->setImage(qImg);
-    mainLayout->insertWidget(mainLayout->count()-1, imageLabel);
+    imageLabel->setImage(image);
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, imageLabel);
 
-    isModelLoad = true;
+    this->isModelLoad = true;
 }
 
 void ResultTab::handleLaunchModelButton()
 {
-    if(isModelLoad == true && modelPtCheckBox->checkState() == Qt::Checked)
+    if(this->isModelLoad == true)
     {
-        QByteArray ba_pathToModel = pathToModel.toLocal8Bit();
-        const char *c_pathToModel = ba_pathToModel.data();
+        if(this->modelPtCheckBox->checkState() == Qt::Checked)
+        {
+            QByteArray ba_pathToModel = this->pathToModel.toLocal8Bit();
+            const char *c_pathToModel = ba_pathToModel.data();
 
-        QByteArray ba_pathToLabels = pathToLabels.toLocal8Bit();
-        const char *c_pathToLabels = ba_pathToLabels.data();
+            QByteArray ba_pathToLabels = this->pathToLabels.toLocal8Bit();
+            const char *c_pathToLabels = ba_pathToLabels.data();
 
-        QByteArray ba_pathToImage = pathToImage.toLocal8Bit();
-        const char *c_pathToImage = ba_pathToImage.data();
+            QByteArray ba_pathToImage = this->pathToImage.toLocal8Bit();
+            const char *c_pathToImage = ba_pathToImage.data();
 
-        ModelRunner model(c_pathToModel, c_pathToLabels, c_pathToImage);
-        model.run();
-        printClassificationResults(model);
+            ModelRunner model(c_pathToModel, c_pathToLabels, c_pathToImage);
+            model.run();
+            printClassificationResults(model);
+        }
+        else if(this->modelH5CheckBox->checkState() == Qt::Checked)
+        {
+            ResultThread *thread = new ResultThread(this->pathToPredictionFile, this->pathToModel, this->pathToImage);
+            connect(thread, &QThread::started, this, &ResultTab::handleWaitingResult);
+            connect(thread, &QThread::finished, this, &ResultTab::handleEndingResult);
+            thread->start();
+        }
     }
-    else if(isModelLoad == true && modelH5CheckBox->checkState() == Qt::Checked)
-    {
-        ResultThread *thread = new ResultThread(pathToPredictionFile, pathToModel, pathToImage);
-        connect(thread, &QThread::started, this, &ResultTab::handleWaitingResult);
-        connect(thread, &QThread::finished, this, &ResultTab::handleEndingResult);
-        thread->start();
-    }
-}
-
-void ResultTab::printClassificationResults(ModelRunner model)
-{
-    QLabel *label = new QLabel(this);
-    label->setText("Image label : " + QString::fromUtf8(model.getLabelImageClassify().c_str()) + " Classification probability : " + QString::number(model.getProbabilityImageClassify()));
-    mainLayout->insertWidget(mainLayout->count()-1, label);
 }
 
 void ResultTab::handleWaitingResult()
 {
-    QLabel *label = new QLabel(this);
-    label->setText("Waiting for the classification of the image");
-    mainLayout->insertWidget(mainLayout->count()-1, label);
+    QLabel *waitingResultsLabel = new QLabel(this);
+    waitingResultsLabel->setText("Waiting for the classification of the image");
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, waitingResultsLabel);
 }
 
 void ResultTab::handleEndingResult()
 {
-    QLabel *label = new QLabel(this);
-    label->setText("Classification of the image is done");
-    mainLayout->insertWidget(mainLayout->count()-1, label);
+    QLabel *endingResultsLabel = new QLabel(this);
+    endingResultsLabel->setText("Classification of the image is done");
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, endingResultsLabel);
 }

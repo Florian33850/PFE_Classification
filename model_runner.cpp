@@ -1,99 +1,95 @@
 #include "model_runner.h"
 
-ModelRunner::ModelRunner(const char* cModel, const char* cLabels, const char* cImage)
+ModelRunner::ModelRunner(const char* pathToModel, const char* pathToLabels, const char* pathToImage)
 {
-    classificationModel = cModel;
-    classificationLabels = cLabels;
-    classificationImage = cImage;
+    this->pathToModel = pathToModel;
+    this->pathToLabels = pathToLabels;
+    this->pathToImage = pathToImage;
 }
 
 void ModelRunner::run()
 {
-    auto model = torch::jit::load(classificationModel);
+    auto model = torch::jit::load(pathToModel);
     model.eval();
 
-    std::vector<std::string> labels = load_labels(classificationLabels);
+    std::vector<std::string> labels = loadLabels(pathToLabels);
 
-    std::vector<torch::jit::IValue> inputs;
-    torch::Tensor in = read_image(classificationImage);
-    inputs.push_back(in);
+    std::vector<torch::jit::IValue> images;
+    torch::Tensor imageTensor = readImage(pathToImage);
+    images.push_back(imageTensor);
 
-    torch::Tensor output = torch::softmax(model.forward(inputs).toTensor(), 1);
+    torch::Tensor outputTensor = torch::softmax(model.forward(images).toTensor(), 1);
 
-    std::tuple<torch::Tensor, torch::Tensor> result = torch::max(output, 1);
+    std::tuple<torch::Tensor, torch::Tensor> classificationResult = torch::max(outputTensor, 1);
 
-    torch::Tensor prob = std::get<0>(result);
-    torch::Tensor index = std::get<1>(result);
+    torch::Tensor classificationProbabilityTensor = std::get<0>(classificationResult);
+    torch::Tensor imageIndexTensor = std::get<1>(classificationResult);
 
-    auto probability = prob.accessor<float,1>();
-    auto idx = index.accessor<long,1>();
+    auto classificationProbabilityIndex = classificationProbabilityTensor.accessor<float,1>();
+    auto imageIndex = imageIndexTensor.accessor<long,1>();
 
-    labelImageClassify = labels[idx[0]];
-    probabilityImageClassify = probability[0];
+    this->imageClassifylabel = labels[imageIndex[0]];
+    this->imageClassifyProbability = classificationProbabilityIndex[0];
 }
 
-std::vector<std::string> ModelRunner::load_labels(const std::string& fileName)
+std::vector<std::string> ModelRunner::loadLabels(const std::string& pathToLabels)
 {
-    std::ifstream ins(fileName);
-    if (!ins.is_open())
+    std::ifstream file(pathToLabels);
+    if (!file.is_open())
     {
-        std::cerr << "Couldn't open " << fileName << std::endl;
-        abort();
+        printf("Couldn't open labels file\n");
+            abort();
     }
 
     std::vector<std::string> labels;
     std::string line;
 
-    while (getline(ins, line))
+    while (getline(file, line))
+    {
         labels.push_back(line);
+    }
 
-    ins.close();
+    file.close();
 
     return labels;
 }
 
-torch::Tensor ModelRunner::read_image(const std::string& imageName)
+torch::Tensor ModelRunner::readImage(const std::string& pathToImage)
 {
-    cv::Mat img = cv::imread(imageName);
-    img = crop_center(img);
-    // cv::resize(img, img, cv::Size(224,224));
-    
-    // if (img.channels()==1)
-    //     cv::cvtColor(img, img, cv::COLOR_GRAY2RGB);
-    // else
-    //     cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
+    cv::Mat imageMat = cv::imread(pathToImage);
+    imageMat = cropCenter(imageMat);
 
-    img.convertTo( img, CV_32FC3, 1/255.0 );
+    imageMat.convertTo(imageMat, CV_32FC3, 1/255.0);
 
-    torch::Tensor img_tensor = torch::from_blob(img.data, {img.rows, img.cols, 3}, c10::kFloat);
-    img_tensor = img_tensor.permute({2, 0, 1});
-    img_tensor.unsqueeze_(0);
+    torch::Tensor imageTensor = torch::from_blob(imageMat.data, {imageMat.rows, imageMat.cols, 3}, c10::kFloat);
+    imageTensor = imageTensor.permute({2, 0, 1});
+    imageTensor.unsqueeze_(0);
 
-    img_tensor = torch::data::transforms::Normalize<>(norm_mean, norm_std)(img_tensor);
+    imageTensor = torch::data::transforms::Normalize<>(normMean, normStd)(imageTensor);
 
-    return img_tensor.clone();
+    return imageTensor.clone();
     return torch::Tensor();
 }
 
-cv::Mat ModelRunner::crop_center(const cv::Mat &img)
+cv::Mat ModelRunner::cropCenter(const cv::Mat &imageMat)
 {
-    const int rows = img.rows;
-    const int cols = img.cols;
+    const int rows = imageMat.rows;
+    const int cols = imageMat.cols;
 
     const int cropSize = std::min(rows,cols);
-    const int offsetW = (cols - cropSize) / 2;
-    const int offsetH = (rows - cropSize) / 2;
-    const cv::Rect roi(offsetW, offsetH, cropSize, cropSize);
+    const int offsetWidth = (cols - cropSize) / 2;
+    const int offsetHeight = (rows - cropSize) / 2;
+    const cv::Rect imageRect(offsetWidth, offsetHeight, cropSize, cropSize);
 
-    return img(roi);
+    return imageMat(imageRect);
 }
 
 std::string ModelRunner::getLabelImageClassify()
 {
-    return labelImageClassify;
+    return imageClassifylabel;
 }
 
 float ModelRunner::getProbabilityImageClassify()
 {
-    return probabilityImageClassify;
+    return imageClassifyProbability;
 }

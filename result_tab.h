@@ -19,32 +19,35 @@
 class ResultTab : public Tab
 {
     Q_OBJECT
+    public:
+        explicit ResultTab(Tab *parent = nullptr);
 
-public:
-    explicit ResultTab(Tab *parent = nullptr);
+    private:
+        QVBoxLayout *mainLayout;
+        QCheckBox *modelH5CheckBox;
+        QCheckBox *modelPtCheckBox;
+        QButtonGroup *modelButtonGroup;
+        QVBoxLayout *typeOfModelLayout;
+        QGroupBox *modelGroupBox;
+        QPushButton *loadModelButton;
+        QPushButton *launchModelButton;
 
-private:
-    QVBoxLayout *mainLayout;
-    QVBoxLayout *typeOfModelLayout;
+        QString pathToModel;
+        QString pathToLabels;
+        QString pathToImage;
+        QString pathToPredictionFile;
 
-    QString pathToModel;
-    QString pathToLabels;
-    QString pathToImage;
-    QString pathToPredictionFile;
+        bool isModelLoad;
 
-    bool isModelLoad;
+        void printClassificationResults(ModelRunner model);
+        
+        void addModelGroupBox();
+        void addLoadModelButton();
+        void addLaunchModelButton();
 
-    QPushButton *loadModelButton;
-    QCheckBox *modelH5CheckBox;
-    QCheckBox *modelPtCheckBox;
-    QButtonGroup *buttonGroup;
-    QPushButton *launchModelButton;
-
-    void handleLoadModelButton();
-    void handleLaunchModelButton();
-
-    void printClassificationResults(ModelRunner model);
-    void handleWaitingResult();
-    void handleEndingResult();
+        void handleLoadModelButton();
+        void handleLaunchModelButton();
+        void handleWaitingResult();
+        void handleEndingResult();
 };
 #endif // RESULT_TAB_H
