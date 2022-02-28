@@ -20,7 +20,7 @@ class ResultTab : public Tab
 {
     Q_OBJECT
     public:
-        explicit ResultTab(Tab *parent = nullptr);
+        ResultTab(Tab *parent = nullptr);
 
     private:
         QVBoxLayout *mainLayout;

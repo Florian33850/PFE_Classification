@@ -17,15 +17,38 @@ ClassificationTrainingTab::ClassificationTrainingTab(Tab *parent)
     this->isTestingSetLoad = false;
 }
 
+void ClassificationTrainingTab::readAndDisplayOutputTrainingFile()
+{
+    QFile outputTrainingFile("outputTraining.txt");
+    QLabel *outputTrainingFileLabel = new QLabel(this);
+    outputTrainingFileLabel->setText("Standard output : ");
+
+    QString line;
+    if (outputTrainingFile.open(QIODevice::ReadWrite | QIODevice::Text)){
+        QTextStream stream(&outputTrainingFile);
+        while (!stream.atEnd()){
+
+            line = stream.readLine();
+            outputTrainingFileLabel->setText(outputTrainingFileLabel->text()+"\n"+line);
+        }
+    }
+    outputTrainingFile.close();
+
+    QScrollArea *test = new QScrollArea();
+    test->setWidget(outputTrainingFileLabel);
+
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, test);
+}
+
 void ClassificationTrainingTab::addTestAndTrainCheckBox()
 {
-    this->testAndTrainCheckBox = new QCheckBox("Load training and testing set", this);
+    this->testAndTrainCheckBox = new QCheckBox("Select training and testing set when the training classifier will be loaded", this);
     this->mainLayout->addWidget(this->testAndTrainCheckBox);
 }
 
 void ClassificationTrainingTab::addLoadTrainingClassifierButton()
 {
-    this->loadTrainingClassifierButton = new QPushButton("Load classifier training");
+    this->loadTrainingClassifierButton = new QPushButton("Load training classifier");
     connect(loadTrainingClassifierButton, &QPushButton::released, this, &ClassificationTrainingTab::handleLoadTrainingClassifierButton);
     this->mainLayout->addWidget(this->loadTrainingClassifierButton);
 }
@@ -41,7 +64,7 @@ void ClassificationTrainingTab::handleLoadTrainingClassifierButton()
 {
     QLabel *informationClassifierLabel = new QLabel(this);
 
-    this->pathToClassifier = QFileDialog::getOpenFileName(this, tr("Select CLASSIFIER TRAINING to LOAD"), "../data/code/training", tr("PY (*.py)"));
+    this->pathToClassifier = QFileDialog::getOpenFileName(this, tr("Select CLASSIFIER TRAINING to LOAD"), tr("PY (*.py)"));
     if(this->pathToClassifier == NULL)
     {
         printf("classifier loading problem\n");
@@ -53,7 +76,7 @@ void ClassificationTrainingTab::handleLoadTrainingClassifierButton()
 
     if(testAndTrainCheckBox->checkState() == Qt::Checked)
     {
-        this->pathToTrainingSet = QFileDialog::getExistingDirectory(this, tr("Select TRAINING DATASET"), "../data/images");
+        this->pathToTrainingSet = QFileDialog::getExistingDirectory(this, tr("Select TRAINING DATASET"));
         if(this->pathToClassifier == NULL)
         {
             printf("classifier loading problem\n");
@@ -61,7 +84,7 @@ void ClassificationTrainingTab::handleLoadTrainingClassifierButton()
         }
         this->isTrainingSetLoad = true;
 
-        this->pathToTestingSet = QFileDialog::getExistingDirectory(this, tr("Select TESTING DATASET"), "../data/images");
+        this->pathToTestingSet = QFileDialog::getExistingDirectory(this, tr("Select TESTING DATASET"));
         if(this->pathToClassifier == NULL)
         {
             printf("classifier loading problem\n");
@@ -69,7 +92,7 @@ void ClassificationTrainingTab::handleLoadTrainingClassifierButton()
         }
         this->isTestingSetLoad = true;
         
-        informationClassifierLabel->setText(informationClassifierLabel->text() + "Training set directory : " + this->pathToTrainingSet + "\n" + "Testing set directory" + pathToTestingSet);
+        informationClassifierLabel->setText(informationClassifierLabel->text() + "Training set directory : " + this->pathToTrainingSet + "\n" + "Testing set directory : " + pathToTestingSet);
     }
 
     this->mainLayout->insertWidget(this->mainLayout->count()-1, informationClassifierLabel);
@@ -77,7 +100,6 @@ void ClassificationTrainingTab::handleLoadTrainingClassifierButton()
 
 void ClassificationTrainingTab::handleLaunchTrainingClassifierButton()
 {
-    this->mainLayout->setStretch(2, this->mainLayout->stretch(1));
     if(this->isTrainingClassifierLoad == true && this->isTrainingSetLoad == true && this->isTestingSetLoad == true && this->testAndTrainCheckBox->checkState() == Qt::Checked)
     {
         ClassificationThread *thread = new ClassificationThread(this->pathToClassifier, this->pathToTrainingSet, this->pathToTestingSet);
@@ -107,18 +129,5 @@ void ClassificationTrainingTab::handleEndingClassification()
     endingClassificationLabel->setText("Training it's done");
     this->mainLayout->insertWidget(this->mainLayout->count()-1, endingClassificationLabel);
 
-    QFile outputTrainingFile("../data/output/outputTraining.txt");
-    QLabel *outputTrainingFileLabel = new QLabel(this);
-
-    QString line;
-    if (outputTrainingFile.open(QIODevice::ReadWrite | QIODevice::Text)){
-        QTextStream stream(&outputTrainingFile);
-        while (!stream.atEnd()){
-
-            line = stream.readLine();
-            outputTrainingFileLabel->setText(outputTrainingFileLabel->text()+line);
-        }
-    }
-    outputTrainingFile.close();
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, outputTrainingFileLabel);
+    readAndDisplayOutputTrainingFile();
 }

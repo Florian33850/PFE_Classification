@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QCheckBox>
 #include <QButtonGroup>
+#include <QScrollArea>
 
 class ClassificationTrainingTab : public Tab
 {
@@ -27,6 +28,8 @@ class ClassificationTrainingTab : public Tab
         QString pathToClassifier;
         QString pathToTrainingSet;
         QString pathToTestingSet;
+
+        void readAndDisplayOutputTrainingFile();
 
         void addTestAndTrainCheckBox();
         void addLoadTrainingClassifierButton();

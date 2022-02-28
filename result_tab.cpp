@@ -23,9 +23,9 @@ void ResultTab::printClassificationResults(ModelRunner model)
 
 void ResultTab::addModelGroupBox()
 {
-    this->modelH5CheckBox = new QCheckBox("Model (*.h5)", this);
+    this->modelH5CheckBox = new QCheckBox("Select classification model (*.h5) with prediction file and an image to classify", this);
     this->modelH5CheckBox->setCheckState(Qt::Checked);
-    this->modelPtCheckBox = new QCheckBox("Model (*.pt)", this);
+    this->modelPtCheckBox = new QCheckBox("Select classification model (*.pt) with labels file and an image to classify", this);
 
     this->modelButtonGroup = new QButtonGroup(this);
     this->modelButtonGroup->setExclusive(true);
@@ -58,7 +58,7 @@ void ResultTab::addLaunchModelButton()
 
 void ResultTab::handleLoadModelButton()
 {
-    this->pathToModel = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION MODEL to LOAD"), "../data/models");
+    this->pathToModel = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION MODEL to LOAD"));
     if (this->pathToModel == NULL)
     {
         printf("model loading problem\n");
@@ -67,7 +67,7 @@ void ResultTab::handleLoadModelButton()
 
     if(this->modelPtCheckBox->checkState() == Qt::Checked)
     {
-        this->pathToLabels = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION LABELS to LOAD"), "../data/labels", tr("TXT (*.txt)"));
+        this->pathToLabels = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION LABELS to LOAD"), tr("TXT (*.txt)"));
         if (this->pathToLabels == NULL)
         {
             printf("labels loading problem\n");
@@ -76,7 +76,7 @@ void ResultTab::handleLoadModelButton()
     }
     else if(this->modelH5CheckBox->checkState() == Qt::Checked)
     {
-        this->pathToPredictionFile = QFileDialog::getOpenFileName(this, tr("Select PREDICTION PYTHON FILE"), "../data/code/prediction", tr("PY (*.py)"));
+        this->pathToPredictionFile = QFileDialog::getOpenFileName(this, tr("Select PREDICTION PYTHON FILE"), tr("PY (*.py)"));
         if (this->pathToPredictionFile == NULL)
         {
             printf("prediction file loading problem\n");
@@ -84,7 +84,7 @@ void ResultTab::handleLoadModelButton()
         }
     }
 
-    this->pathToImage = QFileDialog::getOpenFileName(this, tr("Select IMAGE to CLASSIFY"), "../data/images", tr("JPEG (*.jpeg, *.jpg);;PNG (*.png)"));
+    this->pathToImage = QFileDialog::getOpenFileName(this, tr("Select IMAGE to CLASSIFY"), tr("JPEG (*.jpeg, *.jpg);;PNG (*.png)"));
     if (this->pathToImage == NULL)
     {
         printf("image loading problem\n");

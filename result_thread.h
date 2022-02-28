@@ -10,7 +10,7 @@ class ResultThread : public QThread
 {
     Q_OBJECT
     public:
-        explicit ResultThread(QString pathToPredictionFile, QString pathToModel, QString pathToImage);
+        ResultThread(QString pathToPredictionFile, QString pathToModel, QString pathToImage);
         
         void run();
     
