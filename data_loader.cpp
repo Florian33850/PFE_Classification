@@ -30,7 +30,7 @@ void DataLoader::addImageToImageDataBasePreview(QImage qImage)
 ImageSelectionLoader::ImageSelectionLoader(QWidget *parent, ImageCollection *imageCollection) : DataLoader::DataLoader(parent, imageCollection)
 {
     this->indexPathToImagesList = 0;
-    this->maxNumberOfImagesToLoad = 5;
+    this->maxNumberOfImagesToLoad = 50;
 }
 
 bool ImageSelectionLoader::selectDataBasePath()
