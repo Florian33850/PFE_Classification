@@ -2,31 +2,22 @@
 #define IMAGE_COLLECTION_H
 
 #include "image_label.h"
+
 #include <QStringList>
 
-class ImageCollection {
-
+class ImageCollection
+{
     public:
         ImageCollection();
 
-        int maxNumberOfImagesToLoad;
-
-        void loadPreview();
         void erasePreviewIfNotEmpty();
-        void loadPreviousPreview();
+        void addImageLabelToDataBasePreview(ImageLabel *imageLabel);
 
-        bool pathListToImagesIsEmpty();
-        void setPathToImages(QStringList newPathToImages);
         ImageLabel* getImageLabelFromDataBase(int index);
         int getPreviewListSize();
 
     private:
-        QStringList pathToImages;
-        int indexPathToImagesList;
         std::vector<ImageLabel*> imageDataBasePreview;
-        
-        QImage loadImageFromFile(QString pathToImage);
-        void addImageToImageDataBasePreview(QImage qImage);
 };
 
-#endif // IMAGE_COLLECTION_H
+#endif //IMAGE_COLLECTION_H

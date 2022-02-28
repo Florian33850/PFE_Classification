@@ -4,22 +4,23 @@
 #include <QLabel>
 #include <QImage>
 
-class ImageLabel : public QLabel {
-  Q_OBJECT
-public:
-  ImageLabel(QWidget *parent = 0);
-  ~ImageLabel();
+class ImageLabel : public QLabel
+{
+    Q_OBJECT
+    public:
+        ImageLabel(QWidget *parent = 0);
+        ~ImageLabel();
 
-  void updateContent();
-  void setImage(QImage image);
-  QImage getQImage();
+        void updateContent();
 
-protected Q_SLOTS:
-  void resizeEvent(QResizeEvent *event) override;
+        void setImage(QImage image);
+        QImage getQImage();
 
-private:
-  QImage rawImage;
-  QPixmap pixmap;
+    protected Q_SLOTS:
+        void resizeEvent(QResizeEvent *event) override;
+
+    private:
+        QImage rawImage;
+        QPixmap pixmap;
 };
-
 #endif // IMAGE_LABEL_H

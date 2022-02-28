@@ -3,87 +3,73 @@
 PreprocessingTab::PreprocessingTab(Tab *parent)
     : Tab(parent)
 {
-    mainLayout = new QGridLayout();
-    mainLayout->setSpacing(1);
-    mainLayout->setMargin(1);
+    this->mainLayout = new QGridLayout();
+    this->mainLayout->setSpacing(1);
+    this->mainLayout->setMargin(1);
     setLayout(mainLayout);
 
-    imageCollection = new ImageCollection();
-    maximumRowsOfImages = 3;
-    maximumCollumnsOfImages = 5;
-    preprocessingViewer = new PreprocessingViewer(imageCollection);
-    mainLayout->addWidget(preprocessingViewer, 0, 5, maximumRowsOfImages, 1);
-
-    addLoadDataBaseButton();
-}
-
-void PreprocessingTab::addLoadDataBaseButton()
-{
-    QPushButton *loadDataBaseButton = new QPushButton("Load database");
-    connect(loadDataBaseButton, &QPushButton::released, this, &PreprocessingTab::handleLoadDataBaseButton);
-    mainLayout->addWidget(loadDataBaseButton, 0, 0, 1, 5); 
-}
-
-bool PreprocessingTab::selectDataBasePath()
-{
-    QStringList pathToImages = QFileDialog::getOpenFileNames(this, "Select images to open", tr("Images (*.jpg *.jpeg *.png *.tiff)"));
-    if (pathToImages.size() == 0)
-    {
-        printf("Loading problem, cannot open selected files.\n");
-        return false;
-    }
-    imageCollection->setPathToImages(pathToImages);
-    return true;
+    this->maximumRowsOfPreviewImages = 3;
+    this->maximumCollumnsOfPreviewImages = 5;
+    this->imageCollection = new ImageCollection(); 
+    this->preprocessingViewer = new PreprocessingViewer(imageCollection);
+    this->mainLayout->addWidget(preprocessingViewer, 0, maximumCollumnsOfPreviewImages, maximumRowsOfPreviewImages, 1);
 }
 
 void PreprocessingTab::displayDataBasePreview()
 {
     int imageIndex = 0;
-    int previewListSize = imageCollection->getPreviewListSize();
-    for(int row=1; row<maximumRowsOfImages; row++)
+    int previewListSize = this->imageCollection->getPreviewListSize();
+    for(int row=1; row<maximumRowsOfPreviewImages; row++)
     {
-        for(int col=0; col<maximumCollumnsOfImages; col++)
+        for(int col=0; col<maximumCollumnsOfPreviewImages; col++)
         {
-            if(imageIndex >= imageCollection->maxNumberOfImagesToLoad || imageIndex >= previewListSize)
+            if(imageIndex >= this->dataLoader->maxNumberOfImagesToLoad || imageIndex >= previewListSize)
             {
                 break;
             }
-            mainLayout->addWidget(imageCollection->getImageLabelFromDataBase(imageIndex), row, col);
+            this->mainLayout->addWidget(this->imageCollection->getImageLabelFromDataBase(imageIndex), row, col);
             imageIndex++;
         }
     }
 }
 
-void PreprocessingTab::addPreviousNextButtons()
+void PreprocessingTab::addPreviousPreviewButton()
 {
     QPushButton *previousDataBasePreview = new QPushButton("Prev");
     connect(previousDataBasePreview, &QPushButton::released, this, &PreprocessingTab::handleLoadPreviousPreviewButton);
-    mainLayout->addWidget(previousDataBasePreview, 6, 0, 1, 1);
-
-    QPushButton *nextDataBasePreview = new QPushButton("Next");
-    connect(nextDataBasePreview, &QPushButton::released, this, &PreprocessingTab::handleLoadNextPreviewButton);
-    mainLayout->addWidget(nextDataBasePreview, 6, 2, 1, 1);  
+    this->mainLayout->addWidget(previousDataBasePreview, maximumRowsOfPreviewImages, 0, 1, 1);
 }
 
-void PreprocessingTab::handleLoadDataBaseButton()
+void PreprocessingTab::addNextPreviewButton()
 {
-    selectDataBasePath();
-    imageCollection->erasePreviewIfNotEmpty();
-    imageCollection->loadPreview();
+    QPushButton *nextDataBasePreview = new QPushButton("Next");
+    connect(nextDataBasePreview, &QPushButton::released, this, &PreprocessingTab::handleLoadNextPreviewButton);
+    this->mainLayout->addWidget(nextDataBasePreview, maximumRowsOfPreviewImages, maximumCollumnsOfPreviewImages - 1, 1, 1);
+}
+
+void PreprocessingTab::handleLoadDataBase()
+{
+    this->dataLoader->selectDataBasePath();
+    this->dataLoader->loadPreview();
     displayDataBasePreview();
-    addPreviousNextButtons();
+    addPreviousPreviewButton();
+    addNextPreviewButton();
 }
 
 void PreprocessingTab::handleLoadNextPreviewButton()
 {
-    imageCollection->loadPreview();
-    preprocessingViewer->launchActivatedPreprocesses();
+    if(this->dataLoader->loadPreview())
+    {
+        this->preprocessingViewer->launchActivatedPreprocesses();
+    }
     displayDataBasePreview();
 }
 
 void PreprocessingTab::handleLoadPreviousPreviewButton()
 {
-    imageCollection->loadPreviousPreview();
-    preprocessingViewer->launchActivatedPreprocesses();
+    if(this->dataLoader->loadPreviousPreview())
+    {
+        this->preprocessingViewer->launchActivatedPreprocesses();
+    }
     displayDataBasePreview();
 }

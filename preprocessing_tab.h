@@ -1,31 +1,33 @@
-#ifndef DATALOADER_TAB_H
-#define DATALOADER_TAB_H
+#ifndef PREPROCESSING_TAB_H
+#define PREPROCESSING_TAB_H
 
 #include "tab.h"
 #include "preprocessing_viewer.h"
+#include "data_loader.h"
 
 #include <QFileDialog>
 
 class PreprocessingTab : public Tab
 {
     Q_OBJECT
-public:
-    int maximumRowsOfImages;
-    int maximumCollumnsOfImages;
+    public:
+        PreprocessingTab( Tab *parent = nullptr);
 
-    explicit PreprocessingTab( Tab *parent = nullptr);
-    void displayDataBasePreview();
-    bool selectDataBasePath();
-    void addPreviousNextButtons();
-    void addLoadDataBaseButton();
+        DataLoader *dataLoader;
+        ImageCollection *imageCollection;
+        int maximumRowsOfPreviewImages;
+        int maximumCollumnsOfPreviewImages;
 
-    void handleLoadDataBaseButton();
-    void handleLoadPreviousPreviewButton();
-    void handleLoadNextPreviewButton();
+        void displayDataBasePreview();
+        void addPreviousPreviewButton();
+        void addNextPreviewButton();
 
-private:
-    QGridLayout *mainLayout;
-    ImageCollection *imageCollection;
-    PreprocessingViewer *preprocessingViewer;
+        void handleLoadDataBase();
+        void handleLoadPreviousPreviewButton();
+        void handleLoadNextPreviewButton();
+
+    private:
+        QGridLayout *mainLayout;
+        PreprocessingViewer *preprocessingViewer;
 };
-#endif // DATALOADER_TAB_H
+#endif // PREPROCESSING_TAB_H

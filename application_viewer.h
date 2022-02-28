@@ -12,19 +12,28 @@
 #include <QMenuBar>
 #include <QMessageBox>
 
-class ApplicationViewer : public QMainWindow {
+class ApplicationViewer : public QMainWindow
+{
     Q_OBJECT
+    public:
+        ApplicationViewer(QWidget * parent = 0);
+        ~ApplicationViewer();
+    
+    private:
+        QVBoxLayout *mainLayout;
+        QWidget *mainWidget;
+        QTabWidget *tabWidget;
+        DataLoader *dataLoader;
 
-public:
-    ApplicationViewer(QWidget * parent = 0);
-    ~ApplicationViewer();
-  
-private:
-    QVBoxLayout *mainLayout;
-    QWidget *mainWidget;
-    QTabWidget *tabWidget;
+        PreprocessingTab *preprocessingTab;
+        ClassificationTrainingTab *classificationTrainingTab;
+        ResultTab *resultTab;
 
-    void settingMenu(ApplicationViewer *applicationViewer);
-    void openDataBaseButton(QMenu *menu = NULL);
+        void addSettingMenu(ApplicationViewer *applicationViewer);
+        void addPreprocessingTab(QTabWidget *mainTabWidget);
+        void addClassificationTrainingTab(QTabWidget *mainTabWidget);
+        void addResultTab(QTabWidget *mainTabWidget);
+        
+        void handleOpenImageSelectionDataLoader();
 };
 #endif // APPLICATION_VIEWER_H
