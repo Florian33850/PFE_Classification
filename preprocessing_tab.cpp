@@ -73,20 +73,21 @@ void PreprocessingTab::handleLoadDataBase()
 
 void PreprocessingTab::handleLoadNextPreviewButton()
 {
-    clearImagesLayout();
     if(this->dataLoader->loadPreview())
     {
+        clearImagesLayout();
         this->preprocessingViewer->launchActivatedPreprocesses();
+        displayDataBasePreview();
     }
-    displayDataBasePreview();
+    
 }
 
 void PreprocessingTab::handleLoadPreviousPreviewButton()
 {
-    clearImagesLayout();
     if(this->dataLoader->loadPreviousPreview())
     {
+        clearImagesLayout();
         this->preprocessingViewer->launchActivatedPreprocesses();
+        displayDataBasePreview();
     }
-    displayDataBasePreview();
 }
