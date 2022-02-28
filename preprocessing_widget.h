@@ -15,17 +15,21 @@
 class PreprocessingWidget : public QWidget
 {
     public:
-        PreprocessingWidget(QLayout *mainLayout, QWidget *parentWidget);
+        PreprocessingWidget(QVBoxLayout *mainLayout, QWidget *parentWidget);
 
+        bool isActivated;
+        Preprocessing *preprocess;
+        
         virtual void displayUI() = 0;
         void deleteMainWidgetGroupBox();
+
         QPushButton* getDeletePreprocessingWidgetButton();
         
     protected:
+        QVBoxLayout *mainLayout;
+        QWidget *parentWidget;
         QGroupBox *mainWidgetGroupBox;
         QPushButton *deletePreprocessingWidgetButton;
-        QLayout *mainLayout;
-        QWidget *parentWidget;
 
         void connectWidgetDeleteButton();
 };
@@ -33,25 +37,21 @@ class PreprocessingWidget : public QWidget
 class MirrorWidget : public PreprocessingWidget
 {
     public:
-        MirrorWidget(QLayout *mainLayout, QWidget *parentWidget, MirrorPreprocess *mirrorPreprocessing);
+        MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MirrorPreprocess *mirrorPreprocessing);
 
         void displayUI();
     
     private:
         QCheckBox *horizontalMirrorCheckBox;
         QCheckBox *verticalMirrorCheckBox;
-        MirrorPreprocess *mirror;
 };
 
 class GrayscaleWidget : public PreprocessingWidget
 {
     public:
-        GrayscaleWidget(QLayout *mainLayout, QWidget *parentWidget, GrayscalePreprocess *grayscale);
+        GrayscaleWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, GrayscalePreprocess *grayscale);
 
         void displayUI();
-    
-    private:
-        GrayscalePreprocess *grayscale;
 };
 
 #endif // PREPROCESSING_WIDGET_H

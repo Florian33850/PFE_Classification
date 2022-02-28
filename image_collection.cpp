@@ -6,40 +6,25 @@ ImageCollection::ImageCollection()
 {
 }
 
-void ImageCollection::loadCollection()
+void ImageCollection::erasePreviewIfNotEmpty()
 {
-    for(int fileNum=0; fileNum<pathToImages.length(); fileNum++)
+    if(!imageDataBasePreview.empty())
     {
-        QImage qImg;
-        if(qImg.load(pathToImages.at(fileNum)) == false)
-        {
-            std::cout << "Cannot open image\n" << std::endl;
-        }
-        ImageLabel *imageLabel = new ImageLabel();
-        imageLabel->setImage(qImg);
-        imageDataBase.push_back(imageLabel);
+        imageDataBasePreview.clear();
     }
 }
 
-void ImageCollection::eraseCollectionIfNotEmpty()
+void ImageCollection::addImageLabelToDataBasePreview(ImageLabel *imageLabel)
 {
-    if(!imageDataBase.empty())
-    {
-        imageDataBase.clear();
-    }
-}
-
-void ImageCollection::setPathToImages(QStringList newPathToImages)
-{
-    pathToImages = newPathToImages;
+    imageDataBasePreview.push_back(imageLabel);
 }
 
 ImageLabel* ImageCollection::getImageLabelFromDataBase(int index)
 {
-    return imageDataBase.at(index);
+    return imageDataBasePreview.at(index);
 }
 
-int ImageCollection::getDataBaseSize()
+int ImageCollection::getPreviewListSize()
 {
-    return imageDataBase.size();
+    return imageDataBasePreview.size();
 }
