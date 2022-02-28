@@ -6,6 +6,9 @@ PreprocessingTab::PreprocessingTab(Tab *parent)
     this->mainLayout = new QGridLayout();
     this->mainLayout->setSpacing(1);
     this->mainLayout->setMargin(1);
+
+    imagesLayout = new QGridLayout();
+    mainLayout->addLayout(imagesLayout, 0 ,0);
     setLayout(mainLayout);
 
     this->maximumRowsOfPreviewImages = 3;
@@ -13,6 +16,17 @@ PreprocessingTab::PreprocessingTab(Tab *parent)
     this->imageCollection = new ImageCollection(); 
     this->preprocessingViewer = new PreprocessingViewer(imageCollection);
     this->mainLayout->addWidget(preprocessingViewer, 0, maximumCollumnsOfPreviewImages, maximumRowsOfPreviewImages, 1);
+}
+
+void PreprocessingTab::clearImagesLayout()
+{
+    QLayoutItem *item;
+    while ((item = imagesLayout->takeAt(0)) != 0)
+    {
+        imagesLayout->removeItem(item);
+        delete item->widget();
+        delete item;
+    }
 }
 
 void PreprocessingTab::displayDataBasePreview()
@@ -27,7 +41,7 @@ void PreprocessingTab::displayDataBasePreview()
             {
                 break;
             }
-            this->mainLayout->addWidget(this->imageCollection->getImageLabelFromDataBase(imageIndex), row, col);
+            this->imagesLayout->addWidget(this->imageCollection->getImageLabelFromDataBase(imageIndex), row, col);
             imageIndex++;
         }
     }
@@ -51,6 +65,7 @@ void PreprocessingTab::handleLoadDataBase()
 {
     this->dataLoader->selectDataBasePath();
     this->dataLoader->loadPreview();
+    clearImagesLayout();
     displayDataBasePreview();
     addPreviousPreviewButton();
     addNextPreviewButton();
@@ -58,6 +73,7 @@ void PreprocessingTab::handleLoadDataBase()
 
 void PreprocessingTab::handleLoadNextPreviewButton()
 {
+    clearImagesLayout();
     if(this->dataLoader->loadPreview())
     {
         this->preprocessingViewer->launchActivatedPreprocesses();
@@ -67,6 +83,7 @@ void PreprocessingTab::handleLoadNextPreviewButton()
 
 void PreprocessingTab::handleLoadPreviousPreviewButton()
 {
+    clearImagesLayout();
     if(this->dataLoader->loadPreviousPreview())
     {
         this->preprocessingViewer->launchActivatedPreprocesses();
