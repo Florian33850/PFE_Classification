@@ -7,14 +7,12 @@ class Preprocessing
 {
     public:
         virtual void runPreprocess(ImageCollection *imageCollection) = 0;
-
-    private:
 };
 
 class MirrorPreprocess : public Preprocessing
 {   
     public:
-        explicit MirrorPreprocess();
+        MirrorPreprocess();
 
         bool horizontalMirror;
         bool verticalMirror;
@@ -29,7 +27,7 @@ class MirrorPreprocess : public Preprocessing
 class GrayscalePreprocess : public Preprocessing
 {
     public:
-        explicit GrayscalePreprocess();
+        GrayscalePreprocess();
     
     private:
         void runPreprocess(ImageCollection *imageCollection);

@@ -1,6 +1,6 @@
 #include "preprocessing_widget.h"
 
-PreprocessingWidget::PreprocessingWidget(QLayout *mainLayout, QWidget *parentWidget)
+PreprocessingWidget::PreprocessingWidget(QVBoxLayout *mainLayout, QWidget *parentWidget)
 {
     this->mainLayout = mainLayout;
     this->parentWidget = parentWidget;
@@ -20,14 +20,15 @@ QPushButton* PreprocessingWidget::getDeletePreprocessingWidgetButton()
 }
 
 
-MirrorWidget::MirrorWidget(QLayout *mainLayout, QWidget *parentWidget, MirrorPreprocess *mirrorPreprocess)
- : PreprocessingWidget(mainLayout, parentWidget)
+
+MirrorWidget::MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MirrorPreprocess *mirrorPreprocess)
+    : PreprocessingWidget(mainLayout, parentWidget)
 {
     this->preprocess = mirrorPreprocess;
-    this->horizontalMirrorCheckBox = new QCheckBox("Horizontal", parentWidget);
-    this->verticalMirrorCheckBox = new QCheckBox("Vertical", parentWidget);
+    this->horizontalMirrorCheckBox = new QCheckBox("Horizontal", this->parentWidget);
+    this->verticalMirrorCheckBox = new QCheckBox("Vertical", this->parentWidget);
 
-    mainWidgetGroupBox->setMaximumHeight(MIRRORED_WIDGET_MAXIMUM_HEIGHT);
+    this->mainWidgetGroupBox->setMaximumHeight(MIRRORED_WIDGET_MAXIMUM_HEIGHT);
 }
 
 void MirrorWidget::displayUI()
@@ -42,27 +43,27 @@ void MirrorWidget::displayUI()
     mirrorLayout->addWidget(verticalMirrorCheckBox, 2, 0, 2, 1);
     mirrorLayout->addWidget(deletePreprocessingWidgetButton, 0, 1, 1, 1);
 
-    mainWidgetGroupBox->setLayout(mirrorLayout);
-    mainLayout->addWidget(mainWidgetGroupBox);
+    this->mainWidgetGroupBox->setLayout(mirrorLayout);
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, mainWidgetGroupBox);
+
 }
 
 
 
-GrayscaleWidget::GrayscaleWidget(QLayout *mainLayout, QWidget *parentWidget, GrayscalePreprocess *grayscalePreprocessing)
- : PreprocessingWidget(mainLayout, parentWidget)
+GrayscaleWidget::GrayscaleWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, GrayscalePreprocess *grayscalePreprocessing)
+    : PreprocessingWidget(mainLayout, parentWidget)
 {
     this->preprocess = grayscalePreprocessing;
-
-    mainWidgetGroupBox->setMaximumHeight(GRAYSCALE_WIDGET_MAXIMUM_HEIGHT);
+    this->mainWidgetGroupBox->setMaximumHeight(GRAYSCALE_WIDGET_MAXIMUM_HEIGHT);
 }
 
 void GrayscaleWidget::displayUI()
 {
     QLabel *grayscaleWidgetTitle = new QLabel("Grayscale");
     QHBoxLayout *grayscaleLayout = new QHBoxLayout();
-    mainWidgetGroupBox->setLayout(grayscaleLayout);
     grayscaleLayout->addWidget(grayscaleWidgetTitle);
     grayscaleLayout->addWidget(deletePreprocessingWidgetButton);
 
-    mainLayout->addWidget(mainWidgetGroupBox);
+    this->mainWidgetGroupBox->setLayout(grayscaleLayout);
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, mainWidgetGroupBox);
 }

@@ -1,11 +1,11 @@
-#include "classifier_viewer.h"
+#include "application_viewer.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    ClassifierViewer w;
-    w.showMaximized();
+    ApplicationViewer w;
+    w.show();
 
     return a.exec();
 }
