@@ -1,13 +1,12 @@
-#include "model_runner.h"
-
-ModelRunner::ModelRunner(const char* pathToModel, const char* pathToLabels, const char* pathToImage)
+#include "pytorch_model_runner.h"
+PytorchModelRunner::PytorchModelRunner(const char* pathToModel, const char* pathToLabels, const char* pathToImage)
 {
     this->pathToModel = pathToModel;
     this->pathToLabels = pathToLabels;
     this->pathToImage = pathToImage;
 }
 
-void ModelRunner::run()
+void PytorchModelRunner::run()
 {
     auto model = torch::jit::load(pathToModel);
     model.eval();
@@ -32,7 +31,7 @@ void ModelRunner::run()
     this->imageClassifyProbability = classificationProbabilityIndex[0];
 }
 
-std::vector<std::string> ModelRunner::loadLabels(const std::string& pathToLabels)
+std::vector<std::string> PytorchModelRunner::loadLabels(const std::string& pathToLabels)
 {
     std::ifstream file(pathToLabels);
     if (!file.is_open())
@@ -54,7 +53,7 @@ std::vector<std::string> ModelRunner::loadLabels(const std::string& pathToLabels
     return labels;
 }
 
-torch::Tensor ModelRunner::readImage(const std::string& pathToImage)
+torch::Tensor PytorchModelRunner::readImage(const std::string& pathToImage)
 {
     cv::Mat imageMat = cv::imread(pathToImage);
     imageMat = cropCenter(imageMat);
@@ -71,7 +70,7 @@ torch::Tensor ModelRunner::readImage(const std::string& pathToImage)
     return torch::Tensor();
 }
 
-cv::Mat ModelRunner::cropCenter(const cv::Mat &imageMat)
+cv::Mat PytorchModelRunner::cropCenter(const cv::Mat &imageMat)
 {
     const int rows = imageMat.rows;
     const int cols = imageMat.cols;
@@ -84,12 +83,12 @@ cv::Mat ModelRunner::cropCenter(const cv::Mat &imageMat)
     return imageMat(imageRect);
 }
 
-std::string ModelRunner::getLabelImageClassify()
+std::string PytorchModelRunner::getLabelImageClassify()
 {
     return imageClassifylabel;
 }
 
-float ModelRunner::getProbabilityImageClassify()
+float PytorchModelRunner::getProbabilityImageClassify()
 {
     return imageClassifyProbability;
 }

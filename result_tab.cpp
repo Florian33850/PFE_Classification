@@ -14,7 +14,7 @@ ResultTab::ResultTab(Tab *parent): Tab(parent)
     this->isModelLoad = false;
 }
 
-void ResultTab::printClassificationResults(ModelRunner model)
+void ResultTab::printClassificationResults(PytorchModelRunner model)
 {
     QLabel *classificationResultsLabel = new QLabel(this);
     classificationResultsLabel->setText("Image label : " + QString::fromUtf8(model.getLabelImageClassify().c_str()) + " Classification probability : " + QString::number(model.getProbabilityImageClassify()));
@@ -115,7 +115,7 @@ void ResultTab::handleLaunchModelButton()
             QByteArray ba_pathToImage = this->pathToImage.toLocal8Bit();
             const char *c_pathToImage = ba_pathToImage.data();
 
-            ModelRunner model(c_pathToModel, c_pathToLabels, c_pathToImage);
+            PytorchModelRunner model(c_pathToModel, c_pathToLabels, c_pathToImage);
             model.run();
             printClassificationResults(model);
         }

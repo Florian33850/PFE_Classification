@@ -2,7 +2,7 @@
 #define RESULT_TAB_H
 
 #include "tab.h"
-#include "model_runner.h"
+#include "pytorch_model_runner.h"
 #include "image_label.h"
 #include "result_thread.h"
 
@@ -39,7 +39,7 @@ class ResultTab : public Tab
 
         bool isModelLoad;
 
-        void printClassificationResults(ModelRunner model);
+        void printClassificationResults(PytorchModelRunner model);
         
         void addModelGroupBox();
         void addLoadModelButton();

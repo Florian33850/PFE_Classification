@@ -6,10 +6,10 @@
 #include <fstream>
 #include <chrono>
 
-class ModelRunner
+class PytorchModelRunner
 {
     public :
-        ModelRunner(const char* cModel, const char* cLabels, const char* cImage);
+        PytorchModelRunner(const char* cModel, const char* cLabels, const char* cImage);
         
         void run();
 
