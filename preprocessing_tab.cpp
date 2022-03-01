@@ -33,9 +33,9 @@ void PreprocessingTab::displayDataBasePreview()
 {
     int imageIndex = 0;
     int previewListSize = this->imageCollection->getPreviewListSize();
-    for(int row=1; row<maximumRowsOfPreviewImages; row++)
+    for(int row = 0; row < maximumRowsOfPreviewImages; row++)
     {
-        for(int col=0; col<maximumCollumnsOfPreviewImages; col++)
+        for(int col = 0; col < maximumCollumnsOfPreviewImages; col++)
         {
             if(imageIndex >= this->dataLoader->maxNumberOfImagesToLoad || imageIndex >= previewListSize)
             {
