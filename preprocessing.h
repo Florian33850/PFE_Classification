@@ -1,12 +1,12 @@
 #ifndef PREPROCESSING_H
 #define PREPROCESSING_H
 
-#include "image_collection.h"
+#include "image_label.h"
 
 class Preprocessing
 {
     public:
-        virtual void runPreprocess(ImageCollection *imageCollection) = 0;
+        virtual void runPreprocess(std::vector<ImageLabel*> *imagePreviewList) = 0;
 };
 
 class MirrorPreprocess : public Preprocessing
@@ -21,7 +21,7 @@ class MirrorPreprocess : public Preprocessing
         void changeVerticalMirrorMode();
 
     private:
-        void runPreprocess(ImageCollection *imageCollection);
+        void runPreprocess(std::vector<ImageLabel*> *imagePreviewList);
 };
 
 class GrayscalePreprocess : public Preprocessing
@@ -30,7 +30,7 @@ class GrayscalePreprocess : public Preprocessing
         GrayscalePreprocess();
     
     private:
-        void runPreprocess(ImageCollection *imageCollection);
+        void runPreprocess(std::vector<ImageLabel*> *imagePreviewList);
 };
 
 #endif // PREPROCESSING_H

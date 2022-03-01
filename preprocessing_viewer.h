@@ -10,13 +10,13 @@
 class PreprocessingViewer : public QWidget
 {
     public:
-        PreprocessingViewer(ImageCollection *imageCollection, QWidget *parent = nullptr);
+        PreprocessingViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parent = nullptr);
 
         void launchActivatedPreprocesses();
 
     private:
         QVBoxLayout *mainLayout;
-        ImageCollection *imageCollection;
+        std::vector<ImageLabel*> *imagePreviewList;
         std::vector<PreprocessingWidget*> preprocessingWidgetList;
         std::vector<Preprocessing*> preprocessingList;
 

@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-DataLoader::DataLoader(QWidget *parent, ImageCollection *imageCollection)
+DataLoader::DataLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList)
 {
     this->parent = parent;
-    this->imageCollection = imageCollection;
+    this->imagePreviewList = imagePreviewList; 
 }
 
 QImage DataLoader::loadImageFromPath(QString pathToImage)
@@ -22,12 +22,19 @@ void DataLoader::addImageToImageDataBasePreview(QImage qImage)
 {
     ImageLabel *newImageLabel = new ImageLabel();
     newImageLabel->setImage(qImage);
-    this->imageCollection->addImageLabelToDataBasePreview(newImageLabel);
+    this->imagePreviewList->push_back(newImageLabel);
+}
+
+void DataLoader::eraseImagePreviewListIfNotEmpty()
+{
+    if(!this->imagePreviewList->empty())
+    {
+        imagePreviewList->clear();
+    }
 }
 
 
-
-ImageSelectionLoader::ImageSelectionLoader(QWidget *parent, ImageCollection *imageCollection) : DataLoader::DataLoader(parent, imageCollection)
+ImageSelectionLoader::ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataLoader::DataLoader(parent, imagePreviewList)
 {
     this->indexPathToImagesList = 0;
     this->maxNumberOfImagesToLoad = 10;
@@ -54,7 +61,7 @@ bool ImageSelectionLoader::loadPreview()
     }
     else
     {
-        imageCollection->erasePreviewIfNotEmpty();
+        eraseImagePreviewListIfNotEmpty();
         for(int fileIndex = indexPathToImagesList; fileIndex < indexPathToImagesList + maxNumberOfImagesToLoad; fileIndex++)
         {
             if(fileIndex == pathToImages.size())
@@ -79,7 +86,7 @@ bool ImageSelectionLoader::loadPreviousPreview()
     }
     else
     {
-        imageCollection->erasePreviewIfNotEmpty();
+        eraseImagePreviewListIfNotEmpty();
         for(int fileIndex = previousIndex; fileIndex < indexPathToImagesList - maxNumberOfImagesToLoad; fileIndex++)
         {
             QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));

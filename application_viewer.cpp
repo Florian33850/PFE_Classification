@@ -49,7 +49,7 @@ void ApplicationViewer::addResultTab(QTabWidget *mainTabWidget)
 
 void ApplicationViewer::handleOpenImageSelectionDataLoader()
 {
-    this->dataLoader = new ImageSelectionLoader(mainWidget, preprocessingTab->imageCollection);
+    this->dataLoader = new ImageSelectionLoader(mainWidget, preprocessingTab->imagePreviewList);
     this->preprocessingTab->dataLoader = this->dataLoader;
     this->preprocessingTab->handleLoadDataBase();
 }

@@ -1,6 +1,6 @@
 #include "preprocessing_viewer.h"
 
-PreprocessingViewer::PreprocessingViewer(ImageCollection *imageCollection, QWidget *parent)
+PreprocessingViewer::PreprocessingViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parent)
     : QWidget(parent)
 {
     this->mainLayout = new QVBoxLayout;
@@ -8,7 +8,7 @@ PreprocessingViewer::PreprocessingViewer(ImageCollection *imageCollection, QWidg
     this->mainLayout->setSpacing(1);
     this->mainLayout->setMargin(1);
 
-    this->imageCollection = imageCollection;
+    this->imagePreviewList = imagePreviewList; 
     addLaunchPreprocessingButton();
     addAddPreprocessingComboBox();
 
@@ -21,7 +21,7 @@ void PreprocessingViewer::launchActivatedPreprocesses()
     {
         if(preprocessingWidget->isActivated)
         {
-            preprocessingWidget->preprocess->runPreprocess(imageCollection);
+            preprocessingWidget->preprocess->runPreprocess(imagePreviewList);
         }
     }
 }
