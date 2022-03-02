@@ -13,6 +13,7 @@ ApplicationViewer::ApplicationViewer(QWidget *parent)
 
     this->tabWidget = new QTabWidget();
     addPreprocessingTab(tabWidget);
+    addDataAugmentationTab(tabWidget);
     addClassificationTrainingTab(tabWidget);
     addResultTab(tabWidget);
     this->mainLayout->addWidget(tabWidget);
@@ -45,6 +46,12 @@ void ApplicationViewer::addResultTab(QTabWidget *mainTabWidget)
 {
     resultTab = new ResultTab();
     mainTabWidget->addTab(resultTab, tr("Result"));
+}
+
+void ApplicationViewer::addDataAugmentationTab(QTabWidget *mainTabWidget)
+{
+    dataAugmentationTab = new DataAugmentationTab();
+    mainTabWidget->addTab(dataAugmentationTab, tr("Data Augmentation"));
 }
 
 void ApplicationViewer::handleOpenImageSelectionDataHandler()

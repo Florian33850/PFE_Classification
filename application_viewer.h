@@ -4,6 +4,7 @@
 #include "classification_training_tab.h"
 #include "preprocessing_tab.h"
 #include "result_tab.h"
+#include "data_augmentation_tab.h"
 
 #include <iostream>
 
@@ -26,11 +27,13 @@ class ApplicationViewer : public QMainWindow
         DataHandler *dataHandler;
 
         PreprocessingTab *preprocessingTab;
+        DataAugmentationTab *dataAugmentationTab;
         ClassificationTrainingTab *classificationTrainingTab;
         ResultTab *resultTab;
 
         void addSettingMenu(ApplicationViewer *applicationViewer);
         void addPreprocessingTab(QTabWidget *mainTabWidget);
+        void addDataAugmentationTab(QTabWidget *mainTabWidget);
         void addClassificationTrainingTab(QTabWidget *mainTabWidget);
         void addResultTab(QTabWidget *mainTabWidget);
         

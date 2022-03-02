@@ -1,11 +1,10 @@
-#ifndef DataAugmentation_TAB_H
-#define DataAugmentation_TAB_H
+#ifndef DATA_AUGMENTATION_TAB_H
+#define DATA_AUGMENTATION_TAB_H
 
 #include "tab.h"
-#include "DataAugmentation_viewer.h"
 #include "data_handler.h"
 
-#include <QFileDialog>
+#include <QPushButton>
 
 class DataAugmentationTab : public Tab
 {
@@ -20,9 +19,15 @@ class DataAugmentationTab : public Tab
 
         void clearImagesLayout();
         void displayDataBasePreview();
+        void addPreviousPreviewButton();
+        void addNextPreviewButton();
+
+        void handleLoadDataBase();
+        void handleLoadPreviousPreviewButton();
+        void handleLoadNextPreviewButton();
 
     private:
         QGridLayout *mainLayout;
         QGridLayout *imagesLayout;
 };
-#endif // DataAugmentation_TAB_H
+#endif // DATA_AUGMENTATION_TAB_H
