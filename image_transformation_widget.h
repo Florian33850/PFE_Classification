@@ -1,7 +1,7 @@
 #ifndef PPREPROCESSING_WIDGET_H
 #define PREPROCESSING_WIDGET_H
 
-#include "preprocessing.h"
+#include "image_transformation.h"
 
 #include <QWidget>
 #include <QPushButton>
@@ -12,32 +12,32 @@
 #define MIRRORED_WIDGET_MAXIMUM_HEIGHT 110
 #define GRAYSCALE_WIDGET_MAXIMUM_HEIGHT 65
 
-class PreprocessingWidget : public QWidget
+class ImageTransformationWidget : public QWidget
 {
     public:
-        PreprocessingWidget(QVBoxLayout *mainLayout, QWidget *parentWidget);
+        ImageTransformationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget);
 
         bool isActivated;
-        Preprocessing *preprocess;
+        ImageTransformation *imageTransformation;
         
         virtual void displayUI() = 0;
         void deleteMainWidgetGroupBox();
 
-        QPushButton* getDeletePreprocessingWidgetButton();
+        QPushButton* getDeleteImageTransformationWidgetButton();
         
     protected:
         QVBoxLayout *mainLayout;
         QWidget *parentWidget;
         QGroupBox *mainWidgetGroupBox;
-        QPushButton *deletePreprocessingWidgetButton;
+        QPushButton *deleteImageTransformationWidgetButton;
 
         void connectWidgetDeleteButton();
 };
 
-class MirrorWidget : public PreprocessingWidget
+class MirrorWidget : public ImageTransformationWidget
 {
     public:
-        MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MirrorPreprocess *mirrorPreprocessing);
+        MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MirrorImageTransformation *mirrorImageTransformation);
 
         void displayUI();
     
@@ -46,10 +46,10 @@ class MirrorWidget : public PreprocessingWidget
         QCheckBox *verticalMirrorCheckBox;
 };
 
-class GrayscaleWidget : public PreprocessingWidget
+class GrayscaleWidget : public ImageTransformationWidget
 {
     public:
-        GrayscaleWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, GrayscalePreprocess *grayscale);
+        GrayscaleWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, GrayscaleImageTransformation *grayscaleImageTransformation);
 
         void displayUI();
 };

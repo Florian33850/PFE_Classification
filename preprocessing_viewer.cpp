@@ -17,11 +17,11 @@ PreprocessingViewer::PreprocessingViewer(std::vector<ImageLabel*> *imagePreviewL
 
 void PreprocessingViewer::launchActivatedPreprocesses()
 {
-    for(PreprocessingWidget *preprocessingWidget : preprocessingWidgetList)
+    for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
     {
-        if(preprocessingWidget->isActivated)
+        if(imageTransformationWidget->isActivated)
         {
-            preprocessingWidget->preprocess->runPreprocess(imagePreviewList);
+            imageTransformationWidget->imageTransformation->runImageTransformation(imagePreviewList);
         }
     }
 }
@@ -41,25 +41,25 @@ void PreprocessingViewer::addAddPreprocessingComboBox()
     mainLayout->addWidget(addPreprocessingComboBox);
 }
 
-MirrorWidget* PreprocessingViewer::createMirrorPreprocess()
+MirrorWidget* PreprocessingViewer::createMirrorImageTransformation()
 {
-    MirrorPreprocess *newMirrorPreprocess = new MirrorPreprocess();
-    preprocessingList.push_back(newMirrorPreprocess);
+    MirrorImageTransformation *newMirrorImageTransformation = new MirrorImageTransformation();
+    preprocessingList.push_back(newMirrorImageTransformation);
 
-    MirrorWidget *newMirrorWidget = new MirrorWidget(mainLayout, this, newMirrorPreprocess);
-    preprocessingWidgetList.push_back(newMirrorWidget);
+    MirrorWidget *newMirrorWidget = new MirrorWidget(mainLayout, this, newMirrorImageTransformation);
+    imageTransformationWidgetList.push_back(newMirrorWidget);
 
     newMirrorWidget->displayUI();
     return newMirrorWidget;
 }
 
-GrayscaleWidget* PreprocessingViewer::createGrayscalePreprocess()
+GrayscaleWidget* PreprocessingViewer::createGrayscaleImageTransformation()
 {
-    GrayscalePreprocess *newGrayscalePreprocess = new GrayscalePreprocess();
-    preprocessingList.push_back(newGrayscalePreprocess);
+    GrayscaleImageTransformation *newGrayscaleImageTransformation = new GrayscaleImageTransformation();
+    preprocessingList.push_back(newGrayscaleImageTransformation);
 
-    GrayscaleWidget *newGrayscaleWidget = new GrayscaleWidget(mainLayout, this, newGrayscalePreprocess);
-    preprocessingWidgetList.push_back(newGrayscaleWidget);
+    GrayscaleWidget *newGrayscaleWidget = new GrayscaleWidget(mainLayout, this, newGrayscaleImageTransformation);
+    imageTransformationWidgetList.push_back(newGrayscaleWidget);
 
     newGrayscaleWidget->displayUI();
     return newGrayscaleWidget;
@@ -67,9 +67,9 @@ GrayscaleWidget* PreprocessingViewer::createGrayscalePreprocess()
 
 void PreprocessingViewer::handleLaunchPreprocessingButton()
 {
-    for(PreprocessingWidget *preprocessingWidget : preprocessingWidgetList)
+    for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
     {
-        preprocessingWidget->isActivated = true;
+        imageTransformationWidget->isActivated = true;
     }
     launchActivatedPreprocesses();
 }
@@ -77,30 +77,30 @@ void PreprocessingViewer::handleLaunchPreprocessingButton()
 void PreprocessingViewer::handlePreprocessingComboBox()
 {
     QString newPreprocessing = addPreprocessingComboBox->currentText();
-    PreprocessingWidget *preprocessingWidget;
+    ImageTransformationWidget *imageTransformationWidget;
     if(newPreprocessing.compare("Mirror") == 0)
     {
-        preprocessingWidget = createMirrorPreprocess();
+        imageTransformationWidget = createMirrorImageTransformation();
     }
     else if(newPreprocessing.compare("Grayscale") == 0)
     {
-        preprocessingWidget = createGrayscalePreprocess();
+        imageTransformationWidget = createGrayscaleImageTransformation();
     }
-    connect(preprocessingWidget->getDeletePreprocessingWidgetButton(), &QPushButton::released, 
-        [=](){this->handleDeletePreprocessingWidgetButton(preprocessingWidget);});
+    connect(imageTransformationWidget->getDeleteImageTransformationWidgetButton(), &QPushButton::released, 
+        [=](){this->handleDeleteImageTransformationWidgetButton(imageTransformationWidget);});
 }
 
-void PreprocessingViewer::handleDeletePreprocessingWidgetButton(PreprocessingWidget *preprocessingWidgetToDelete)
+void PreprocessingViewer::handleDeleteImageTransformationWidgetButton(ImageTransformationWidget *imageTransformationWidgetToDelete)
 {
     int index = 0;
-    for(PreprocessingWidget *preprocessingWidget : preprocessingWidgetList)
+    for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
     {
-        if(preprocessingWidget == preprocessingWidgetToDelete)
+        if(imageTransformationWidget == imageTransformationWidgetToDelete)
         {
             preprocessingList.erase(preprocessingList.begin() + index);
-            preprocessingWidgetList.erase(preprocessingWidgetList.begin() + index);
-            preprocessingWidget->deleteMainWidgetGroupBox();
-            delete preprocessingWidget;
+            imageTransformationWidgetList.erase(imageTransformationWidgetList.begin() + index);
+            imageTransformationWidget->deleteMainWidgetGroupBox();
+            delete imageTransformationWidget;
         }
         index++;
     }

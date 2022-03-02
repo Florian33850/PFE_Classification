@@ -1,14 +1,14 @@
-#include "data_loader.h"
+#include "data_handler.h"
 
 #include <iostream>
 
-DataLoader::DataLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList)
+DataHandler::DataHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList)
 {
     this->parent = parent;
     this->imagePreviewList = imagePreviewList; 
 }
 
-QImage DataLoader::loadImageFromPath(QString pathToImage)
+QImage DataHandler::loadImageFromPath(QString pathToImage)
 {
     QImage qImage;
     if(qImage.load(pathToImage) == false)
@@ -18,7 +18,7 @@ QImage DataLoader::loadImageFromPath(QString pathToImage)
     return qImage;
 }
 
-void DataLoader::addImageToImageDataBasePreview(QImage qImage)
+void DataHandler::addImageToImageDataBasePreview(QImage qImage)
 {
     ImageLabel *newImageLabel = new ImageLabel();
     newImageLabel->setImage(qImage);
@@ -27,7 +27,7 @@ void DataLoader::addImageToImageDataBasePreview(QImage qImage)
 
 
 
-ImageSelectionLoader::ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataLoader::DataLoader(parent, imagePreviewList)
+ImageSelectionLoader::ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
 {
     this->indexPathToImagesList = 0;
     this->maxNumberOfImagesToLoad = 10;

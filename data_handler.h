@@ -1,15 +1,15 @@
-#ifndef DATA_LOADER_H
-#define DATA_LOADER_H
+#ifndef data_handler_H
+#define data_handler_H
 
 #include "image_label.h"
 
 #include <QStringList>
 #include <QFileDialog>
 
-class DataLoader
+class DataHandler
 {
     public:
-        DataLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
+        DataHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
         
         int maxNumberOfImagesToLoad;
         int totalNumberOfImages;
@@ -26,7 +26,7 @@ class DataLoader
         void addImageToImageDataBasePreview(QImage qImage);
 };
 
-class ImageSelectionLoader : public DataLoader
+class ImageSelectionLoader : public DataHandler
 {
     public:
         ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
@@ -39,4 +39,4 @@ class ImageSelectionLoader : public DataLoader
         int indexPathToImagesList;
         QStringList pathToImages;
 };
-#endif //DATA_LOADER_H
+#endif //data_handler_H

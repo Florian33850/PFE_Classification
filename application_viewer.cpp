@@ -25,7 +25,7 @@ void ApplicationViewer::addSettingMenu(ApplicationViewer *applicationViewer)
     QMenu *fileMenu = menuBar()->addMenu("&File");
     QMenu *openSubMenu = fileMenu->addMenu("&Open");
     QAction *openImageSelection = openSubMenu->addAction("&Image selection");
-    QObject::connect(openImageSelection, &QAction::triggered, this, &ApplicationViewer::handleOpenImageSelectionDataLoader);
+    QObject::connect(openImageSelection, &QAction::triggered, this, &ApplicationViewer::handleOpenImageSelectionDataHandler);
     QAction *helpAction = menuBar()->addAction("&Help");
 }
 
@@ -47,9 +47,9 @@ void ApplicationViewer::addResultTab(QTabWidget *mainTabWidget)
     mainTabWidget->addTab(resultTab, tr("Result"));
 }
 
-void ApplicationViewer::handleOpenImageSelectionDataLoader()
+void ApplicationViewer::handleOpenImageSelectionDataHandler()
 {
-    this->dataLoader = new ImageSelectionLoader(mainWidget, preprocessingTab->imagePreviewList);
-    this->preprocessingTab->dataLoader = this->dataLoader;
+    this->dataHandler = new ImageSelectionLoader(mainWidget, preprocessingTab->imagePreviewList);
+    this->preprocessingTab->dataHandler = this->dataHandler;
     this->preprocessingTab->handleLoadDataBase();
 }
