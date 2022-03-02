@@ -14,13 +14,6 @@ ResultTab::ResultTab(Tab *parent): Tab(parent)
     this->isModelLoad = false;
 }
 
-void ResultTab::printClassificationResults(PytorchModelRunner model)
-{
-    QLabel *classificationResultsLabel = new QLabel(this);
-    classificationResultsLabel->setText("Image label : " + QString::fromUtf8(model.getLabelImageClassify().c_str()) + " Classification probability : " + QString::number(model.getProbabilityImageClassify()));
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, classificationResultsLabel);
-}
-
 void ResultTab::addModelGroupBox()
 {
     this->modelH5CheckBox = new QCheckBox("Select classification model (*.h5) with prediction file and an image to classify", this);
@@ -104,22 +97,7 @@ void ResultTab::handleLaunchModelButton()
 {
     if(this->isModelLoad == true)
     {
-        if(this->modelPtCheckBox->checkState() == Qt::Checked)
-        {
-            QByteArray ba_pathToModel = this->pathToModel.toLocal8Bit();
-            const char *c_pathToModel = ba_pathToModel.data();
-
-            QByteArray ba_pathToLabels = this->pathToLabels.toLocal8Bit();
-            const char *c_pathToLabels = ba_pathToLabels.data();
-
-            QByteArray ba_pathToImage = this->pathToImage.toLocal8Bit();
-            const char *c_pathToImage = ba_pathToImage.data();
-
-            PytorchModelRunner model(c_pathToModel, c_pathToLabels, c_pathToImage);
-            model.run();
-            printClassificationResults(model);
-        }
-        else if(this->modelH5CheckBox->checkState() == Qt::Checked)
+        if(this->modelH5CheckBox->checkState() == Qt::Checked)
         {
             ResultThread *thread = new ResultThread(this->pathToPredictionFile, this->pathToModel, this->pathToImage);
             connect(thread, &QThread::started, this, &ResultTab::handleWaitingResult);

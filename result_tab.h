@@ -2,7 +2,6 @@
 #define RESULT_TAB_H
 
 #include "tab.h"
-#include "pytorch_model_runner.h"
 #include "image_label.h"
 #include "result_thread.h"
 
@@ -38,8 +37,6 @@ class ResultTab : public Tab
         QString pathToPredictionFile;
 
         bool isModelLoad;
-
-        void printClassificationResults(PytorchModelRunner model);
         
         void addModelGroupBox();
         void addLoadModelButton();
