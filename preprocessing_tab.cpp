@@ -13,8 +13,8 @@ PreprocessingTab::PreprocessingTab(Tab *parent)
 
     this->maximumRowsOfPreviewImages = 3;
     this->maximumCollumnsOfPreviewImages = 5;
-    this->imageCollection = new ImageCollection(); 
-    this->preprocessingViewer = new PreprocessingViewer(imageCollection);
+    this->imagePreviewList = new std::vector<ImageLabel*>();
+    this->preprocessingViewer = new PreprocessingViewer(this->imagePreviewList);
     this->mainLayout->addWidget(preprocessingViewer, 0, 3, 4, 1);
 }
 
@@ -32,7 +32,7 @@ void PreprocessingTab::clearImagesLayout()
 void PreprocessingTab::displayDataBasePreview()
 {
     int imageIndex = 0;
-    int previewListSize = this->imageCollection->getPreviewListSize();
+    int previewListSize = imagePreviewList->size();
     for(int row = 0; row < maximumRowsOfPreviewImages; row++)
     {
         for(int col = 0; col < maximumCollumnsOfPreviewImages; col++)
@@ -41,7 +41,7 @@ void PreprocessingTab::displayDataBasePreview()
             {
                 break;
             }
-            this->imagesLayout->addWidget(this->imageCollection->getImageLabelFromDataBase(imageIndex), row, col);
+            this->imagesLayout->addWidget(this->imagePreviewList->at(imageIndex), row, col);
             imageIndex++;
         }
     }

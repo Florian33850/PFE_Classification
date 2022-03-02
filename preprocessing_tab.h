@@ -14,7 +14,7 @@ class PreprocessingTab : public Tab
         PreprocessingTab( Tab *parent = nullptr);
 
         DataLoader *dataLoader;
-        ImageCollection *imageCollection;
+        std::vector<ImageLabel*> *imagePreviewList;
         int maximumRowsOfPreviewImages;
         int maximumCollumnsOfPreviewImages;
 
