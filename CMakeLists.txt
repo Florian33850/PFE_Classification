@@ -23,6 +23,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3")
 
 #add the executable
 add_executable(application_viewer main.cpp application_viewer.cpp image_label.cpp
-preprocessing_tab.cpp classification_training_tab.cpp result_tab.cpp tab.cpp preprocessing.cpp preprocessing_viewer.cpp 
-preprocessing_widget.cpp data_loader.cpp classification_thread.cpp result_thread.cpp)
-target_link_libraries(application_viewer Qt5::Widgets ${OpenCV_LIBS})
+preprocessing_tab.cpp classification_training_tab.cpp result_tab.cpp tab.cpp image_transformation.cpp preprocessing_viewer.cpp
+image_transformation_widget.cpp data_handler.cpp classification_thread.cpp result_thread.cpp)
+target_link_libraries(application_viewer Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS})

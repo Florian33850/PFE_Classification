@@ -23,7 +23,7 @@ class ApplicationViewer : public QMainWindow
         QVBoxLayout *mainLayout;
         QWidget *mainWidget;
         QTabWidget *tabWidget;
-        DataLoader *dataLoader;
+        DataHandler *dataHandler;
 
         PreprocessingTab *preprocessingTab;
         ClassificationTrainingTab *classificationTrainingTab;
@@ -34,6 +34,6 @@ class ApplicationViewer : public QMainWindow
         void addClassificationTrainingTab(QTabWidget *mainTabWidget);
         void addResultTab(QTabWidget *mainTabWidget);
         
-        void handleOpenImageSelectionDataLoader();
+        void handleOpenImageSelectionDataHandler();
 };
 #endif // APPLICATION_VIEWER_H

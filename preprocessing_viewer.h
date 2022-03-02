@@ -1,7 +1,7 @@
 #ifndef PREPROCESSING_VIEWER_H
 #define PREPROCESSING_VIEWER_H
 
-#include "preprocessing_widget.h"
+#include "image_transformation_widget.h"
 
 #include <iostream>
 #include <QVBoxLayout>
@@ -17,8 +17,8 @@ class PreprocessingViewer : public QWidget
     private:
         QVBoxLayout *mainLayout;
         std::vector<ImageLabel*> *imagePreviewList;
-        std::vector<PreprocessingWidget*> preprocessingWidgetList;
-        std::vector<Preprocessing*> preprocessingList;
+        std::vector<ImageTransformationWidget*> imageTransformationWidgetList;
+        std::vector<ImageTransformation*> preprocessingList;
 
         QPushButton *launchPreprocessingButton;
         QComboBox *addPreprocessingComboBox;
@@ -27,11 +27,11 @@ class PreprocessingViewer : public QWidget
         void addLaunchPreprocessingButton();
         void addAddPreprocessingComboBox();
         
-        MirrorWidget* createMirrorPreprocess();
-        GrayscaleWidget* createGrayscalePreprocess();
+        MirrorWidget* createMirrorImageTransformation();
+        GrayscaleWidget* createGrayscaleImageTransformation();
         
         void handleLaunchPreprocessingButton();
         void handlePreprocessingComboBox();
-        void handleDeletePreprocessingWidgetButton(PreprocessingWidget* preprocessingWidget);
+        void handleDeleteImageTransformationWidgetButton(ImageTransformationWidget* imageTransformationWidget);
 };
 #endif // PREPROCESSING_VIEWER_H

@@ -1,22 +1,22 @@
-#include "preprocessing.h"
+#include "image_transformation.h"
 
-MirrorPreprocess::MirrorPreprocess()
+MirrorImageTransformation::MirrorImageTransformation()
 {
     horizontalMirror = false;
     verticalMirror = false;
 }
 
-void MirrorPreprocess::changeHorizontalMirrorMode()
+void MirrorImageTransformation::changeHorizontalMirrorMode()
 {
     horizontalMirror = !horizontalMirror;
 }
 
-void MirrorPreprocess::changeVerticalMirrorMode()
+void MirrorImageTransformation::changeVerticalMirrorMode()
 {
     verticalMirror = !verticalMirror;
 }
 
-void MirrorPreprocess::runPreprocess(std::vector<ImageLabel*> *imagePreviewList)
+void MirrorImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
 {
     for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
     {
@@ -27,11 +27,11 @@ void MirrorPreprocess::runPreprocess(std::vector<ImageLabel*> *imagePreviewList)
 
 
 
-GrayscalePreprocess::GrayscalePreprocess()
+GrayscaleImageTransformation::GrayscaleImageTransformation()
 {
 }
 
-void GrayscalePreprocess::runPreprocess(std::vector<ImageLabel*> *imagePreviewList)
+void GrayscaleImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
 {
     for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
     {
