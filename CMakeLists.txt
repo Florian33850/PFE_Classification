@@ -24,6 +24,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3 ${TORCH_CXX_FLAGS}")
 
 #add the executable
 add_executable(application_viewer main.cpp application_viewer.cpp pytorch_model_runner.cpp image_label.cpp
-preprocessing_tab.cpp classification_training_tab.cpp result_tab.cpp tab.cpp image_transformation.cpp preprocessing_viewer.cpp 
+preprocessing_tab.cpp classification_training_tab.cpp result_tab.cpp tab.cpp image_transformation.cpp preprocessing_viewer.cpp
 image_transformation_widget.cpp data_handler.cpp classification_thread.cpp result_thread.cpp)
 target_link_libraries(application_viewer Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS})
