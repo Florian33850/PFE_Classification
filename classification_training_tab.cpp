@@ -34,10 +34,10 @@ void ClassificationTrainingTab::readAndDisplayOutputTrainingFile()
     }
     outputTrainingFile.close();
 
-    QScrollArea *test = new QScrollArea();
-    test->setWidget(outputTrainingFileLabel);
+    QScrollArea *scrollArea = new QScrollArea();
+    scrollArea->setWidget(outputTrainingFileLabel);
 
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, test);
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, scrollArea);
 }
 
 void ClassificationTrainingTab::addTestAndTrainCheckBox()
