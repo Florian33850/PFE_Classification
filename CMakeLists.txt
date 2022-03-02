@@ -1,4 +1,3 @@
-#cmake_minimum_required(VERSION 3.10)
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 #set the project name
@@ -11,10 +10,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-if(CMAKE_VERSION VERSION_LESS "3.7.0")
-    set(CMAKE_INCLUDE_CURRENT_DIR ON)
-endif()
-
 ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
@@ -22,7 +17,20 @@ find_package(OpenCV REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3")
 
 #add the executable
-add_executable(application_viewer main.cpp application_viewer.cpp image_label.cpp
-preprocessing_tab.cpp classification_training_tab.cpp result_tab.cpp tab.cpp image_transformation.cpp preprocessing_viewer.cpp
-image_transformation_widget.cpp data_handler.cpp classification_thread.cpp result_thread.cpp)
+add_executable(application_viewer
+  src/main.cpp
+  src/application_viewer.cpp
+  src/image_label.cpp
+  src/preprocessing_tab.cpp
+  src/classification_training_tab.cpp
+  src/result_tab.cpp
+  src/tab.cpp
+  src/image_transformation.cpp
+  src/preprocessing_viewer.cpp
+  src/image_transformation_widget.cpp
+  src/data_handler.cpp
+  src/classification_thread.cpp
+  src/result_thread.cpp
+  )
+
 target_link_libraries(application_viewer Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS})
