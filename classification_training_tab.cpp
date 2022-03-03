@@ -6,15 +6,10 @@ ClassificationTrainingTab::ClassificationTrainingTab(Tab *parent)
     this->mainLayout = new QVBoxLayout;
     this->setLayout(this->mainLayout);
 
-    addTestAndTrainCheckBox();
-    addLoadTrainingClassifierButton();
+    addTrainingParametersFormLayout();
     addLaunchTrainingClassifierButton();
 
     this->mainLayout->addStretch();
-    
-    this->isTrainingClassifierLoad = false;
-    this->isTrainingSetLoad = false;
-    this->isTestingSetLoad = false;
 }
 
 void ClassificationTrainingTab::readAndDisplayOutputTrainingFile()
@@ -40,17 +35,47 @@ void ClassificationTrainingTab::readAndDisplayOutputTrainingFile()
     this->mainLayout->insertWidget(this->mainLayout->count()-1, scrollArea);
 }
 
-void ClassificationTrainingTab::addTestAndTrainCheckBox()
+void ClassificationTrainingTab::addTrainingParametersFormLayout()
 {
-    this->testAndTrainCheckBox = new QCheckBox("Select training and testing set when the training classifier will be loaded", this);
-    this->mainLayout->addWidget(this->testAndTrainCheckBox);
-}
+    this->formGroupBox = new QGroupBox(tr("Training parameters"));
+    this->formLayout = new QFormLayout;
 
-void ClassificationTrainingTab::addLoadTrainingClassifierButton()
-{
-    this->loadTrainingClassifierButton = new QPushButton("Load training classifier");
-    connect(loadTrainingClassifierButton, &QPushButton::released, this, &ClassificationTrainingTab::handleLoadTrainingClassifierButton);
-    this->mainLayout->addWidget(this->loadTrainingClassifierButton);
+    this->addClassifierButton = new QPushButton("Add");
+    this->classifierLineEdit = new QLineEdit();
+    this->classifierLineEdit->setReadOnly(true);
+    connect(addClassifierButton, &QPushButton::released, [=](){this->handleAddFileToQlineEdit(classifierLineEdit);});
+    
+    this->addTrainingSetButton = new QPushButton("Add");
+    this->trainingSetLineEdit = new QLineEdit();
+    this->trainingSetLineEdit->setReadOnly(true);
+    connect(addTrainingSetButton, &QPushButton::released, [=](){this->handleAddDirectoryToQlineEdit(trainingSetLineEdit);});
+
+    this->addTestingSetButton = new QPushButton("Add");
+    this->testingSetLineEdit = new QLineEdit();
+    this->testingSetLineEdit->setReadOnly(true);
+    connect(addTestingSetButton, &QPushButton::released, [=](){this->handleAddDirectoryToQlineEdit(testingSetLineEdit);});
+    
+    this->numberOfepochsLineEdit = new QLineEdit();
+    this->numberOfepochsLineEdit->setValidator(new QIntValidator(0,INT_MAX,this));
+
+    this->heightOfImagesLineEdit = new QLineEdit();
+    this->heightOfImagesLineEdit->setValidator(new QIntValidator(0,INT_MAX,this));
+
+    this->widthOfImagesLineEdit = new QLineEdit();
+    this->widthOfImagesLineEdit->setValidator(new QIntValidator(0,INT_MAX,this));
+
+    this->formLayout->addRow(tr("&Classifier:"), addClassifierButton);
+    this->formLayout->addRow(classifierLineEdit);
+    this->formLayout->addRow(tr("&Training set :"), addTrainingSetButton);
+    this->formLayout->addRow(trainingSetLineEdit);
+    this->formLayout->addRow(tr("&Testing set :"), addTestingSetButton);
+    this->formLayout->addRow(testingSetLineEdit);
+    this->formLayout->addRow(tr("&Number of epochs :"), numberOfepochsLineEdit);
+    this->formLayout->addRow(tr("&Height of images :"), heightOfImagesLineEdit);
+    this->formLayout->addRow(tr("&Width of images :"), widthOfImagesLineEdit);
+
+    this->formGroupBox->setLayout(formLayout);
+    this->mainLayout->addWidget(formGroupBox);
 }
 
 void ClassificationTrainingTab::addLaunchTrainingClassifierButton()
@@ -60,56 +85,28 @@ void ClassificationTrainingTab::addLaunchTrainingClassifierButton()
     this->mainLayout->addWidget(this->launchTrainingClassifierButton);
 }
 
-void ClassificationTrainingTab::handleLoadTrainingClassifierButton()
+void ClassificationTrainingTab::handleAddDirectoryToQlineEdit(QLineEdit *qLineEdit)
 {
-    QLabel *informationClassifierLabel = new QLabel(this);
+    qLineEdit->setText(QFileDialog::getExistingDirectory(this));
+}
 
-    this->pathToClassifier = QFileDialog::getOpenFileName(this, tr("Select CLASSIFIER TRAINING to LOAD"), tr("PY (*.py)"));
-    if(this->pathToClassifier == NULL)
-    {
-        printf("classifier loading problem\n");
-        return;
-    }
-    this->isTrainingClassifierLoad = true;
-
-    informationClassifierLabel->setText("Classification file : " + this->pathToClassifier + "\n"); 
-
-    if(testAndTrainCheckBox->checkState() == Qt::Checked)
-    {
-        this->pathToTrainingSet = QFileDialog::getExistingDirectory(this, tr("Select TRAINING DATASET"));
-        if(this->pathToClassifier == NULL)
-        {
-            printf("classifier loading problem\n");
-            return;
-        }
-        this->isTrainingSetLoad = true;
-
-        this->pathToTestingSet = QFileDialog::getExistingDirectory(this, tr("Select TESTING DATASET"));
-        if(this->pathToClassifier == NULL)
-        {
-            printf("classifier loading problem\n");
-            return;
-        }
-        this->isTestingSetLoad = true;
-        
-        informationClassifierLabel->setText(informationClassifierLabel->text() + "Training set directory : " + this->pathToTrainingSet + "\n" + "Testing set directory : " + pathToTestingSet);
-    }
-
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, informationClassifierLabel);
+void ClassificationTrainingTab::handleAddFileToQlineEdit(QLineEdit *qLineEdit)
+{
+    qLineEdit->setText(QFileDialog::getOpenFileName(this));
 }
 
 void ClassificationTrainingTab::handleLaunchTrainingClassifierButton()
 {
-    if(this->isTrainingClassifierLoad == true && this->isTrainingSetLoad == true && this->isTestingSetLoad == true && this->testAndTrainCheckBox->checkState() == Qt::Checked)
+    QString pathToClassifier = classifierLineEdit->text();
+    QString pathToTrainingSet = trainingSetLineEdit->text();
+    QString pathToTestingSet = testingSetLineEdit->text();
+    QString numberOfEpochs = numberOfepochsLineEdit->text();
+    QString heightOfImages = heightOfImagesLineEdit->text();
+    QString widthOfImages = widthOfImagesLineEdit->text();
+
+    if(pathToClassifier != NULL)
     {
-        ClassificationThread *thread = new ClassificationThread(this->pathToClassifier, this->pathToTrainingSet, this->pathToTestingSet);
-        connect(thread, &QThread::started, this, &ClassificationTrainingTab::handleWaitingClassification);
-        connect(thread, &QThread::finished, this, &ClassificationTrainingTab::handleEndingClassification);
-        thread->start();
-    }
-    else if(this->isTrainingClassifierLoad == true && this->testAndTrainCheckBox->checkState() == Qt::Unchecked)
-    {
-        ClassificationThread *thread = new ClassificationThread(this->pathToClassifier);
+        ClassificationThread *thread = new ClassificationThread(pathToClassifier, pathToTrainingSet, pathToTestingSet, numberOfEpochs, heightOfImages, widthOfImages);
         connect(thread, &QThread::started, this, &ClassificationTrainingTab::handleWaitingClassification);
         connect(thread, &QThread::finished, this, &ClassificationTrainingTab::handleEndingClassification);
         thread->start();

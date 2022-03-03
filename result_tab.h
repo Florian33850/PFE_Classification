@@ -11,9 +11,10 @@
 #include <QCoreApplication>
 #include <QTextCodec>
 #include <QtCore>
-#include <QButtonGroup>
-#include <QCheckBox>
 #include <QGroupBox>
+#include <QFormLayout>
+#include <QLineEdit>
+#include <QScrollArea>
 
 class ResultTab : public Tab
 {
@@ -23,26 +24,26 @@ class ResultTab : public Tab
 
     private:
         QVBoxLayout *mainLayout;
-        QCheckBox *modelH5CheckBox;
-        QCheckBox *modelPtCheckBox;
-        QButtonGroup *modelButtonGroup;
-        QVBoxLayout *typeOfModelLayout;
-        QGroupBox *modelGroupBox;
-        QPushButton *loadModelButton;
+
+        QGroupBox *formGroupBox;
+        QFormLayout *formLayout;
+        QPushButton *addPredicitonFileButton;
+        QLineEdit *predictionFileLineEdit;
+        QPushButton *addModelClassifierButton;
+        QLineEdit *modelClassifierLineEdit;
+        QPushButton *addLabelsButton;
+        QLineEdit *labelsLineEdit;
+        QPushButton *addImageButton;
+        QLineEdit *imageLineEdit;
+
         QPushButton *launchModelButton;
-
-        QString pathToModel;
-        QString pathToLabels;
-        QString pathToImage;
-        QString pathToPredictionFile;
-
-        bool isModelLoad;
         
-        void addModelGroupBox();
-        void addLoadModelButton();
+        void readAndDisplayOutputResultFile();
+
+        void addClassificationParametersFormLayout();
         void addLaunchModelButton();
 
-        void handleLoadModelButton();
+        void handleAddFileToQlineEdit(QLineEdit *qLineEdit);
         void handleLaunchModelButton();
         void handleWaitingResult();
         void handleEndingResult();

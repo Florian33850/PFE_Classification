@@ -10,6 +10,10 @@
 #include <QCheckBox>
 #include <QButtonGroup>
 #include <QScrollArea>
+#include <QFormLayout>
+#include <QLineEdit>
+#include <QGroupBox>
+#include <QIntValidator>
 
 class ClassificationTrainingTab : public Tab
 {
@@ -19,22 +23,29 @@ class ClassificationTrainingTab : public Tab
 
     private:
         QVBoxLayout *mainLayout;
-        QCheckBox *testAndTrainCheckBox;
+
+        QGroupBox *formGroupBox;
+        QFormLayout *formLayout;
+        QPushButton *addClassifierButton;
+        QLineEdit *classifierLineEdit;
+        QPushButton *addTrainingSetButton;
+        QLineEdit *trainingSetLineEdit;
+        QPushButton *addTestingSetButton;
+        QLineEdit *testingSetLineEdit;
+        QLineEdit *numberOfepochsLineEdit;
+        QLineEdit *heightOfImagesLineEdit;
+        QLineEdit *widthOfImagesLineEdit;
+
         QPushButton *loadTrainingClassifierButton;
         QPushButton *launchTrainingClassifierButton;
-        bool isTrainingClassifierLoad;
-        bool isTrainingSetLoad;
-        bool isTestingSetLoad;
-        QString pathToClassifier;
-        QString pathToTrainingSet;
-        QString pathToTestingSet;
 
         void readAndDisplayOutputTrainingFile();
 
-        void addTestAndTrainCheckBox();
-        void addLoadTrainingClassifierButton();
+        void addTrainingParametersFormLayout();
         void addLaunchTrainingClassifierButton();
 
+        void handleAddDirectoryToQlineEdit(QLineEdit *qLineEdit);
+        void handleAddFileToQlineEdit(QLineEdit *qLineEdit);
         void handleLoadTrainingClassifierButton();
         void handleLaunchTrainingClassifierButton();
         void handleWaitingClassification();

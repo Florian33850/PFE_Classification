@@ -5,41 +5,71 @@ ResultTab::ResultTab(Tab *parent): Tab(parent)
     this->mainLayout = new QVBoxLayout;
     this->setLayout(this->mainLayout);
 
-    addModelGroupBox();
-    addLoadModelButton();
+    addClassificationParametersFormLayout();
     addLaunchModelButton();
 
     this->mainLayout->addStretch();
-
-    this->isModelLoad = false;
 }
 
-void ResultTab::addModelGroupBox()
+void ResultTab::readAndDisplayOutputResultFile()
 {
-    this->modelH5CheckBox = new QCheckBox("Select classification model (*.h5) with prediction file and an image to classify", this);
-    this->modelH5CheckBox->setCheckState(Qt::Checked);
-    this->modelPtCheckBox = new QCheckBox("Select classification model (*.pt) with labels file and an image to classify", this);
+    QFile outputTrainingFile("outputResult.txt");
+    QLabel *outputTrainingFileLabel = new QLabel(this);
+    outputTrainingFileLabel->setText("Standard output : ");
 
-    this->modelButtonGroup = new QButtonGroup(this);
-    this->modelButtonGroup->setExclusive(true);
-    this->modelButtonGroup->addButton(this->modelH5CheckBox);
-    this->modelButtonGroup->addButton(this->modelPtCheckBox);
+    QString line;
+    if (outputTrainingFile.open(QIODevice::ReadWrite | QIODevice::Text)){
+        QTextStream stream(&outputTrainingFile);
+        while (!stream.atEnd()){
 
-    this->typeOfModelLayout = new QVBoxLayout;
-    this->typeOfModelLayout->addWidget(this->modelH5CheckBox);
-    this->typeOfModelLayout->addWidget(this->modelPtCheckBox);
+            line = stream.readLine();
+            outputTrainingFileLabel->setText(outputTrainingFileLabel->text()+"\n"+line);
+        }
+    }
+    outputTrainingFile.close();
 
-    this->modelGroupBox = new QGroupBox("Type of classification model");
+    QScrollArea *scrollArea = new QScrollArea();
+    scrollArea->setWidget(outputTrainingFileLabel);
 
-    this->modelGroupBox->setLayout(this->typeOfModelLayout);
-    this->mainLayout->addWidget(this->modelGroupBox);
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, scrollArea);
 }
 
-void ResultTab::addLoadModelButton()
+void ResultTab::addClassificationParametersFormLayout()
 {
-    this->loadModelButton = new QPushButton("Load classification model");
-    connect(this->loadModelButton, &QPushButton::released, this, &ResultTab::handleLoadModelButton);
-    this->mainLayout->addWidget(this->loadModelButton);
+    this->formGroupBox = new QGroupBox(tr("Training parameters"));
+    this->formLayout = new QFormLayout;
+
+    this->addPredicitonFileButton = new QPushButton("Add");
+    this->predictionFileLineEdit = new QLineEdit();
+    this->predictionFileLineEdit->setReadOnly(true);
+    connect(addPredicitonFileButton, &QPushButton::released, [=](){this->handleAddFileToQlineEdit(predictionFileLineEdit);});
+    
+    this->addModelClassifierButton = new QPushButton("Add");
+    this->modelClassifierLineEdit = new QLineEdit();
+    this->modelClassifierLineEdit->setReadOnly(true);
+    connect(addModelClassifierButton, &QPushButton::released, [=](){this->handleAddFileToQlineEdit(modelClassifierLineEdit);});
+    
+    this->addLabelsButton = new QPushButton("Add");
+    this->labelsLineEdit = new QLineEdit();
+    this->labelsLineEdit->setReadOnly(true);
+    connect(addLabelsButton, &QPushButton::released, [=](){this->handleAddFileToQlineEdit(labelsLineEdit);});
+
+    this->addImageButton = new QPushButton("Add");
+    this->imageLineEdit = new QLineEdit();
+    this->imageLineEdit->setReadOnly(true);
+    connect(addImageButton, &QPushButton::released, [=](){this->handleAddFileToQlineEdit(imageLineEdit);});
+
+    this->formLayout->addRow(tr("&File for prediction :"), addPredicitonFileButton);
+    this->formLayout->addRow(predictionFileLineEdit);
+    this->formLayout->addRow(tr("&Model of classification:"), addModelClassifierButton);
+    this->formLayout->addRow(modelClassifierLineEdit);
+    this->formLayout->addRow(tr("&File of labels :"), addLabelsButton);
+    this->formLayout->addRow(labelsLineEdit);
+    this->formLayout->addRow(tr("&Image to classify :"), addImageButton);
+    this->formLayout->addRow(imageLineEdit);
+
+    this->formGroupBox->setLayout(formLayout);
+    this->mainLayout->addWidget(formGroupBox);
 }
 
 void ResultTab::addLaunchModelButton()
@@ -49,61 +79,30 @@ void ResultTab::addLaunchModelButton()
     this->mainLayout->addWidget(this->launchModelButton);
 }
 
-void ResultTab::handleLoadModelButton()
+void ResultTab::handleAddFileToQlineEdit(QLineEdit *qLineEdit)
 {
-    this->pathToModel = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION MODEL to LOAD"));
-    if (this->pathToModel == NULL)
-    {
-        printf("model loading problem\n");
-        return;
-    }
-
-    if(this->modelPtCheckBox->checkState() == Qt::Checked)
-    {
-        this->pathToLabels = QFileDialog::getOpenFileName(this, tr("Select CLASSIFICATION LABELS to LOAD"), tr("TXT (*.txt)"));
-        if (this->pathToLabels == NULL)
-        {
-            printf("labels loading problem\n");
-            return;
-        }
-    }
-    else if(this->modelH5CheckBox->checkState() == Qt::Checked)
-    {
-        this->pathToPredictionFile = QFileDialog::getOpenFileName(this, tr("Select PREDICTION PYTHON FILE"), tr("PY (*.py)"));
-        if (this->pathToPredictionFile == NULL)
-        {
-            printf("prediction file loading problem\n");
-            return;
-        }
-    }
-
-    this->pathToImage = QFileDialog::getOpenFileName(this, tr("Select IMAGE to CLASSIFY"), tr("JPEG (*.jpeg, *.jpg);;PNG (*.png)"));
-    if (this->pathToImage == NULL)
-    {
-        printf("image loading problem\n");
-        return;
-    }
-
-    QImage image;
-    image.load(this->pathToImage);
-    ImageLabel *imageLabel = new ImageLabel();
-    imageLabel->setImage(image);
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, imageLabel);
-
-    this->isModelLoad = true;
+    qLineEdit->setText(QFileDialog::getOpenFileName(this));
 }
 
 void ResultTab::handleLaunchModelButton()
 {
-    if(this->isModelLoad == true)
+    QString pathToPredictionFile = predictionFileLineEdit->text();
+    QString pathToModel = modelClassifierLineEdit->text();
+    QString pathToLabels = labelsLineEdit->text();
+    QString pathToImage = imageLineEdit->text();
+
+    if(pathToPredictionFile != NULL && pathToModel != NULL && pathToImage != NULL)
     {
-        if(this->modelH5CheckBox->checkState() == Qt::Checked)
-        {
-            ResultThread *thread = new ResultThread(this->pathToPredictionFile, this->pathToModel, this->pathToImage);
-            connect(thread, &QThread::started, this, &ResultTab::handleWaitingResult);
-            connect(thread, &QThread::finished, this, &ResultTab::handleEndingResult);
-            thread->start();
-        }
+        QImage image;
+        image.load(pathToImage);
+        ImageLabel *imageLabel = new ImageLabel();
+        imageLabel->setImage(image);
+        this->mainLayout->insertWidget(this->mainLayout->count()-1, imageLabel);
+
+        ResultThread *thread = new ResultThread(pathToPredictionFile, pathToModel, pathToLabels, pathToImage);
+        connect(thread, &QThread::started, this, &ResultTab::handleWaitingResult);
+        connect(thread, &QThread::finished, this, &ResultTab::handleEndingResult);
+        thread->start();
     }
 }
 
@@ -119,4 +118,6 @@ void ResultTab::handleEndingResult()
     QLabel *endingResultsLabel = new QLabel(this);
     endingResultsLabel->setText("Classification of the image is done");
     this->mainLayout->insertWidget(this->mainLayout->count()-1, endingResultsLabel);
+
+    readAndDisplayOutputResultFile();
 }

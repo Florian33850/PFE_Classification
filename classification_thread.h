@@ -10,8 +10,7 @@ class ClassificationThread : public QThread
 {
     Q_OBJECT
     public:
-        ClassificationThread(QString pathToClassifier, QString pathToTrainingSet, QString pathToTestingSet);
-        ClassificationThread(QString pathToClassifier);
+        ClassificationThread(QString pathToClassifier, QString pathToTrainingSet, QString pathToTestingSet, QString numberOfEpochs, QString heightOfImages, QString widthOfImages);
 
         void run();
     
@@ -19,5 +18,8 @@ class ClassificationThread : public QThread
         QString pathToClassifier;
         QString pathToTrainingSet; 
         QString pathToTestingSet;
+        QString numberOfEpochs;
+        QString heightOfImages;
+        QString widthOfImages;
 };
 #endif // CLASSIFICATION_THREAD_H
