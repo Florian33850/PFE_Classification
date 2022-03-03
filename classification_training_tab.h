@@ -18,7 +18,6 @@ class ClassificationTrainingTab : public Tab
         ClassificationTrainingTab(Tab *parent = nullptr);
 
     private:
-        QVBoxLayout *mainLayout;
         QCheckBox *testAndTrainCheckBox;
         QPushButton *loadTrainingClassifierButton;
         QPushButton *launchTrainingClassifierButton;

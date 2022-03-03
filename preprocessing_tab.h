@@ -2,7 +2,7 @@
 #define PREPROCESSING_TAB_H
 
 #include "tab.h"
-#include "preprocessing_viewer.h"
+#include "image_transformation_viewer.h"
 #include "data_handler.h"
 
 #include <QFileDialog>
@@ -13,23 +13,10 @@ class PreprocessingTab : public Tab
     public:
         PreprocessingTab( Tab *parent = nullptr);
 
-        DataHandler *dataHandler;
-        std::vector<ImageLabel*> *imagePreviewList;
-        int maximumRowsOfPreviewImages;
-        int maximumCollumnsOfPreviewImages;
-
-        void clearImagesLayout();
-        void displayDataBasePreview();
-        void addPreviousPreviewButton();
-        void addNextPreviewButton();
-
-        void handleLoadDataBase();
-        void handleLoadPreviousPreviewButton();
-        void handleLoadNextPreviewButton();
+        std::vector<ImageLabel*> *imagesPreviewList;
+        ImagesPreviewWidget *imagesPreviewWidget;
 
     private:
-        QGridLayout *mainLayout;
-        QGridLayout *imagesLayout;
-        PreprocessingViewer *preprocessingViewer;
+        ImageTransformationViewer *imageTransformationViewer;
 };
 #endif // PREPROCESSING_TAB_H

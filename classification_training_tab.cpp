@@ -3,15 +3,10 @@
 ClassificationTrainingTab::ClassificationTrainingTab(Tab *parent)
     : Tab(parent)
 {
-    this->mainLayout = new QVBoxLayout;
-    this->setLayout(this->mainLayout);
-
     addTestAndTrainCheckBox();
     addLoadTrainingClassifierButton();
     addLaunchTrainingClassifierButton();
 
-    this->mainLayout->addStretch();
-    
     this->isTrainingClassifierLoad = false;
     this->isTrainingSetLoad = false;
     this->isTestingSetLoad = false;
@@ -37,7 +32,7 @@ void ClassificationTrainingTab::readAndDisplayOutputTrainingFile()
     QScrollArea *scrollArea = new QScrollArea();
     scrollArea->setWidget(outputTrainingFileLabel);
 
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, scrollArea);
+    this->mainLayout->addWidget(scrollArea);
 }
 
 void ClassificationTrainingTab::addTestAndTrainCheckBox()
@@ -95,7 +90,7 @@ void ClassificationTrainingTab::handleLoadTrainingClassifierButton()
         informationClassifierLabel->setText(informationClassifierLabel->text() + "Training set directory : " + this->pathToTrainingSet + "\n" + "Testing set directory : " + pathToTestingSet);
     }
 
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, informationClassifierLabel);
+    this->mainLayout->addWidget(informationClassifierLabel);
 }
 
 void ClassificationTrainingTab::handleLaunchTrainingClassifierButton()
@@ -120,14 +115,14 @@ void ClassificationTrainingTab::handleWaitingClassification()
 {
     QLabel *waitingCLassificationLabel = new QLabel(this);
     waitingCLassificationLabel->setText("Waiting for classification training");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, waitingCLassificationLabel);
+    this->mainLayout->addWidget(waitingCLassificationLabel);
 }
 
 void ClassificationTrainingTab::handleEndingClassification()
 {
     QLabel *endingClassificationLabel = new QLabel(this);
     endingClassificationLabel->setText("Training it's done");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, endingClassificationLabel);
+    this->mainLayout->addWidget(endingClassificationLabel);
 
     readAndDisplayOutputTrainingFile();
 }

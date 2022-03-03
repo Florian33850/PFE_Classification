@@ -22,7 +22,6 @@ class ResultTab : public Tab
         ResultTab(Tab *parent = nullptr);
 
     private:
-        QVBoxLayout *mainLayout;
         QCheckBox *modelH5CheckBox;
         QCheckBox *modelPtCheckBox;
         QButtonGroup *modelButtonGroup;

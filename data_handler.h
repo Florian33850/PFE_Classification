@@ -11,6 +11,7 @@ class DataHandler
     public:
         DataHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
         
+        QStringList pathToImages;
         int maxNumberOfImagesToLoad;
         int totalNumberOfImages;
 
@@ -37,6 +38,5 @@ class ImageSelectionLoader : public DataHandler
 
     private:
         int indexPathToImagesList;
-        QStringList pathToImages;
 };
 #endif //data_handler_H

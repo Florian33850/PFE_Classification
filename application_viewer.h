@@ -24,7 +24,8 @@ class ApplicationViewer : public QMainWindow
         QVBoxLayout *mainLayout;
         QWidget *mainWidget;
         QTabWidget *tabWidget;
-        DataHandler *dataHandler;
+        DataHandler *preprocessingDataHandler;
+        DataHandler *dataAugmentationDataHandler;
 
         PreprocessingTab *preprocessingTab;
         DataAugmentationTab *dataAugmentationTab;

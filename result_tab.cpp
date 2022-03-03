@@ -2,14 +2,9 @@
 
 ResultTab::ResultTab(Tab *parent): Tab(parent)
 {
-    this->mainLayout = new QVBoxLayout;
-    this->setLayout(this->mainLayout);
-
     addModelGroupBox();
     addLoadModelButton();
     addLaunchModelButton();
-
-    this->mainLayout->addStretch();
 
     this->isModelLoad = false;
 }
@@ -88,7 +83,7 @@ void ResultTab::handleLoadModelButton()
     image.load(this->pathToImage);
     ImageLabel *imageLabel = new ImageLabel();
     imageLabel->setImage(image);
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, imageLabel);
+    this->mainLayout->addWidget(imageLabel);
 
     this->isModelLoad = true;
 }
@@ -111,12 +106,12 @@ void ResultTab::handleWaitingResult()
 {
     QLabel *waitingResultsLabel = new QLabel(this);
     waitingResultsLabel->setText("Waiting for the classification of the image");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, waitingResultsLabel);
+    this->mainLayout->addWidget(waitingResultsLabel);
 }
 
 void ResultTab::handleEndingResult()
 {
     QLabel *endingResultsLabel = new QLabel(this);
     endingResultsLabel->setText("Classification of the image is done");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, endingResultsLabel);
+    this->mainLayout->addWidget(endingResultsLabel);
 }

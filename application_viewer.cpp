@@ -36,6 +36,12 @@ void ApplicationViewer::addPreprocessingTab(QTabWidget *mainTabWidget)
     mainTabWidget->addTab(preprocessingTab, tr("Preprocessing"));
 }
 
+void ApplicationViewer::addDataAugmentationTab(QTabWidget *mainTabWidget)
+{
+    dataAugmentationTab = new DataAugmentationTab();
+    mainTabWidget->addTab(dataAugmentationTab, tr("Data Augmentation"));
+}
+
 void ApplicationViewer::addClassificationTrainingTab(QTabWidget *mainTabWidget)
 {
     classificationTrainingTab = new ClassificationTrainingTab();
@@ -48,15 +54,16 @@ void ApplicationViewer::addResultTab(QTabWidget *mainTabWidget)
     mainTabWidget->addTab(resultTab, tr("Result"));
 }
 
-void ApplicationViewer::addDataAugmentationTab(QTabWidget *mainTabWidget)
-{
-    dataAugmentationTab = new DataAugmentationTab();
-    mainTabWidget->addTab(dataAugmentationTab, tr("Data Augmentation"));
-}
-
 void ApplicationViewer::handleOpenImageSelectionDataHandler()
 {
-    this->dataHandler = new ImageSelectionLoader(mainWidget, preprocessingTab->imagePreviewList);
-    this->preprocessingTab->dataHandler = this->dataHandler;
-    this->preprocessingTab->handleLoadDataBase();
+    this->preprocessingDataHandler = new ImageSelectionLoader(mainWidget, preprocessingTab->imagePreviewList);
+    this->dataAugmentationDataHandler = new ImageSelectionLoader(mainWidget, dataAugmentationTab->imagePreviewList);
+
+    this->preprocessingDataHandler->selectDataBasePath();
+    this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;
+
+    this->preprocessingDataHandler->loadPreview();
+    this->dataAugmentationDataHandler->loadPreview();
+    this->preprocessingTab->imagesPreviewWidget->display(this->preprocessingDataHandler);
+    this->dataAugmentationTab->imagesPreviewWidget->display(this->dataAugmentationDataHandler);
 }

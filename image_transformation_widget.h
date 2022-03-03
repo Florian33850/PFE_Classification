@@ -1,5 +1,5 @@
-#ifndef PPREPROCESSING_WIDGET_H
-#define PREPROCESSING_WIDGET_H
+#ifndef IMAGE_TRANSFORMATION_WIDGET_H
+#define IMAGE_TRANSFORMATION_WIDGET_H
 
 #include "image_transformation.h"
 
@@ -54,4 +54,4 @@ class GrayscaleWidget : public ImageTransformationWidget
         void displayUI();
 };
 
-#endif // PREPROCESSING_WIDGET_H
+#endif // IMAGE_TRANSFORMATION_WIDGET_H
