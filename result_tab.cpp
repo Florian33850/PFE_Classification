@@ -79,11 +79,6 @@ void ResultTab::addLaunchModelButton()
     this->mainLayout->addWidget(this->launchModelButton);
 }
 
-void ResultTab::handleAddFileToQlineEdit(QLineEdit *qLineEdit)
-{
-    qLineEdit->setText(QFileDialog::getOpenFileName(this));
-}
-
 void ResultTab::handleLaunchModelButton()
 {
     QString pathToPredictionFile = predictionFileLineEdit->text();

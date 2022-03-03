@@ -85,16 +85,6 @@ void ClassificationTrainingTab::addLaunchTrainingClassifierButton()
     this->mainLayout->addWidget(this->launchTrainingClassifierButton);
 }
 
-void ClassificationTrainingTab::handleAddDirectoryToQlineEdit(QLineEdit *qLineEdit)
-{
-    qLineEdit->setText(QFileDialog::getExistingDirectory(this));
-}
-
-void ClassificationTrainingTab::handleAddFileToQlineEdit(QLineEdit *qLineEdit)
-{
-    qLineEdit->setText(QFileDialog::getOpenFileName(this));
-}
-
 void ClassificationTrainingTab::handleLaunchTrainingClassifierButton()
 {
     QString pathToClassifier = classifierLineEdit->text();

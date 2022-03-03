@@ -6,14 +6,12 @@
 #include "result_thread.h"
 
 #include <QPushButton>
-#include <QFileDialog>
 #include <QProcess>
 #include <QCoreApplication>
 #include <QTextCodec>
 #include <QtCore>
 #include <QGroupBox>
 #include <QFormLayout>
-#include <QLineEdit>
 #include <QScrollArea>
 
 class ResultTab : public Tab
@@ -43,7 +41,6 @@ class ResultTab : public Tab
         void addClassificationParametersFormLayout();
         void addLaunchModelButton();
 
-        void handleAddFileToQlineEdit(QLineEdit *qLineEdit);
         void handleLaunchModelButton();
         void handleWaitingResult();
         void handleEndingResult();
