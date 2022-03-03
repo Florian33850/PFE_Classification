@@ -37,7 +37,7 @@ void PreprocessingTab::displayDataBasePreview()
     {
         for(int col = 0; col < maximumCollumnsOfPreviewImages; col++)
         {
-            if(imageIndex >= this->dataLoader->maxNumberOfImagesToLoad || imageIndex >= previewListSize)
+            if(imageIndex >= this->dataHandler->maxNumberOfImagesToLoad || imageIndex >= previewListSize)
             {
                 break;
             }
@@ -63,8 +63,8 @@ void PreprocessingTab::addNextPreviewButton()
 
 void PreprocessingTab::handleLoadDataBase()
 {
-    this->dataLoader->selectDataBasePath();
-    this->dataLoader->loadPreview();
+    this->dataHandler->selectDataBasePath();
+    this->dataHandler->loadPreview();
     clearImagesLayout();
     displayDataBasePreview();
     addPreviousPreviewButton();
@@ -73,7 +73,7 @@ void PreprocessingTab::handleLoadDataBase()
 
 void PreprocessingTab::handleLoadNextPreviewButton()
 {
-    if(this->dataLoader->loadPreview())
+    if(this->dataHandler->loadPreview())
     {
         clearImagesLayout();
         this->preprocessingViewer->launchActivatedPreprocesses();
@@ -84,7 +84,7 @@ void PreprocessingTab::handleLoadNextPreviewButton()
 
 void PreprocessingTab::handleLoadPreviousPreviewButton()
 {
-    if(this->dataLoader->loadPreviousPreview())
+    if(this->dataHandler->loadPreviousPreview())
     {
         clearImagesLayout();
         this->preprocessingViewer->launchActivatedPreprocesses();
