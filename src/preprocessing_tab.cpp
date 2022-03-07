@@ -7,8 +7,8 @@ PreprocessingTab::PreprocessingTab(Tab *parent)
     this->mainLayout->setSpacing(1);
     this->mainLayout->setMargin(1);
 
-    imagesLayout = new QGridLayout();
-    mainLayout->addLayout(imagesLayout, 0, 0, 3, 3);
+    imagesPreviewLayout = new QGridLayout();
+    mainLayout->addLayout(imagesPreviewLayout, 0, 0, 3, 3);
     setLayout(mainLayout);
 
     this->maximumRowsOfPreviewImages = 3;
@@ -16,17 +16,6 @@ PreprocessingTab::PreprocessingTab(Tab *parent)
     this->imagePreviewList = new std::vector<ImageLabel*>();
     this->preprocessingViewer = new PreprocessingViewer(this->imagePreviewList);
     this->mainLayout->addWidget(preprocessingViewer, 0, 3, 4, 1);
-}
-
-void PreprocessingTab::clearImagesLayout()
-{
-    QLayoutItem *item;
-    while ((item = imagesLayout->takeAt(0)) != 0)
-    {
-        imagesLayout->removeItem(item);
-        delete item->widget();
-        delete item;
-    }
 }
 
 void PreprocessingTab::displayDataBasePreview()
@@ -41,7 +30,7 @@ void PreprocessingTab::displayDataBasePreview()
             {
                 break;
             }
-            this->imagesLayout->addWidget(this->imagePreviewList->at(imageIndex), row, col);
+            this->imagesPreviewLayout->addWidget(this->imagePreviewList->at(imageIndex), row, col);
             imageIndex++;
         }
     }
@@ -65,7 +54,7 @@ void PreprocessingTab::handleLoadDataBase()
 {
     this->dataHandler->selectDataBasePath();
     this->dataHandler->loadPreview();
-    clearImagesLayout();
+    clearLayout(this->imagesPreviewLayout);
     displayDataBasePreview();
     addPreviousPreviewButton();
     addNextPreviewButton();
@@ -75,7 +64,7 @@ void PreprocessingTab::handleLoadNextPreviewButton()
 {
     if(this->dataHandler->loadPreview())
     {
-        clearImagesLayout();
+        clearLayout(this->imagesPreviewLayout);
         this->preprocessingViewer->launchActivatedPreprocesses();
         displayDataBasePreview();
     }
@@ -86,7 +75,7 @@ void PreprocessingTab::handleLoadPreviousPreviewButton()
 {
     if(this->dataHandler->loadPreviousPreview())
     {
-        clearImagesLayout();
+        clearLayout(this->imagesPreviewLayout);
         this->preprocessingViewer->launchActivatedPreprocesses();
         displayDataBasePreview();
     }

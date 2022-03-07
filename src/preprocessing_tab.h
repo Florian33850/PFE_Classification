@@ -18,7 +18,6 @@ class PreprocessingTab : public Tab
         int maximumRowsOfPreviewImages;
         int maximumCollumnsOfPreviewImages;
 
-        void clearImagesLayout();
         void displayDataBasePreview();
         void addPreviousPreviewButton();
         void addNextPreviewButton();
@@ -29,7 +28,7 @@ class PreprocessingTab : public Tab
 
     private:
         QGridLayout *mainLayout;
-        QGridLayout *imagesLayout;
+        QGridLayout *imagesPreviewLayout;
         PreprocessingViewer *preprocessingViewer;
 };
 #endif // PREPROCESSING_TAB_H
