@@ -12,5 +12,7 @@ class Tab : public QWidget
     public:
         Tab(QWidget * parent = nullptr);
         ~Tab();
+
+        void clearLayout(QLayout *layout);
 };
 #endif // TAB_H
