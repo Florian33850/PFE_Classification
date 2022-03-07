@@ -2,7 +2,7 @@
 #define CLASSIFICATION_TRAINING_TAB_H
 
 #include "tab.h"
-#include "classification_thread.h"
+#include "classification_training_widget.h"
 
 #include <QPushButton>
 #include <QLabel>
@@ -12,6 +12,7 @@
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QIntValidator>
+#include <QComboBox>
 
 class ClassificationTrainingTab : public Tab
 {
@@ -22,29 +23,11 @@ class ClassificationTrainingTab : public Tab
     private:
         QVBoxLayout *mainLayout;
 
-        QGroupBox *formGroupBox;
-        QFormLayout *formLayout;
-        QPushButton *addClassifierButton;
-        QLineEdit *classifierLineEdit;
-        QPushButton *addTrainingSetButton;
-        QLineEdit *trainingSetLineEdit;
-        QPushButton *addTestingSetButton;
-        QLineEdit *testingSetLineEdit;
-        QLineEdit *numberOfepochsLineEdit;
-        QLineEdit *heightOfImagesLineEdit;
-        QLineEdit *widthOfImagesLineEdit;
+        QComboBox *chooseTrainingMethodComboBox;
+        QStringList trainingMethodStringList = {"Deep Learning", "Random Forest"};
 
-        QPushButton *loadTrainingClassifierButton;
-        QPushButton *launchTrainingClassifierButton;
+        void addChooseTrainingMethodComboBox();
 
-        void readAndDisplayOutputTrainingFile();
-
-        void addTrainingParametersFormLayout();
-        void addLaunchTrainingClassifierButton();
-
-        void handleLoadTrainingClassifierButton();
-        void handleLaunchTrainingClassifierButton();
-        void handleWaitingClassification();
-        void handleEndingClassification();
+        void handleTrainingMethodComboBox();
 };
 #endif // CLASSIFICATION_TRAINING_TAB_H

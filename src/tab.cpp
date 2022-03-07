@@ -7,13 +7,3 @@ Tab::Tab(QWidget *parent)
 }
 
 Tab::~Tab() {}
-
-void Tab::handleAddDirectoryToQlineEdit(QLineEdit *qLineEdit)
-{
-    qLineEdit->setText(QFileDialog::getExistingDirectory(this));
-}
-
-void Tab::handleAddFileToQlineEdit(QLineEdit *qLineEdit)
-{
-    qLineEdit->setText(QFileDialog::getOpenFileName(this));
-}

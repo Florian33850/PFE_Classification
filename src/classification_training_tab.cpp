@@ -6,115 +6,32 @@ ClassificationTrainingTab::ClassificationTrainingTab(Tab *parent)
     this->mainLayout = new QVBoxLayout;
     this->setLayout(this->mainLayout);
 
-    addTrainingParametersFormLayout();
-    addLaunchTrainingClassifierButton();
+    addChooseTrainingMethodComboBox();
 
     this->mainLayout->addStretch();
 }
 
-void ClassificationTrainingTab::readAndDisplayOutputTrainingFile()
+void ClassificationTrainingTab::addChooseTrainingMethodComboBox()
 {
-    QFile outputTrainingFile("outputTraining.txt");
-    QLabel *outputTrainingFileLabel = new QLabel(this);
-    outputTrainingFileLabel->setText("Standard output : ");
-
-    QString line;
-    if (outputTrainingFile.open(QIODevice::ReadWrite | QIODevice::Text)){
-        QTextStream stream(&outputTrainingFile);
-        while (!stream.atEnd()){
-
-            line = stream.readLine();
-            outputTrainingFileLabel->setText(outputTrainingFileLabel->text()+"\n"+line);
-        }
-    }
-    outputTrainingFile.close();
-
-    QScrollArea *scrollArea = new QScrollArea();
-    scrollArea->setWidget(outputTrainingFileLabel);
-
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, scrollArea);
+    chooseTrainingMethodComboBox = new QComboBox();
+    chooseTrainingMethodComboBox->addItems(trainingMethodStringList);
+    connect(chooseTrainingMethodComboBox, QOverload<int>::of(&QComboBox::activated), this, &ClassificationTrainingTab::handleTrainingMethodComboBox);
+    mainLayout->addWidget(chooseTrainingMethodComboBox);
 }
 
-void ClassificationTrainingTab::addTrainingParametersFormLayout()
+void ClassificationTrainingTab::handleTrainingMethodComboBox()
 {
-    this->formGroupBox = new QGroupBox(tr("Training parameters"));
-    this->formLayout = new QFormLayout;
-
-    this->addClassifierButton = new QPushButton("Add");
-    this->classifierLineEdit = new QLineEdit();
-    this->classifierLineEdit->setReadOnly(true);
-    connect(addClassifierButton, &QPushButton::released, [=](){this->handleAddFileToQlineEdit(classifierLineEdit);});
-    
-    this->addTrainingSetButton = new QPushButton("Add");
-    this->trainingSetLineEdit = new QLineEdit();
-    this->trainingSetLineEdit->setReadOnly(true);
-    connect(addTrainingSetButton, &QPushButton::released, [=](){this->handleAddDirectoryToQlineEdit(trainingSetLineEdit);});
-
-    this->addTestingSetButton = new QPushButton("Add");
-    this->testingSetLineEdit = new QLineEdit();
-    this->testingSetLineEdit->setReadOnly(true);
-    connect(addTestingSetButton, &QPushButton::released, [=](){this->handleAddDirectoryToQlineEdit(testingSetLineEdit);});
-    
-    this->numberOfepochsLineEdit = new QLineEdit();
-    this->numberOfepochsLineEdit->setValidator(new QIntValidator(0,INT_MAX,this));
-
-    this->heightOfImagesLineEdit = new QLineEdit();
-    this->heightOfImagesLineEdit->setValidator(new QIntValidator(0,INT_MAX,this));
-
-    this->widthOfImagesLineEdit = new QLineEdit();
-    this->widthOfImagesLineEdit->setValidator(new QIntValidator(0,INT_MAX,this));
-
-    this->formLayout->addRow(tr("&Classifier:"), addClassifierButton);
-    this->formLayout->addRow(classifierLineEdit);
-    this->formLayout->addRow(tr("&Training set :"), addTrainingSetButton);
-    this->formLayout->addRow(trainingSetLineEdit);
-    this->formLayout->addRow(tr("&Testing set :"), addTestingSetButton);
-    this->formLayout->addRow(testingSetLineEdit);
-    this->formLayout->addRow(tr("&Number of epochs :"), numberOfepochsLineEdit);
-    this->formLayout->addRow(tr("&Height of images :"), heightOfImagesLineEdit);
-    this->formLayout->addRow(tr("&Width of images :"), widthOfImagesLineEdit);
-
-    this->formGroupBox->setLayout(formLayout);
-    this->mainLayout->addWidget(formGroupBox);
-}
-
-void ClassificationTrainingTab::addLaunchTrainingClassifierButton()
-{
-    this->launchTrainingClassifierButton = new QPushButton("Launch training");
-    connect(this->launchTrainingClassifierButton, &QPushButton::released, this, &ClassificationTrainingTab::handleLaunchTrainingClassifierButton);
-    this->mainLayout->addWidget(this->launchTrainingClassifierButton);
-}
-
-void ClassificationTrainingTab::handleLaunchTrainingClassifierButton()
-{
-    QString pathToClassifier = classifierLineEdit->text();
-    QString pathToTrainingSet = trainingSetLineEdit->text();
-    QString pathToTestingSet = testingSetLineEdit->text();
-    QString numberOfEpochs = numberOfepochsLineEdit->text();
-    QString heightOfImages = heightOfImagesLineEdit->text();
-    QString widthOfImages = widthOfImagesLineEdit->text();
-
-    if(pathToClassifier != NULL)
+    QString newTrainingMethod = chooseTrainingMethodComboBox->currentText();
+    ClassificationTrainingWidget *classificationTrainingWidget;
+    if(newTrainingMethod.compare("Deep Learning") == 0)
     {
-        ClassificationThread *thread = new ClassificationThread(pathToClassifier, pathToTrainingSet, pathToTestingSet, numberOfEpochs, heightOfImages, widthOfImages);
-        connect(thread, &QThread::started, this, &ClassificationTrainingTab::handleWaitingClassification);
-        connect(thread, &QThread::finished, this, &ClassificationTrainingTab::handleEndingClassification);
-        thread->start();
+        classificationTrainingWidget = new DeepLearningWidget(this->mainLayout);
     }
+    else if(newTrainingMethod.compare("Random Forest") == 0)
+    {
+        // imageTransformationWidget = createGrayscaleImageTransformation();
+    }
+    // connect(imageTransformationWidget->getDeleteImageTransformationWidgetButton(), &QPushButton::released, 
+    //     [=](){this->handleDeleteImageTransformationWidgetButton(imageTransformationWidget);});
 }
 
-void ClassificationTrainingTab::handleWaitingClassification()
-{
-    QLabel *waitingCLassificationLabel = new QLabel(this);
-    waitingCLassificationLabel->setText("Waiting for classification training");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, waitingCLassificationLabel);
-}
-
-void ClassificationTrainingTab::handleEndingClassification()
-{
-    QLabel *endingClassificationLabel = new QLabel(this);
-    endingClassificationLabel->setText("Training it's done");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, endingClassificationLabel);
-
-    readAndDisplayOutputTrainingFile();
-}

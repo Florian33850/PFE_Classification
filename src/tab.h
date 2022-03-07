@@ -12,9 +12,5 @@ class Tab : public QWidget
     public:
         Tab(QWidget * parent = nullptr);
         ~Tab();
-    
-    protected:
-        void handleAddFileToQlineEdit(QLineEdit *qLineEdit);
-        void handleAddDirectoryToQlineEdit(QLineEdit *qLineEdit);
 };
 #endif // TAB_H
