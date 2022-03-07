@@ -20,8 +20,9 @@ class Tab : public QWidget
         ~Tab();
 
         DataHandler *dataHandler;
+        ImagesPreviewWidget *imagesPreviewWidget;
         std::vector<ImageLabel*> *imagePreviewList;
-    
+
     protected:
         QGridLayout *mainLayout;
 };

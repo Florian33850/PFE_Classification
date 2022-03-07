@@ -62,8 +62,6 @@ void ApplicationViewer::handleOpenImageSelectionDataHandler()
     this->preprocessingDataHandler->selectDataBasePath();
     this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;
 
-    this->preprocessingDataHandler->loadPreview();
-    this->dataAugmentationDataHandler->loadPreview();
-    this->preprocessingTab->imagesPreviewWidget->display(this->preprocessingDataHandler);
-    this->dataAugmentationTab->imagesPreviewWidget->display(this->dataAugmentationDataHandler);
+    this->preprocessingTab->handleNewDataHandler(this->preprocessingDataHandler);
+    this->dataAugmentationTab->handleNewDataHandler(this->dataAugmentationDataHandler);
 }

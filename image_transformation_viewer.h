@@ -10,13 +10,14 @@
 class ImageTransformationViewer : public QWidget
 {
     public:
-        ImageTransformationViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parent = nullptr);
+        ImageTransformationViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parentWidget = nullptr);
 
         void launchActivatedPreprocesses();
 
     protected:
         QVBoxLayout *mainLayout;
         std::vector<ImageLabel*> *imagePreviewList;
+        QWidget *parent;
         std::vector<ImageTransformationWidget*> imageTransformationWidgetList;
         std::vector<ImageTransformation*> imageTransformationList;
         QStringList preprocessingStringList = {"Add Preprocessing", "Mirror", "Grayscale"};
@@ -32,7 +33,7 @@ class ImageTransformationViewer : public QWidget
 class PreprocessingViewer : public ImageTransformationViewer
 {
     public:
-        PreprocessingViewer(std::vector<ImageLabel*>* imagePreviewList);
+        PreprocessingViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parentWidget = nullptr);
     private:
         QPushButton *launchPreprocessingButton;
         QComboBox *addPreprocessingComboBox;
@@ -46,6 +47,6 @@ class PreprocessingViewer : public ImageTransformationViewer
 class DataAugmentationViewer : public ImageTransformationViewer
 {
     public:
-        DataAugmentationViewer(std::vector<ImageLabel*>* imagePreviewList);
+        DataAugmentationViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parentWidget = nullptr);
 };
 #endif // IMAGE_TRANSFORMATION_VIEWER_H

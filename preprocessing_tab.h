@@ -13,8 +13,7 @@ class PreprocessingTab : public Tab
     public:
         PreprocessingTab( Tab *parent = nullptr);
 
-        std::vector<ImageLabel*> *imagesPreviewList;
-        ImagesPreviewWidget *imagesPreviewWidget;
+        void handleNewDataHandler(DataHandler *dataHandler);
 
     private:
         ImageTransformationViewer *imageTransformationViewer;

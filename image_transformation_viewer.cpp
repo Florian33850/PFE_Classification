@@ -1,7 +1,7 @@
 #include "image_transformation_viewer.h"
 
-ImageTransformationViewer::ImageTransformationViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parent)
-    : QWidget(parent)
+ImageTransformationViewer::ImageTransformationViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parentWidget)
+    : QWidget(parentWidget)
 {
     this->mainLayout = new QVBoxLayout;
     this->setLayout(mainLayout);
@@ -75,7 +75,8 @@ void ImageTransformationViewer::handleDeleteImageTransformationWidgetButton(Imag
 }
 
 
-PreprocessingViewer::PreprocessingViewer(std::vector<ImageLabel*> *imagePreviewList) : ImageTransformationViewer(imagePreviewList)
+PreprocessingViewer::PreprocessingViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parentWidget)
+    : ImageTransformationViewer(imagePreviewList, parentWidget)
 {
     addLaunchPreprocessingButton();
     addAddPreprocessingComboBox();
@@ -108,10 +109,15 @@ void PreprocessingViewer::handleImageTransformationComboBox()
     {
         imageTransformationWidget = createGrayscaleImageTransformation();
     }
+    else
+    {
+        return;
+    }
     connect(imageTransformationWidget->getDeleteImageTransformationWidgetButton(), &QPushButton::released, 
         [=](){this->handleDeleteImageTransformationWidgetButton(imageTransformationWidget);});
 }
 
-DataAugmentationViewer::DataAugmentationViewer(std::vector<ImageLabel*> *imagePreviewList) : ImageTransformationViewer(imagePreviewList)
+DataAugmentationViewer::DataAugmentationViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parentWidget)
+    : ImageTransformationViewer(imagePreviewList, parentWidget)
 {
 }
