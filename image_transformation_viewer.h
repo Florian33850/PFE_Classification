@@ -30,6 +30,8 @@ class ImageTransformationViewer : public QWidget
         void handleDeleteImageTransformationWidgetButton(ImageTransformationWidget* imageTransformationWidget);
 };
 
+
+
 class PreprocessingViewer : public ImageTransformationViewer
 {
     public:
@@ -44,9 +46,26 @@ class PreprocessingViewer : public ImageTransformationViewer
         void handleImageTransformationComboBox();
 };
 
+
+
+class DataAugmentationWidget
+{
+    public:
+        DataAugmentationWidget();
+};
+
 class DataAugmentationViewer : public ImageTransformationViewer
 {
     public:
         DataAugmentationViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parentWidget = nullptr);
+    
+    private:
+        std::vector<DataAugmentationWidget*> dataAugmentationWidgetList;
+        QPushButton *addDataAugmentationButton;
+
+        void addAddDataAugmentationButton();
+
+        void handleAddDataAugmentationButton();
 };
+
 #endif // IMAGE_TRANSFORMATION_VIEWER_H

@@ -117,7 +117,22 @@ void PreprocessingViewer::handleImageTransformationComboBox()
         [=](){this->handleDeleteImageTransformationWidgetButton(imageTransformationWidget);});
 }
 
+
+
 DataAugmentationViewer::DataAugmentationViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parentWidget)
     : ImageTransformationViewer(imagePreviewList, parentWidget)
 {
+    addAddDataAugmentationButton();
+}
+
+void DataAugmentationViewer::addAddDataAugmentationButton()
+{
+    this->addDataAugmentationButton = new QPushButton("Add Data Augmentation");
+    connect(this->addDataAugmentationButton, &QPushButton::released, this, &DataAugmentationViewer::handleAddDataAugmentationButton);
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, this->addDataAugmentationButton);
+}
+
+void DataAugmentationViewer::handleAddDataAugmentationButton()
+{
+    printf("Add Data Augmentation\n");
 }
