@@ -18,11 +18,10 @@ class DataAugmentationTab : public Tab
         int maximumRowsOfPreviewImages;
         int maximumCollumnsOfPreviewImages;
 
-        void clearImagesLayout();
         void displayDataBasePreview();
 
     private:
         QGridLayout *mainLayout;
-        QGridLayout *imagesLayout;
+        QGridLayout *imagesPreviewLayout;
 };
 #endif // DataAugmentation_TAB_H
