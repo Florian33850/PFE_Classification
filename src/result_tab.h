@@ -6,14 +6,13 @@
 #include "result_thread.h"
 
 #include <QPushButton>
-#include <QFileDialog>
 #include <QProcess>
 #include <QCoreApplication>
 #include <QTextCodec>
 #include <QtCore>
-#include <QButtonGroup>
-#include <QCheckBox>
 #include <QGroupBox>
+#include <QFormLayout>
+#include <QScrollArea>
 
 class ResultTab : public Tab
 {
@@ -22,27 +21,28 @@ class ResultTab : public Tab
         ResultTab(Tab *parent = nullptr);
 
     private:
-        QVBoxLayout *mainLayout;
-        QCheckBox *modelH5CheckBox;
-        QCheckBox *modelPtCheckBox;
-        QButtonGroup *modelButtonGroup;
-        QVBoxLayout *typeOfModelLayout;
-        QGroupBox *modelGroupBox;
-        QPushButton *loadModelButton;
+        QGridLayout *mainLayout;
+        QBoxLayout *classificationParametersLayout;
+        QBoxLayout *resultOutputLayout;
+
+        QGroupBox *formGroupBox;
+        QFormLayout *formLayout;
+        QPushButton *addPredicitonFileButton;
+        QLineEdit *predictionFileLineEdit;
+        QPushButton *addModelClassifierButton;
+        QLineEdit *modelClassifierLineEdit;
+        QPushButton *addLabelsButton;
+        QLineEdit *labelsLineEdit;
+        QPushButton *addImageButton;
+        QLineEdit *imageLineEdit;
+
         QPushButton *launchModelButton;
-
-        QString pathToModel;
-        QString pathToLabels;
-        QString pathToImage;
-        QString pathToPredictionFile;
-
-        bool isModelLoad;
         
-        void addModelGroupBox();
-        void addLoadModelButton();
+        void readAndDisplayOutputResultFile();
+
+        void addClassificationParametersFormLayout();
         void addLaunchModelButton();
 
-        void handleLoadModelButton();
         void handleLaunchModelButton();
         void handleWaitingResult();
         void handleEndingResult();

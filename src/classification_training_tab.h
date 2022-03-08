@@ -2,14 +2,17 @@
 #define CLASSIFICATION_TRAINING_TAB_H
 
 #include "tab.h"
-#include "classification_thread.h"
+#include "classification_training_widget.h"
 
 #include <QPushButton>
 #include <QLabel>
-#include <QFileDialog>
 #include <QCheckBox>
 #include <QButtonGroup>
 #include <QScrollArea>
+#include <QFormLayout>
+#include <QGroupBox>
+#include <QIntValidator>
+#include <QComboBox>
 
 class ClassificationTrainingTab : public Tab
 {
@@ -18,26 +21,15 @@ class ClassificationTrainingTab : public Tab
         ClassificationTrainingTab(Tab *parent = nullptr);
 
     private:
-        QVBoxLayout *mainLayout;
-        QCheckBox *testAndTrainCheckBox;
-        QPushButton *loadTrainingClassifierButton;
-        QPushButton *launchTrainingClassifierButton;
-        bool isTrainingClassifierLoad;
-        bool isTrainingSetLoad;
-        bool isTestingSetLoad;
-        QString pathToClassifier;
-        QString pathToTrainingSet;
-        QString pathToTestingSet;
+        QGridLayout *mainLayout;
+        QVBoxLayout *parametersLayout;
+        QVBoxLayout *trainingOutputLayout;
 
-        void readAndDisplayOutputTrainingFile();
+        QComboBox *chooseTrainingMethodComboBox;
+        QStringList trainingMethodStringList = {"Deep Learning", "Random Forest"};
 
-        void addTestAndTrainCheckBox();
-        void addLoadTrainingClassifierButton();
-        void addLaunchTrainingClassifierButton();
+        void addChooseTrainingMethodComboBox();
 
-        void handleLoadTrainingClassifierButton();
-        void handleLaunchTrainingClassifierButton();
-        void handleWaitingClassification();
-        void handleEndingClassification();
+        void handleTrainingMethodComboBox();
 };
 #endif // CLASSIFICATION_TRAINING_TAB_H

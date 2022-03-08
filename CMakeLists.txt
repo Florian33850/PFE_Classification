@@ -31,6 +31,7 @@ add_executable(application_viewer
   src/data_handler.cpp
   src/classification_thread.cpp
   src/result_thread.cpp
+  src/classification_training_widget
   )
 
 target_link_libraries(application_viewer Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS})

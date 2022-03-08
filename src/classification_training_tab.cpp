@@ -3,131 +3,41 @@
 ClassificationTrainingTab::ClassificationTrainingTab(Tab *parent)
     : Tab(parent)
 {
-    this->mainLayout = new QVBoxLayout;
+    this->mainLayout = new QGridLayout;
     this->setLayout(this->mainLayout);
 
-    addTestAndTrainCheckBox();
-    addLoadTrainingClassifierButton();
-    addLaunchTrainingClassifierButton();
+    this->parametersLayout = new QVBoxLayout;
+    this->mainLayout->addLayout(this->parametersLayout, 1, 0);
 
-    this->mainLayout->addStretch();
-    
-    this->isTrainingClassifierLoad = false;
-    this->isTrainingSetLoad = false;
-    this->isTestingSetLoad = false;
+    this->trainingOutputLayout = new QVBoxLayout;
+    this->mainLayout->addLayout(this->trainingOutputLayout, 2, 0);
+
+    addChooseTrainingMethodComboBox();
+
+    this->parametersLayout->addStretch();
+    this->trainingOutputLayout->addStretch();
 }
 
-void ClassificationTrainingTab::readAndDisplayOutputTrainingFile()
+void ClassificationTrainingTab::addChooseTrainingMethodComboBox()
 {
-    QFile outputTrainingFile("outputTraining.txt");
-    QLabel *outputTrainingFileLabel = new QLabel(this);
-    outputTrainingFileLabel->setText("Standard output : ");
-
-    QString line;
-    if (outputTrainingFile.open(QIODevice::ReadWrite | QIODevice::Text)){
-        QTextStream stream(&outputTrainingFile);
-        while (!stream.atEnd()){
-
-            line = stream.readLine();
-            outputTrainingFileLabel->setText(outputTrainingFileLabel->text()+"\n"+line);
-        }
-    }
-    outputTrainingFile.close();
-
-    QScrollArea *scrollArea = new QScrollArea();
-    scrollArea->setWidget(outputTrainingFileLabel);
-
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, scrollArea);
+    this->chooseTrainingMethodComboBox = new QComboBox();
+    this->chooseTrainingMethodComboBox->addItems(this->trainingMethodStringList);
+    connect(this->chooseTrainingMethodComboBox, QOverload<int>::of(&QComboBox::activated), this, &ClassificationTrainingTab::handleTrainingMethodComboBox);
+    mainLayout->addWidget(this->chooseTrainingMethodComboBox, 0, 0);
 }
 
-void ClassificationTrainingTab::addTestAndTrainCheckBox()
+void ClassificationTrainingTab::handleTrainingMethodComboBox()
 {
-    this->testAndTrainCheckBox = new QCheckBox("Select training and testing set when the training classifier will be loaded", this);
-    this->mainLayout->addWidget(this->testAndTrainCheckBox);
-}
-
-void ClassificationTrainingTab::addLoadTrainingClassifierButton()
-{
-    this->loadTrainingClassifierButton = new QPushButton("Load training classifier");
-    connect(loadTrainingClassifierButton, &QPushButton::released, this, &ClassificationTrainingTab::handleLoadTrainingClassifierButton);
-    this->mainLayout->addWidget(this->loadTrainingClassifierButton);
-}
-
-void ClassificationTrainingTab::addLaunchTrainingClassifierButton()
-{
-    this->launchTrainingClassifierButton = new QPushButton("Launch training");
-    connect(this->launchTrainingClassifierButton, &QPushButton::released, this, &ClassificationTrainingTab::handleLaunchTrainingClassifierButton);
-    this->mainLayout->addWidget(this->launchTrainingClassifierButton);
-}
-
-void ClassificationTrainingTab::handleLoadTrainingClassifierButton()
-{
-    QLabel *informationClassifierLabel = new QLabel(this);
-
-    this->pathToClassifier = QFileDialog::getOpenFileName(this, tr("Select CLASSIFIER TRAINING to LOAD"), tr("PY (*.py)"));
-    if(this->pathToClassifier == NULL)
+    QString newTrainingMethod = chooseTrainingMethodComboBox->currentText();
+    ClassificationTrainingWidget *classificationTrainingWidget;
+    if(newTrainingMethod.compare("Deep Learning") == 0)
     {
-        printf("classifier loading problem\n");
-        return;
+        clearLayout(this->parametersLayout);
+        classificationTrainingWidget = new DeepLearningWidget(this->parametersLayout, this->trainingOutputLayout);
     }
-    this->isTrainingClassifierLoad = true;
-
-    informationClassifierLabel->setText("Classification file : " + this->pathToClassifier + "\n"); 
-
-    if(testAndTrainCheckBox->checkState() == Qt::Checked)
+    else if(newTrainingMethod.compare("Random Forest") == 0)
     {
-        this->pathToTrainingSet = QFileDialog::getExistingDirectory(this, tr("Select TRAINING DATASET"));
-        if(this->pathToClassifier == NULL)
-        {
-            printf("classifier loading problem\n");
-            return;
-        }
-        this->isTrainingSetLoad = true;
-
-        this->pathToTestingSet = QFileDialog::getExistingDirectory(this, tr("Select TESTING DATASET"));
-        if(this->pathToClassifier == NULL)
-        {
-            printf("classifier loading problem\n");
-            return;
-        }
-        this->isTestingSetLoad = true;
-        
-        informationClassifierLabel->setText(informationClassifierLabel->text() + "Training set directory : " + this->pathToTrainingSet + "\n" + "Testing set directory : " + pathToTestingSet);
+        clearLayout(this->parametersLayout);
+        classificationTrainingWidget = new RandomForestWidget(this->parametersLayout, this->trainingOutputLayout);
     }
-
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, informationClassifierLabel);
-}
-
-void ClassificationTrainingTab::handleLaunchTrainingClassifierButton()
-{
-    if(this->isTrainingClassifierLoad == true && this->isTrainingSetLoad == true && this->isTestingSetLoad == true && this->testAndTrainCheckBox->checkState() == Qt::Checked)
-    {
-        ClassificationThread *thread = new ClassificationThread(this->pathToClassifier, this->pathToTrainingSet, this->pathToTestingSet);
-        connect(thread, &QThread::started, this, &ClassificationTrainingTab::handleWaitingClassification);
-        connect(thread, &QThread::finished, this, &ClassificationTrainingTab::handleEndingClassification);
-        thread->start();
-    }
-    else if(this->isTrainingClassifierLoad == true && this->testAndTrainCheckBox->checkState() == Qt::Unchecked)
-    {
-        ClassificationThread *thread = new ClassificationThread(this->pathToClassifier);
-        connect(thread, &QThread::started, this, &ClassificationTrainingTab::handleWaitingClassification);
-        connect(thread, &QThread::finished, this, &ClassificationTrainingTab::handleEndingClassification);
-        thread->start();
-    }
-}
-
-void ClassificationTrainingTab::handleWaitingClassification()
-{
-    QLabel *waitingCLassificationLabel = new QLabel(this);
-    waitingCLassificationLabel->setText("Waiting for classification training");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, waitingCLassificationLabel);
-}
-
-void ClassificationTrainingTab::handleEndingClassification()
-{
-    QLabel *endingClassificationLabel = new QLabel(this);
-    endingClassificationLabel->setText("Training it's done");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, endingClassificationLabel);
-
-    readAndDisplayOutputTrainingFile();
 }
