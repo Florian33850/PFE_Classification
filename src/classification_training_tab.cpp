@@ -6,9 +6,17 @@ ClassificationTrainingTab::ClassificationTrainingTab(Tab *parent)
     this->mainLayout = new QVBoxLayout;
     this->setLayout(this->mainLayout);
 
+    this->parametersLayout = new QVBoxLayout;
+    this->mainLayout->addLayout(this->parametersLayout);
+
+    this->trainingOutputLayout = new QVBoxLayout;
+    this->mainLayout->addLayout(this->trainingOutputLayout);
+
     addChooseTrainingMethodComboBox();
 
     this->mainLayout->addStretch();
+    this->parametersLayout->addStretch();
+    this->trainingOutputLayout->addStretch();
 }
 
 void ClassificationTrainingTab::addChooseTrainingMethodComboBox()
@@ -16,7 +24,7 @@ void ClassificationTrainingTab::addChooseTrainingMethodComboBox()
     chooseTrainingMethodComboBox = new QComboBox();
     chooseTrainingMethodComboBox->addItems(trainingMethodStringList);
     connect(chooseTrainingMethodComboBox, QOverload<int>::of(&QComboBox::activated), this, &ClassificationTrainingTab::handleTrainingMethodComboBox);
-    mainLayout->addWidget(chooseTrainingMethodComboBox);
+    mainLayout->insertWidget(0, chooseTrainingMethodComboBox);
 }
 
 void ClassificationTrainingTab::handleTrainingMethodComboBox()
@@ -25,13 +33,12 @@ void ClassificationTrainingTab::handleTrainingMethodComboBox()
     ClassificationTrainingWidget *classificationTrainingWidget;
     if(newTrainingMethod.compare("Deep Learning") == 0)
     {
-        classificationTrainingWidget = new DeepLearningWidget(this->mainLayout);
+        clearLayout(this->parametersLayout);
+        classificationTrainingWidget = new DeepLearningWidget(this->parametersLayout, this->trainingOutputLayout);
     }
     else if(newTrainingMethod.compare("Random Forest") == 0)
     {
-        // imageTransformationWidget = createGrayscaleImageTransformation();
+        clearLayout(this->parametersLayout);
+        classificationTrainingWidget = new RandomForestWidget(this->parametersLayout, this->trainingOutputLayout);
     }
-    // connect(imageTransformationWidget->getDeleteImageTransformationWidgetButton(), &QPushButton::released, 
-    //     [=](){this->handleDeleteImageTransformationWidgetButton(imageTransformationWidget);});
 }
-

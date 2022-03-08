@@ -1,11 +1,11 @@
 #include "result_thread.h"
 
-ResultThread::ResultThread(QString pathToPredictionFile, QString pathToModel, QString pathToLabel, QString pathToImage)
+ResultThread::ResultThread(QString pathToPredictionFile, QString pathToModel, QString pathToImage, QString pathToLabels)
 {
     this->pathToPredictionFile = pathToPredictionFile;
     this->pathToModel = pathToModel;
-    this->pathToLabels = pathToLabels;
     this->pathToImage = pathToImage;
+    this->pathToLabels = pathToLabels;
 }
 
 void ResultThread::run()
@@ -13,7 +13,7 @@ void ResultThread::run()
     QProcess process;
     process.setStandardOutputFile("outputResult.txt", QIODevice::ReadWrite);
     process.setStandardErrorFile("errorResult.txt", QIODevice::ReadWrite);
-    process.start("python3" ,{this->pathToPredictionFile, this->pathToModel, this->pathToLabels, this->pathToImage});
+    process.start("python3" ,{this->pathToPredictionFile, this->pathToModel, this->pathToImage, this->pathToLabels});
     process.waitForStarted();
     process.waitForFinished(-1);
 }

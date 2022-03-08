@@ -22,6 +22,8 @@ class ClassificationTrainingTab : public Tab
 
     private:
         QVBoxLayout *mainLayout;
+        QVBoxLayout *parametersLayout;
+        QVBoxLayout *trainingOutputLayout;
 
         QComboBox *chooseTrainingMethodComboBox;
         QStringList trainingMethodStringList = {"Deep Learning", "Random Forest"};

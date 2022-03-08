@@ -17,19 +17,19 @@ class ClassificationTrainingWidget : public QWidget
 {
     Q_OBJECT
     public:
-        ClassificationTrainingWidget(QVBoxLayout *mainLayout);
+        ClassificationTrainingWidget(QVBoxLayout *parametersLayout, QVBoxLayout *trainingOutputLayout);
     
     protected:
-        QVBoxLayout *mainLayout;
+        QVBoxLayout *parametersLayout;
+        QVBoxLayout *trainingOutputLayout;
+
         QGroupBox *formGroupBox;
         QFormLayout *formLayout;
 
         QPushButton *launchTrainingClassifierButton;
 
         void readAndDisplayOutputTrainingFile();
-        
-        void handleAddDirectoryToQlineEdit(QLineEdit *qLineEdit);
-        void handleAddFileToQlineEdit(QLineEdit *qLineEdit);
+
         void handleWaitingClassification();
         void handleEndingClassification();
 
@@ -43,7 +43,7 @@ class ClassificationTrainingWidget : public QWidget
 class DeepLearningWidget : public ClassificationTrainingWidget
 {
     public:
-        DeepLearningWidget(QVBoxLayout *mainLayout);
+        DeepLearningWidget(QVBoxLayout *parametersLayout, QVBoxLayout *trainingOutputLayout);
     
     private:
         QPushButton *addClassifierButton;
@@ -60,21 +60,23 @@ class DeepLearningWidget : public ClassificationTrainingWidget
 };
 #endif // DEEP_LEARNING_WIDGET_H
 
-// #ifndef RANDOM_FOREST_WIDGET_H
-// #define RANDOM_FOREST_WIDGET_H
+#ifndef RANDOM_FOREST_WIDGET_H
+#define RANDOM_FOREST_WIDGET_H
 
-// class RandomForestWidget : public ClassificationTrainingWidget
-// {
-//     public:
-//         RandomForestWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, GrayscaleImageTransformation *grayscaleImageTransformation);
+class RandomForestWidget : public ClassificationTrainingWidget
+{
+    public:
+        RandomForestWidget(QVBoxLayout *parametersLayout, QVBoxLayout *trainingOutputLayout);
 
-//     protected:
-//         QPushButton *addClassifierButton;
-//         QLineEdit *classifierLineEdit;
-//         QPushButton *addTrainingSetButton;
-//         QLineEdit *trainingSetLineEdit;
-//         QLineEdit *numberOfTreesLineEdit;
-//         QLineEdit *heightOfImagesLineEdit;
-//         QLineEdit *widthOfImagesLineEdit;
-// };
-// #endif // RANDOM_FOREST_WIDGET_H
+    protected:
+        QPushButton *addClassifierButton;
+        QLineEdit *classifierLineEdit;
+        QPushButton *addTrainingSetButton;
+        QLineEdit *trainingSetLineEdit;
+        QLineEdit *numberOfTreesLineEdit;
+        QLineEdit *heightOfImagesLineEdit;
+        QLineEdit *widthOfImagesLineEdit;
+
+        void handleLaunchTrainingClassifierButton();
+};
+#endif // RANDOM_FOREST_WIDGET_H
