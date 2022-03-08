@@ -32,7 +32,7 @@ MirrorWidget* ImageTransformationViewer::createMirrorImageTransformation()
     MirrorWidget *newMirrorWidget = new MirrorWidget(mainLayout, this, newMirrorImageTransformation);
     imageTransformationWidgetList.push_back(newMirrorWidget);
 
-    newMirrorWidget->displayUI();
+    newMirrorWidget->displayUI(newMirrorWidget->getLayoutCount()-1);
     return newMirrorWidget;
 }
 
@@ -44,7 +44,7 @@ GrayscaleWidget* ImageTransformationViewer::createGrayscaleImageTransformation()
     GrayscaleWidget *newGrayscaleWidget = new GrayscaleWidget(mainLayout, this, newGrayscaleImageTransformation);
     imageTransformationWidgetList.push_back(newGrayscaleWidget);
 
-    newGrayscaleWidget->displayUI();
+    newGrayscaleWidget->displayUI(newGrayscaleWidget->getLayoutCount()-1);
     return newGrayscaleWidget;
 }
 
@@ -134,5 +134,6 @@ void DataAugmentationViewer::addAddDataAugmentationButton()
 
 void DataAugmentationViewer::handleAddDataAugmentationButton()
 {
-    printf("Add Data Augmentation\n");
+    DataAugmentationWidget *dataAugmentationWidgetToAdd = new DataAugmentationWidget(this);
+    this->mainLayout->insertWidget(this->mainLayout->count()-1, dataAugmentationWidgetToAdd);
 }

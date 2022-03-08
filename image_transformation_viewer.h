@@ -1,7 +1,7 @@
 #ifndef IMAGE_TRANSFORMATION_VIEWER_H
 #define IMAGE_TRANSFORMATION_VIEWER_H
 
-#include "image_transformation_widget.h"
+#include "data_augmentation_widget.h"
 
 #include <iostream>
 #include <QVBoxLayout>
@@ -47,12 +47,6 @@ class PreprocessingViewer : public ImageTransformationViewer
 };
 
 
-
-class DataAugmentationWidget
-{
-    public:
-        DataAugmentationWidget();
-};
 
 class DataAugmentationViewer : public ImageTransformationViewer
 {
