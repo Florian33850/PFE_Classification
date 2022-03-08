@@ -21,7 +21,9 @@ class ResultTab : public Tab
         ResultTab(Tab *parent = nullptr);
 
     private:
-        QVBoxLayout *mainLayout;
+        QGridLayout *mainLayout;
+        QBoxLayout *classificationParametersLayout;
+        QBoxLayout *resultOutputLayout;
 
         QGroupBox *formGroupBox;
         QFormLayout *formLayout;

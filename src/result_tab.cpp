@@ -2,13 +2,18 @@
 
 ResultTab::ResultTab(Tab *parent): Tab(parent)
 {
-    this->mainLayout = new QVBoxLayout;
+    this->mainLayout = new QGridLayout;
     this->setLayout(this->mainLayout);
+
+    this->classificationParametersLayout = new QVBoxLayout;
+    this->classificationParametersLayout->addStretch();
+    this->mainLayout->addLayout(this->classificationParametersLayout, 0, 0);
+    this->resultOutputLayout = new QVBoxLayout;
+    this->resultOutputLayout->addStretch();
+    this->mainLayout->addLayout(this->resultOutputLayout, 1, 0);
 
     addClassificationParametersFormLayout();
     addLaunchModelButton();
-
-    this->mainLayout->addStretch();
 }
 
 void ResultTab::readAndDisplayOutputResultFile()
@@ -31,7 +36,7 @@ void ResultTab::readAndDisplayOutputResultFile()
     QScrollArea *scrollArea = new QScrollArea();
     scrollArea->setWidget(outputTrainingFileLabel);
 
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, scrollArea);
+    this->resultOutputLayout->insertWidget(this->resultOutputLayout->count()-1, scrollArea);
 }
 
 void ResultTab::addClassificationParametersFormLayout()
@@ -69,15 +74,15 @@ void ResultTab::addClassificationParametersFormLayout()
     this->formLayout->addRow(tr("&File of labels :"), addLabelsButton);
     this->formLayout->addRow(labelsLineEdit);
 
-    this->formGroupBox->setLayout(formLayout);
-    this->mainLayout->addWidget(formGroupBox);
+    this->formGroupBox->setLayout(this->formLayout);
+    this->classificationParametersLayout->insertWidget(this->classificationParametersLayout->count()-1, this->formGroupBox);
 }
 
 void ResultTab::addLaunchModelButton()
 {
     this->launchModelButton = new QPushButton("Launch classification model");
     connect(this->launchModelButton, &QPushButton::released, this, &ResultTab::handleLaunchModelButton);
-    this->mainLayout->addWidget(this->launchModelButton);
+    this->classificationParametersLayout->insertWidget(this->classificationParametersLayout->count()-1, this->launchModelButton);
 }
 
 void ResultTab::handleLaunchModelButton()
@@ -93,7 +98,7 @@ void ResultTab::handleLaunchModelButton()
         image.load(pathToImage);
         ImageLabel *imageLabel = new ImageLabel();
         imageLabel->setImage(image);
-        this->mainLayout->insertWidget(this->mainLayout->count()-1, imageLabel);
+        this->resultOutputLayout->insertWidget(this->resultOutputLayout->count()-1, imageLabel);
 
         ResultThread *thread = new ResultThread(pathToPredictionFile, pathToModel, pathToImage, pathToLabels);
         connect(thread, &QThread::started, this, &ResultTab::handleWaitingResult);
@@ -106,14 +111,14 @@ void ResultTab::handleWaitingResult()
 {
     QLabel *waitingResultsLabel = new QLabel(this);
     waitingResultsLabel->setText("Waiting for the classification of the image");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, waitingResultsLabel);
+    this->resultOutputLayout->insertWidget(this->resultOutputLayout->count()-1, waitingResultsLabel);
 }
 
 void ResultTab::handleEndingResult()
 {
     QLabel *endingResultsLabel = new QLabel(this);
     endingResultsLabel->setText("Classification of the image is done");
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, endingResultsLabel);
+    this->resultOutputLayout->insertWidget(this->resultOutputLayout->count()-1, endingResultsLabel);
 
     readAndDisplayOutputResultFile();
 }

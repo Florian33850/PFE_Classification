@@ -3,28 +3,27 @@
 ClassificationTrainingTab::ClassificationTrainingTab(Tab *parent)
     : Tab(parent)
 {
-    this->mainLayout = new QVBoxLayout;
+    this->mainLayout = new QGridLayout;
     this->setLayout(this->mainLayout);
 
     this->parametersLayout = new QVBoxLayout;
-    this->mainLayout->addLayout(this->parametersLayout);
+    this->mainLayout->addLayout(this->parametersLayout, 1, 0);
 
     this->trainingOutputLayout = new QVBoxLayout;
-    this->mainLayout->addLayout(this->trainingOutputLayout);
+    this->mainLayout->addLayout(this->trainingOutputLayout, 2, 0);
 
     addChooseTrainingMethodComboBox();
 
-    this->mainLayout->addStretch();
     this->parametersLayout->addStretch();
     this->trainingOutputLayout->addStretch();
 }
 
 void ClassificationTrainingTab::addChooseTrainingMethodComboBox()
 {
-    chooseTrainingMethodComboBox = new QComboBox();
-    chooseTrainingMethodComboBox->addItems(trainingMethodStringList);
-    connect(chooseTrainingMethodComboBox, QOverload<int>::of(&QComboBox::activated), this, &ClassificationTrainingTab::handleTrainingMethodComboBox);
-    mainLayout->insertWidget(0, chooseTrainingMethodComboBox);
+    this->chooseTrainingMethodComboBox = new QComboBox();
+    this->chooseTrainingMethodComboBox->addItems(this->trainingMethodStringList);
+    connect(this->chooseTrainingMethodComboBox, QOverload<int>::of(&QComboBox::activated), this, &ClassificationTrainingTab::handleTrainingMethodComboBox);
+    mainLayout->addWidget(this->chooseTrainingMethodComboBox, 0, 0);
 }
 
 void ClassificationTrainingTab::handleTrainingMethodComboBox()

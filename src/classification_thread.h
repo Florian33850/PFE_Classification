@@ -31,7 +31,7 @@ class DeepLearningThread : public ClassificationThread
         void run();
     
     private:
-        QString pathToTrainingSet; 
+        QString pathToTrainingSet;
         QString pathToTestingSet;
         QString numberOfEpochs;
         QString widthOfImages;

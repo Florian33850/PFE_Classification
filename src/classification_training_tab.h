@@ -21,7 +21,7 @@ class ClassificationTrainingTab : public Tab
         ClassificationTrainingTab(Tab *parent = nullptr);
 
     private:
-        QVBoxLayout *mainLayout;
+        QGridLayout *mainLayout;
         QVBoxLayout *parametersLayout;
         QVBoxLayout *trainingOutputLayout;
 
