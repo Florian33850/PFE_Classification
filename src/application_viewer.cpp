@@ -26,6 +26,8 @@ void ApplicationViewer::addSettingMenu(ApplicationViewer *applicationViewer)
     QMenu *openSubMenu = fileMenu->addMenu("&Open");
     QAction *openImageSelection = openSubMenu->addAction("&Image selection");
     QObject::connect(openImageSelection, &QAction::triggered, this, &ApplicationViewer::handleOpenImageSelectionDataHandler);
+    QAction *openLymeDatabase = openSubMenu->addAction("&Lyme Database");
+    QObject::connect(openLymeDatabase, &QAction::triggered, this, &ApplicationViewer::handleOpenLymeDatabaseDataHandler);
     QAction *helpAction = menuBar()->addAction("&Help");
 }
 
@@ -50,6 +52,13 @@ void ApplicationViewer::addResultTab(QTabWidget *mainTabWidget)
 void ApplicationViewer::handleOpenImageSelectionDataHandler()
 {
     this->dataHandler = new ImageSelectionLoader(mainWidget, preprocessingTab->imagePreviewList);
+    this->preprocessingTab->dataHandler = this->dataHandler;
+    this->preprocessingTab->handleLoadDataBase();
+}
+
+void ApplicationViewer::handleOpenLymeDatabaseDataHandler()
+{
+    this->dataHandler = new LymeDatabaseLoader(mainWidget, preprocessingTab->imagePreviewList);
     this->preprocessingTab->dataHandler = this->dataHandler;
     this->preprocessingTab->handleLoadDataBase();
 }
