@@ -14,6 +14,15 @@ ImagesPreviewWidget::ImagesPreviewWidget(std::vector<ImageLabel*> *imagePreviewL
     this->setLayout(this->mainLayout);
 }
 
+void ImagesPreviewWidget::display(DataHandler *dataHandler)
+{
+    this->dataHandler = dataHandler;
+    clearImagesLayout();
+    displayDataBasePreview();
+    addPreviousPreviewButton();
+    addNextPreviewButton();
+}
+
 void ImagesPreviewWidget::clearImagesLayout()
 {
     QLayoutItem *item;
@@ -57,18 +66,16 @@ void ImagesPreviewWidget::addNextPreviewButton()
     this->mainLayout->addWidget(nextDataBasePreview, 3, 2, 1, 1);
 }
 
-void ImagesPreviewWidget::display(DataHandler *dataHandler)
+void ImagesPreviewWidget::reloadPreview()
 {
-    this->dataHandler = dataHandler;
+    this->dataHandler->reloadPreview();
     clearImagesLayout();
     displayDataBasePreview();
-    addPreviousPreviewButton();
-    addNextPreviewButton();
 }
 
 void ImagesPreviewWidget::handleLoadNextPreviewButton()
 {
-    if(this->dataHandler->loadPreview())
+    if(this->dataHandler->loadNextPreview())
     {
         clearImagesLayout();
         this->imageTransformationViewer->launchActivatedPreprocesses();

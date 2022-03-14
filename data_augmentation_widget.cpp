@@ -1,14 +1,16 @@
 #include "data_augmentation_widget.h"
 
 DataAugmentationWidget::DataAugmentationWidget(QWidget *parentWidget)
+    : QWidget(parentWidget)
 {
     this->mainLayout = new QVBoxLayout();
     setLayout(this->mainLayout);
     this->parentWidget = parentWidget;
-    QLabel *widgetTitle = new QLabel("DataAugmentation 1");
+    QLabel *widgetTitle = new QLabel("Data Augmentation");
     this->mainLayout->addWidget(widgetTitle);
     addPreviewButton();
     addMirrorCheckBox();
+    addGrayscaleCheckBox();
 }
 
 void DataAugmentationWidget::addPreviewButton()
@@ -22,50 +24,72 @@ void DataAugmentationWidget::addMirrorCheckBox()
 {
     this->mirrorCheckBox = new QCheckBox("Mirror");
     this->mainLayout->addWidget(this->mirrorCheckBox);
-    connect(mirrorCheckBox, &QCheckBox::clicked, this, &DataAugmentationWidget::handleMirrorCheckbox);
+    connect(mirrorCheckBox, &QCheckBox::clicked, this, [=]{DataAugmentationWidget::handleImageTransformationCheckBox(this->mirrorWidget, this->mirrorCheckBox, transformationWidgetsEnum::mirror);});
+}
+
+void DataAugmentationWidget::addGrayscaleCheckBox()
+{
+    this->grayscaleCheckBox = new QCheckBox("Grayscale");
+    this->mainLayout->addWidget(this->grayscaleCheckBox);
+    connect(grayscaleCheckBox, &QCheckBox::clicked, this, [=]{DataAugmentationWidget::handleImageTransformationCheckBox(this->grayscaleWidget, this->grayscaleCheckBox, transformationWidgetsEnum::grayscale);});
 }
 
 void DataAugmentationWidget::deleteImageTransformationWidget(ImageTransformationWidget *imageTransformationWidget)
 {
     int index = 0;
-    for(ImageTransformation *currentImageTransformation : this->imageTransformationList)
+    for(ImageTransformationWidget *currentImageTransformation : this->imageTransformationWidgetList)
     {
-        if(this->mirrorWidget->imageTransformation == currentImageTransformation)
+        if(imageTransformationWidget == currentImageTransformation)
         {
-            this->imageTransformationList.erase(this->imageTransformationList.begin() + index);
+            this->imageTransformationWidgetList.erase(this->imageTransformationWidgetList.begin() + index);
         }
         index++;
     }
-    delete this->mirrorWidget->imageTransformation;
-    this->mirrorWidget->deleteMainWidgetGroupBox();
-    delete this->mirrorWidget;
+    delete imageTransformationWidget->imageTransformation;
+    imageTransformationWidget->deleteMainWidgetGroupBox();
+    delete imageTransformationWidget;
 }
 
-void DataAugmentationWidget::handleMirrorCheckbox()
+ImageTransformationWidget* DataAugmentationWidget::initialiseImageTransformationWidget(ImageTransformationWidget *imageTransformationWidget, transformationWidgetsEnum index)
 {
-    if(this->mirrorCheckBox->isChecked())
-    {
+    if (index == transformationWidgetsEnum::mirror) {
         MirrorImageTransformation *mirrorImageTransformation = new MirrorImageTransformation();
-        imageTransformationList.push_back(mirrorImageTransformation);
-        this->mirrorWidget = new MirrorWidget(this->mainLayout, parentWidget, mirrorImageTransformation);
-        connect(this->mirrorWidget->getDeleteImageTransformationWidgetButton(), &QPushButton::released, this, 
-            &DataAugmentationWidget::handleDeleteImageTransformationWidgetButton);
-        this->mirrorWidget->displayUI(this->mainLayout->indexOf(this->mirrorCheckBox) + 1);
+        imageTransformationWidget = new MirrorWidget(this->mainLayout, parentWidget, mirrorImageTransformation);
+        return imageTransformationWidget;
+    } else if (index == transformationWidgetsEnum::grayscale) {
+        GrayscaleImageTransformation *grayscaleImageTransformation = new GrayscaleImageTransformation();
+        imageTransformationWidget = new GrayscaleWidget(this->mainLayout, parentWidget, grayscaleImageTransformation);
+        return imageTransformationWidget;
+    } else {
+        return NULL;
+    }
+}
+
+void DataAugmentationWidget::handleImageTransformationCheckBox(ImageTransformationWidget *imageTransformationWidget, QCheckBox *imageTransformationCheckbox, transformationWidgetsEnum index)
+{
+    if(imageTransformationCheckbox->isChecked())
+    {
+        imageTransformationWidget = initialiseImageTransformationWidget(imageTransformationWidget, index);
+        imageTransformationWidgetList.push_back(imageTransformationWidget);
+        QPushButton *test = imageTransformationWidget->getDeleteImageTransformationWidgetButton();
+        connect(imageTransformationWidget->getDeleteImageTransformationWidgetButton(), &QPushButton::released, this,
+            [=]{handleDeleteImageTransformationWidgetButton(imageTransformationWidget, imageTransformationCheckbox);});
+        imageTransformationWidget->displayUI(this->mainLayout->indexOf(imageTransformationCheckbox) + 1);
     }
     else
     {
-        deleteImageTransformationWidget(this->mirrorWidget);
+        //this->deleteImageTransformationWidget(imageTransformationWidget);
     }
 }
 
-void DataAugmentationWidget::handleDeleteImageTransformationWidgetButton()
-{
-    this->deleteImageTransformationWidget(this->mirrorWidget);
-    this->mirrorCheckBox->setCheckState(Qt::Unchecked);
-}
 
+void DataAugmentationWidget::handleDeleteImageTransformationWidgetButton(ImageTransformationWidget *imageTransformationWidget, QCheckBox *imageTransformationCheckbox)
+{
+    this->deleteImageTransformationWidget(imageTransformationWidget);
+    imageTransformationCheckbox->setCheckState(Qt::Unchecked);
+}
 
 void DataAugmentationWidget::handlePreviewButton()
 {
-    printf("teststetdtsdtst\n");
+    Q_EMIT previewSignal(this);
 }

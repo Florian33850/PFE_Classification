@@ -45,7 +45,7 @@ bool ImageSelectionLoader::selectDataBasePath()
     return true;
 }
 
-bool ImageSelectionLoader::loadPreview()
+bool ImageSelectionLoader::loadNextPreview()
 {
     if(indexPathToImagesList >= pathToImages.size())
     {
@@ -88,4 +88,25 @@ bool ImageSelectionLoader::loadPreviousPreview()
         indexPathToImagesList -= maxNumberOfImagesToLoad;
         return true;
     }
+}
+
+bool ImageSelectionLoader::reloadPreview()
+{
+    int previousIndex = indexPathToImagesList - maxNumberOfImagesToLoad;
+    if(previousIndex < 0)
+    {
+        std::cout << "No more images to load" << std::endl;
+        return false;
+    }
+    imagePreviewList->clear();
+    for(int fileIndex = previousIndex; fileIndex < indexPathToImagesList; fileIndex++)
+    {
+        if(fileIndex == pathToImages.size())
+        {
+            break;
+        }
+        QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
+        addImageToImageDataBasePreview(qImage);
+    }
+    return true;
 }

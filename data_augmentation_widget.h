@@ -7,26 +7,33 @@ class DataAugmentationWidget : public QWidget
 {
     Q_OBJECT
     public:
-        DataAugmentationWidget(QWidget *parentWidget);
+        explicit DataAugmentationWidget(QWidget *parentWidget);
     
-        std::vector<ImageTransformation*> imageTransformationList;
+        enum transformationWidgetsEnum{mirror=0, grayscale=1};
+        std::vector<ImageTransformationWidget*> imageTransformationWidgetList;
+
+    Q_SIGNALS:
+        void previewSignal(DataAugmentationWidget* sender);
 
     private:
         QVBoxLayout *mainLayout;
         QWidget *parentWidget;
         QPushButton *previewButton;
-        QCheckBox *mirrorCheckBox;
 
+        QCheckBox *mirrorCheckBox;
+        QCheckBox *grayscaleCheckBox;
 
         MirrorWidget *mirrorWidget;
-
-        void deleteImageTransformationWidget(ImageTransformationWidget *imageTransformationWidget);
+        GrayscaleWidget *grayscaleWidget;
 
         void addMirrorCheckBox();
+        void addGrayscaleCheckBox();
         void addPreviewButton();
+        void deleteImageTransformationWidget(ImageTransformationWidget *imageTransformationWidget);
+        ImageTransformationWidget* initialiseImageTransformationWidget(ImageTransformationWidget *imageTransformationWidget, transformationWidgetsEnum index);
 
-        void handleMirrorCheckbox();
-        void handleDeleteImageTransformationWidgetButton();
+        void handleImageTransformationCheckBox(ImageTransformationWidget *imageTransformationWidget, QCheckBox *imageTransformationCheckbox, transformationWidgetsEnum index);
+        void handleDeleteImageTransformationWidgetButton(ImageTransformationWidget *imageTransformationWidget, QCheckBox *imageTransformationCheckbox);
         void handlePreviewButton();
 };
 

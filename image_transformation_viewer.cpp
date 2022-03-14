@@ -50,6 +50,7 @@ GrayscaleWidget* ImageTransformationViewer::createGrayscaleImageTransformation()
 
 void ImageTransformationViewer::handleLaunchImageTransformationButton()
 {
+    Q_EMIT reloadPreviewSignal();
     for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
     {
         imageTransformationWidget->isActivated = true;
@@ -73,6 +74,7 @@ void ImageTransformationViewer::handleDeleteImageTransformationWidgetButton(Imag
         index++;
     }
 }
+
 
 
 PreprocessingViewer::PreprocessingViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parentWidget)
@@ -135,5 +137,15 @@ void DataAugmentationViewer::addAddDataAugmentationButton()
 void DataAugmentationViewer::handleAddDataAugmentationButton()
 {
     DataAugmentationWidget *dataAugmentationWidgetToAdd = new DataAugmentationWidget(this);
+    connect(dataAugmentationWidgetToAdd, SIGNAL(previewSignal(DataAugmentationWidget*)), this, SLOT(handlePreview(DataAugmentationWidget*)));
     this->mainLayout->insertWidget(this->mainLayout->count()-1, dataAugmentationWidgetToAdd);
+}
+
+void DataAugmentationViewer::handlePreview(DataAugmentationWidget* sender)
+{
+    if(!this->imagePreviewList->empty())
+    {
+        this->imageTransformationWidgetList = sender->imageTransformationWidgetList;
+        handleLaunchImageTransformationButton();
+    }
 }

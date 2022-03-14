@@ -23,6 +23,7 @@ class ImagesPreviewWidget : public QWidget
         void clearImagesLayout();
 
         void display(DataHandler *dataHandler);
+        void reloadPreview();
 
     private:
         QGridLayout *mainLayout;

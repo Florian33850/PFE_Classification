@@ -10,14 +10,15 @@ class DataHandler
 {
     public:
         DataHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
-        
+
         QStringList pathToImages;
         int maxNumberOfImagesToLoad;
         int totalNumberOfImages;
 
         virtual bool selectDataBasePath() = 0;
-        virtual bool loadPreview() = 0;
+        virtual bool loadNextPreview() = 0;
         virtual bool loadPreviousPreview() = 0;
+        virtual bool reloadPreview() = 0;
 
     protected:
         QWidget *parent;
@@ -33,8 +34,9 @@ class ImageSelectionLoader : public DataHandler
         ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
 
         bool selectDataBasePath();
-        bool loadPreview();
+        bool loadNextPreview();
         bool loadPreviousPreview();
+        bool reloadPreview();
 
     private:
         int indexPathToImagesList;
