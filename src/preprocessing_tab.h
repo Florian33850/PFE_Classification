@@ -11,7 +11,7 @@ class PreprocessingTab : public Tab
 {
     Q_OBJECT
     public:
-        PreprocessingTab( Tab *parent = nullptr);
+        PreprocessingTab();
 
         void handleNewDataHandler(DataHandler *dataHandler);
 

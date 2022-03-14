@@ -10,13 +10,16 @@ class ResultThread : public QThread
 {
     Q_OBJECT
     public:
-        ResultThread(QString pathToPredictionFile, QString pathToModel, QString pathToImage);
+        ResultThread(QString pathToPredictionFile, QString pathToModel, QString pathToImage, QString pathToLabels);
         
         void run();
     
     private:
         QString pathToPredictionFile;
-        QString pathToModel; 
+        QString pathToModel;
         QString pathToImage;
+        QString pathToLabels;
+
+        QProcess process;
 };
 #endif // RESULT_THREAD_H

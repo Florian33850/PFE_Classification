@@ -39,5 +39,6 @@ class ApplicationViewer : public QMainWindow
         void addResultTab(QTabWidget *mainTabWidget);
         
         void handleOpenImageSelectionDataHandler();
+        void handleOpenLymeDatabaseDataHandler();
 };
 #endif // APPLICATION_VIEWER_H

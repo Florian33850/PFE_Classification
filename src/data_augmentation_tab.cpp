@@ -1,7 +1,6 @@
 #include "data_augmentation_tab.h"
 
-DataAugmentationTab::DataAugmentationTab(Tab *parent)
-    : Tab(parent)
+DataAugmentationTab::DataAugmentationTab() : Tab()
 {
     this->imagePreviewList = new std::vector<ImageLabel*>();
     this->imageTransformationViewer = new DataAugmentationViewer(this->imagePreviewList);

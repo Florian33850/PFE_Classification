@@ -16,7 +16,7 @@ class Tab : public QWidget
 {
     Q_OBJECT
     public:
-        Tab(QWidget * parent = nullptr);
+        Tab();
         ~Tab();
 
         DataHandler *dataHandler;
@@ -25,5 +25,6 @@ class Tab : public QWidget
 
     protected:
         QGridLayout *mainLayout;
+        void clearLayout(QLayout *layout);
 };
 #endif // TAB_H

@@ -7,7 +7,7 @@ class DataAugmentationTab : public Tab
 {
     Q_OBJECT
     public:
-        DataAugmentationTab( Tab *parent = nullptr);
+        DataAugmentationTab();
 
         void handleNewDataHandler(DataHandler *dataHandler);
 

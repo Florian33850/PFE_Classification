@@ -5,6 +5,8 @@
 
 #include <QStringList>
 #include <QFileDialog>
+#include <QDirIterator>
+#include <QDir>
 
 class DataHandler
 {
@@ -14,12 +16,15 @@ class DataHandler
         QStringList pathToImages;
         int maxNumberOfImagesToLoad;
         int totalNumberOfImages;
+        int indexPathToImagesList;
+        
+
+        bool reloadPreview();
 
         virtual bool selectDataBasePath() = 0;
         virtual bool loadNextPreview() = 0;
         virtual bool loadPreviousPreview() = 0;
-        virtual bool reloadPreview() = 0;
-
+        
     protected:
         QWidget *parent;
         std::vector<ImageLabel*> *imagePreviewList;
@@ -36,9 +41,18 @@ class ImageSelectionLoader : public DataHandler
         bool selectDataBasePath();
         bool loadNextPreview();
         bool loadPreviousPreview();
-        bool reloadPreview();
+};
+
+class LymeDatabaseLoader : public DataHandler
+{
+    public:
+        LymeDatabaseLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
+
+        bool selectDataBasePath();
+        bool loadNextPreview();
+        bool loadPreviousPreview();
 
     private:
-        int indexPathToImagesList;
+        QString pathToDatabase;
 };
 #endif //data_handler_H
