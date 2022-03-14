@@ -10,7 +10,7 @@ class Tab : public QWidget
 {
     Q_OBJECT
     public:
-        Tab(QWidget * parent = nullptr);
+        Tab();
         ~Tab();
 
         void clearLayout(QLayout *layout);

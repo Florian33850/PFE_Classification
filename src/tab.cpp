@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-Tab::Tab(QWidget *parent)
-  : QWidget(parent){
+Tab::Tab()
+{
 }
 
 Tab::~Tab() {}

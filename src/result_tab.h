@@ -18,7 +18,7 @@ class ResultTab : public Tab
 {
     Q_OBJECT
     public:
-        ResultTab(Tab *parent = nullptr);
+        ResultTab();
 
     private:
         QGridLayout *mainLayout;

@@ -1,6 +1,6 @@
 #include "result_tab.h"
 
-ResultTab::ResultTab(Tab *parent): Tab(parent)
+ResultTab::ResultTab()
 {
     this->mainLayout = new QGridLayout;
     this->setLayout(this->mainLayout);

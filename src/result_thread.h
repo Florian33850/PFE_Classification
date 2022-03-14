@@ -18,6 +18,8 @@ class ResultThread : public QThread
         QString pathToPredictionFile;
         QString pathToModel;
         QString pathToImage;
-        QString pathToLabels; 
+        QString pathToLabels;
+
+        QProcess process;
 };
 #endif // RESULT_THREAD_H
