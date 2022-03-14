@@ -19,6 +19,11 @@ QPushButton* ImageTransformationWidget::getDeleteImageTransformationWidgetButton
     return deleteImageTransformationWidgetButton;
 }
 
+int ImageTransformationWidget::getLayoutCount()
+{
+    return this->mainLayout->count();
+}
+
 
 
 MirrorWidget::MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MirrorImageTransformation *mirrorImageTransformation)
@@ -31,7 +36,7 @@ MirrorWidget::MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, Mirro
     this->mainWidgetGroupBox->setMaximumHeight(MIRRORED_WIDGET_MAXIMUM_HEIGHT);
 }
 
-void MirrorWidget::displayUI()
+void MirrorWidget::displayUI(int indexInLayout)
 {
     parentWidget->connect(horizontalMirrorCheckBox, &QCheckBox::toggled, [=](){static_cast<MirrorImageTransformation*>(this->imageTransformation)->changeHorizontalMirrorMode();});
     parentWidget->connect(verticalMirrorCheckBox, &QCheckBox::toggled, [=](){static_cast<MirrorImageTransformation*>(this->imageTransformation)->changeVerticalMirrorMode();});
@@ -44,8 +49,7 @@ void MirrorWidget::displayUI()
     mirrorLayout->addWidget(deleteImageTransformationWidgetButton, 0, 1, 1, 1);
 
     this->mainWidgetGroupBox->setLayout(mirrorLayout);
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, mainWidgetGroupBox);
-
+    this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
 }
 
 
@@ -57,7 +61,7 @@ GrayscaleWidget::GrayscaleWidget(QVBoxLayout *mainLayout, QWidget *parentWidget,
     this->mainWidgetGroupBox->setMaximumHeight(GRAYSCALE_WIDGET_MAXIMUM_HEIGHT);
 }
 
-void GrayscaleWidget::displayUI()
+void GrayscaleWidget::displayUI(int indexInLayout)
 {
     QLabel *grayscaleWidgetTitle = new QLabel("Grayscale");
     QHBoxLayout *grayscaleLayout = new QHBoxLayout();
@@ -65,5 +69,5 @@ void GrayscaleWidget::displayUI()
     grayscaleLayout->addWidget(deleteImageTransformationWidgetButton);
 
     this->mainWidgetGroupBox->setLayout(grayscaleLayout);
-    this->mainLayout->insertWidget(this->mainLayout->count()-1, mainWidgetGroupBox);
+    this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
 }

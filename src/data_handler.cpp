@@ -25,6 +25,27 @@ void DataHandler::addImageToImageDataBasePreview(QImage qImage)
     this->imagePreviewList->push_back(newImageLabel);
 }
 
+bool DataHandler::reloadPreview()
+{
+    int previousIndex = indexPathToImagesList - maxNumberOfImagesToLoad;
+    if(previousIndex < 0)
+    {
+        std::cout << "No more images to load" << std::endl;
+        return false;
+    }
+    imagePreviewList->clear();
+    for(int fileIndex = previousIndex; fileIndex < indexPathToImagesList; fileIndex++)
+    {
+        if(fileIndex == pathToImages.size())
+        {
+            break;
+        }
+        QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
+        addImageToImageDataBasePreview(qImage);
+    }
+    return true;
+}
+
 
 
 ImageSelectionLoader::ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
@@ -45,7 +66,7 @@ bool ImageSelectionLoader::selectDataBasePath()
     return true;
 }
 
-bool ImageSelectionLoader::loadPreview()
+bool ImageSelectionLoader::loadNextPreview()
 {
     if(this->indexPathToImagesList >= pathToImages.size())
     {
@@ -120,7 +141,7 @@ bool LymeDatabaseLoader::selectDataBasePath()
     return true;
 }
 
-bool LymeDatabaseLoader::loadPreview()
+bool LymeDatabaseLoader::loadNextPreview()
 {
     if(indexPathToImagesList >= pathToImages.size())
     {

@@ -13,6 +13,7 @@ ApplicationViewer::ApplicationViewer(QWidget *parent)
 
     this->tabWidget = new QTabWidget();
     addPreprocessingTab(tabWidget);
+    addDataAugmentationTab(tabWidget);
     addClassificationTrainingTab(tabWidget);
     addResultTab(tabWidget);
     this->mainLayout->addWidget(tabWidget);
@@ -37,6 +38,12 @@ void ApplicationViewer::addPreprocessingTab(QTabWidget *mainTabWidget)
     mainTabWidget->addTab(preprocessingTab, tr("Preprocessing"));
 }
 
+void ApplicationViewer::addDataAugmentationTab(QTabWidget *mainTabWidget)
+{
+    dataAugmentationTab = new DataAugmentationTab();
+    mainTabWidget->addTab(dataAugmentationTab, tr("Data Augmentation"));
+}
+
 void ApplicationViewer::addClassificationTrainingTab(QTabWidget *mainTabWidget)
 {
     classificationTrainingTab = new ClassificationTrainingTab();
@@ -51,14 +58,24 @@ void ApplicationViewer::addResultTab(QTabWidget *mainTabWidget)
 
 void ApplicationViewer::handleOpenImageSelectionDataHandler()
 {
-    this->dataHandler = new ImageSelectionLoader(mainWidget, preprocessingTab->imagePreviewList);
-    this->preprocessingTab->dataHandler = this->dataHandler;
-    this->preprocessingTab->handleLoadDataBase();
+    this->preprocessingDataHandler = new ImageSelectionLoader(mainWidget, preprocessingTab->imagePreviewList);
+    this->dataAugmentationDataHandler = new ImageSelectionLoader(mainWidget, dataAugmentationTab->imagePreviewList);
+
+    this->preprocessingDataHandler->selectDataBasePath();
+    this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;
+
+    this->preprocessingTab->handleNewDataHandler(this->preprocessingDataHandler);
+    this->dataAugmentationTab->handleNewDataHandler(this->dataAugmentationDataHandler);
 }
 
 void ApplicationViewer::handleOpenLymeDatabaseDataHandler()
 {
-    this->dataHandler = new LymeDatabaseLoader(mainWidget, preprocessingTab->imagePreviewList);
-    this->preprocessingTab->dataHandler = this->dataHandler;
-    this->preprocessingTab->handleLoadDataBase();
+    this->preprocessingDataHandler = new LymeDatabaseLoader(mainWidget, preprocessingTab->imagePreviewList);
+    this->dataAugmentationDataHandler = new LymeDatabaseLoader(mainWidget, dataAugmentationTab->imagePreviewList);
+    
+    this->preprocessingDataHandler->selectDataBasePath();
+    this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;
+
+    this->preprocessingTab->handleNewDataHandler(this->preprocessingDataHandler);
+    this->dataAugmentationTab->handleNewDataHandler(this->dataAugmentationDataHandler);
 }

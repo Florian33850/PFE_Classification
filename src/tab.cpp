@@ -4,6 +4,10 @@
 
 Tab::Tab()
 {
+    this->mainLayout = new QGridLayout();
+    this->mainLayout->setSpacing(1);
+    this->mainLayout->setMargin(1);
+    this->setLayout(this->mainLayout);
 }
 
 Tab::~Tab() {}

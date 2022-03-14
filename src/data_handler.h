@@ -12,15 +12,19 @@ class DataHandler
 {
     public:
         DataHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
-        
+
+        QStringList pathToImages;
         int maxNumberOfImagesToLoad;
         int totalNumberOfImages;
-        QStringList pathToImages;
+        int indexPathToImagesList;
+        
+
+        bool reloadPreview();
 
         virtual bool selectDataBasePath() = 0;
-        virtual bool loadPreview() = 0;
+        virtual bool loadNextPreview() = 0;
         virtual bool loadPreviousPreview() = 0;
-
+        
     protected:
         QWidget *parent;
         std::vector<ImageLabel*> *imagePreviewList;
@@ -35,11 +39,8 @@ class ImageSelectionLoader : public DataHandler
         ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
 
         bool selectDataBasePath();
-        bool loadPreview();
+        bool loadNextPreview();
         bool loadPreviousPreview();
-
-    private:
-        int indexPathToImagesList;
 };
 
 class LymeDatabaseLoader : public DataHandler
@@ -48,11 +49,10 @@ class LymeDatabaseLoader : public DataHandler
         LymeDatabaseLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
 
         bool selectDataBasePath();
-        bool loadPreview();
+        bool loadNextPreview();
         bool loadPreviousPreview();
 
     private:
-        int indexPathToImagesList;
         QString pathToDatabase;
 };
 #endif //data_handler_H

@@ -1,27 +1,21 @@
-#ifndef DataAugmentation_TAB_H
-#define DataAugmentation_TAB_H
+#ifndef DATA_AUGMENTATION_TAB_H
+#define DATA_AUGMENTATION_TAB_H
 
 #include "tab.h"
-#include "DataAugmentation_viewer.h"
-#include "data_handler.h"
-
-#include <QFileDialog>
 
 class DataAugmentationTab : public Tab
 {
     Q_OBJECT
     public:
-        DataAugmentationTab( Tab *parent = nullptr);
+        DataAugmentationTab();
 
-        DataHandler *dataHandler;
-        std::vector<ImageLabel*> *imagePreviewList;
-        int maximumRowsOfPreviewImages;
-        int maximumCollumnsOfPreviewImages;
-
-        void displayDataBasePreview();
+        void handleNewDataHandler(DataHandler *dataHandler);
 
     private:
-        QGridLayout *mainLayout;
-        QGridLayout *imagesPreviewLayout;
+        ImageTransformationViewer *imageTransformationViewer;
+
+        QVBoxLayout *dataBaseCountLayout;
+
+        void addDataBaseCountDisplay();
 };
-#endif // DataAugmentation_TAB_H
+#endif // DATA_AUGMENTATION_TAB_H

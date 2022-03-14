@@ -29,16 +29,19 @@ add_executable(application_viewer
   src/application_viewer.cpp
   src/image_label.cpp
   src/preprocessing_tab.cpp
+  src/data_augmentation_tab.cpp
+  src/data_augmentation_widget.cpp
   src/classification_training_tab.cpp
   src/result_tab.cpp
   src/tab.cpp
   src/image_transformation.cpp
-  src/preprocessing_viewer.cpp
+  src/image_transformation_viewer.cpp
   src/image_transformation_widget.cpp
   src/data_handler.cpp
+  src/images_preview_widget.cpp
   src/classification_thread.cpp
   src/result_thread.cpp
-  src/classification_training_widget
+  src/classification_training_widget.cpp
   )
 
 target_link_libraries(application_viewer Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS})
@@ -100,19 +103,22 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(UnitTests tests/test_hello.cpp
     tests/result_thread_test.cpp 
-  src/application_viewer.cpp
-  src/image_label.cpp
-  src/preprocessing_tab.cpp
-  src/classification_training_tab.cpp
-  src/result_tab.cpp
-  src/tab.cpp
-  src/image_transformation.cpp
-  src/preprocessing_viewer.cpp
-  src/image_transformation_widget.cpp
-  src/data_handler.cpp
-  src/classification_thread.cpp
-  src/result_thread.cpp
-  src/classification_training_widget.cpp)
+    src/application_viewer.cpp
+    src/image_label.cpp
+    src/preprocessing_tab.cpp
+    src/data_augmentation_tab.cpp
+    src/data_augmentation_widget.cpp
+    src/classification_training_tab.cpp
+    src/result_tab.cpp
+    src/tab.cpp
+    src/image_transformation.cpp
+    src/image_transformation_viewer.cpp
+    src/image_transformation_widget.cpp
+    src/data_handler.cpp
+    src/images_preview_widget.cpp
+    src/classification_thread.cpp
+    src/result_thread.cpp
+    src/classification_training_widget.cpp)
 target_link_libraries(UnitTests gtest_main Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS})
 
 include(GoogleTest)

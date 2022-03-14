@@ -1,10 +1,7 @@
 #include "classification_training_tab.h"
 
-ClassificationTrainingTab::ClassificationTrainingTab()
+ClassificationTrainingTab::ClassificationTrainingTab() : Tab()
 {
-    this->mainLayout = new QGridLayout;
-    this->setLayout(this->mainLayout);
-
     this->parametersLayout = new QVBoxLayout;
     this->mainLayout->addLayout(this->parametersLayout, 1, 0);
 

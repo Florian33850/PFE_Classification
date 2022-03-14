@@ -13,6 +13,8 @@
 #include <QGroupBox>
 #include <QIntValidator>
 #include <QComboBox>
+#include <QFileDialog>
+#include <QLineEdit>
 
 class ClassificationTrainingTab : public Tab
 {
@@ -21,7 +23,6 @@ class ClassificationTrainingTab : public Tab
         ClassificationTrainingTab();
 
     private:
-        QGridLayout *mainLayout;
         QVBoxLayout *parametersLayout;
         QVBoxLayout *trainingOutputLayout;
 

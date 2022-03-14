@@ -1,5 +1,5 @@
-#ifndef PPREPROCESSING_WIDGET_H
-#define PREPROCESSING_WIDGET_H
+#ifndef IMAGE_TRANSFORMATION_WIDGET_H
+#define IMAGE_TRANSFORMATION_WIDGET_H
 
 #include "image_transformation.h"
 
@@ -20,10 +20,11 @@ class ImageTransformationWidget : public QWidget
         bool isActivated;
         ImageTransformation *imageTransformation;
         
-        virtual void displayUI() = 0;
+        virtual void displayUI(int indexInLayout) = 0;
         void deleteMainWidgetGroupBox();
 
         QPushButton* getDeleteImageTransformationWidgetButton();
+        int getLayoutCount();
         
     protected:
         QVBoxLayout *mainLayout;
@@ -39,7 +40,7 @@ class MirrorWidget : public ImageTransformationWidget
     public:
         MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MirrorImageTransformation *mirrorImageTransformation);
 
-        void displayUI();
+        void displayUI(int indexInLayout);
     
     private:
         QCheckBox *horizontalMirrorCheckBox;
@@ -51,7 +52,7 @@ class GrayscaleWidget : public ImageTransformationWidget
     public:
         GrayscaleWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, GrayscaleImageTransformation *grayscaleImageTransformation);
 
-        void displayUI();
+        void displayUI(int indexInLayout);
 };
 
-#endif // PREPROCESSING_WIDGET_H
+#endif // IMAGE_TRANSFORMATION_WIDGET_H
