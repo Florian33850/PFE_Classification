@@ -18,7 +18,7 @@ class ClassificationTrainingTab : public Tab
 {
     Q_OBJECT
     public:
-        ClassificationTrainingTab(Tab *parent = nullptr);
+        ClassificationTrainingTab();
 
     private:
         QGridLayout *mainLayout;

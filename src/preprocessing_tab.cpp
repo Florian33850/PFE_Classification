@@ -1,7 +1,6 @@
 #include "preprocessing_tab.h"
 
-PreprocessingTab::PreprocessingTab(Tab *parent)
-    : Tab(parent)
+PreprocessingTab::PreprocessingTab()
 {
     this->mainLayout = new QGridLayout();
     this->mainLayout->setSpacing(1);

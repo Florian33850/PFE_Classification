@@ -1,7 +1,6 @@
 #include "classification_training_tab.h"
 
-ClassificationTrainingTab::ClassificationTrainingTab(Tab *parent)
-    : Tab(parent)
+ClassificationTrainingTab::ClassificationTrainingTab()
 {
     this->mainLayout = new QGridLayout;
     this->setLayout(this->mainLayout);
