@@ -2,7 +2,8 @@
 #define private public
 #include "../src/result_thread.h"
 
-TEST(InstantiationTest, TestIfInstantiationOfResultThreadIsNotNull) {
+TEST(InstantiationTest, TestIfInstantiationOfResultThreadIsNotNull)
+{
     QString pathToPredictionFile = "";
     QString pathToModel = "";
     QString pathToImage = "";
@@ -11,7 +12,8 @@ TEST(InstantiationTest, TestIfInstantiationOfResultThreadIsNotNull) {
     ASSERT_TRUE(resultThread != NULL);
 }
 
-TEST(NotRunningBeforeTest, TestIfQProcessOfResultThreadNotRunningBeforeRunFunction) {
+TEST(NotRunningBeforeTest, TestIfQProcessOfResultThreadNotRunningBeforeRunFunction)
+{
     QString pathToPredictionFile = "";
     QString pathToModel = "";
     QString pathToImage = "";
@@ -20,7 +22,8 @@ TEST(NotRunningBeforeTest, TestIfQProcessOfResultThreadNotRunningBeforeRunFuncti
     ASSERT_TRUE(resultThread->process.state() == QProcess::NotRunning);
 }
 
-TEST(NotRunningAfterTest, TestIfQProcessOfResultThreadNotRunningAfterRunFunction) {
+TEST(NotRunningAfterTest, TestIfQProcessOfResultThreadNotRunningAfterRunFunction)
+{
     QString pathToPredictionFile = "";
     QString pathToModel = "";
     QString pathToImage = "";
