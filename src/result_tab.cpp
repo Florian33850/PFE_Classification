@@ -1,10 +1,7 @@
 #include "result_tab.h"
 
-ResultTab::ResultTab()
+ResultTab::ResultTab() : Tab()
 {
-    this->mainLayout = new QGridLayout;
-    this->setLayout(this->mainLayout);
-
     this->classificationParametersLayout = new QVBoxLayout;
     this->classificationParametersLayout->addStretch();
     this->mainLayout->addLayout(this->classificationParametersLayout, 0, 0);

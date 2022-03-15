@@ -13,6 +13,8 @@
 #include <QGroupBox>
 #include <QFormLayout>
 #include <QScrollArea>
+#include <QLineEdit>
+#include <QFileDialog>
 
 class ResultTab : public Tab
 {
@@ -21,7 +23,6 @@ class ResultTab : public Tab
         ResultTab();
 
     private:
-        QGridLayout *mainLayout;
         QBoxLayout *classificationParametersLayout;
         QBoxLayout *resultOutputLayout;
 
