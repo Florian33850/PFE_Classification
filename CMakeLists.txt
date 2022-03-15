@@ -101,8 +101,9 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(UnitTests tests/test_hello.cpp
+add_executable(UnitTests
     tests/result_thread_test.cpp
+    tests/classification_thread_test.cpp
     src/application_viewer.cpp
     src/image_label.cpp
     src/preprocessing_tab.cpp
