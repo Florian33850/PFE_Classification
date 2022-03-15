@@ -53,8 +53,6 @@ TEST(NotRunningAfterTest, TestIfQProcessOfClassificationThreadNotRunningAfterRun
 
 TEST(FilesExistTest, TestIfOutputFilesOfDeepLearningThreadAreCreatedAfterRunFunction)
 {
-    std::remove("outputTraining.txt");
-    std::remove("errorTraining.txt");
     QString pathToClassifier = "";
     QString pathToTrainingSet = ""; 
     QString pathToTestingSet = ""; 
@@ -76,12 +74,12 @@ TEST(FilesExistTest, TestIfOutputFilesOfDeepLearningThreadAreCreatedAfterRunFunc
         isCreated = false;
     }
     EXPECT_TRUE(isCreated == true);
+    std::remove("outputTraining.txt");
+    std::remove("errorTraining.txt");
 }
 
 TEST(FilesExistTest, TestIfOutputFilesOfRandomForestThreadAreCreatedAfterRunFunction)
 {
-    std::remove("outputTraining.txt");
-    std::remove("errorTraining.txt");
     QString pathToClassifier = "";
     QString pathToTrainingSet = ""; 
     QString numberOfTrees = ""; 
@@ -102,4 +100,6 @@ TEST(FilesExistTest, TestIfOutputFilesOfRandomForestThreadAreCreatedAfterRunFunc
         isCreated = false;
     }
     EXPECT_TRUE(isCreated == true);
+    std::remove("outputTraining.txt");
+    std::remove("errorTraining.txt");
 }
