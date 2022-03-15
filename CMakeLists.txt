@@ -104,6 +104,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(UnitTests
     tests/result_thread_test.cpp
     tests/classification_thread_test.cpp
+    tests/image_transformation_test.cpp
     src/application_viewer.cpp
     src/image_label.cpp
     src/preprocessing_tab.cpp
