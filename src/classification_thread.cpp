@@ -7,13 +7,12 @@ ClassificationThread::ClassificationThread(QString pathToClassifier)
 
 void ClassificationThread::launchClassification(QString command, QStringList arguments)
 {
-    QProcess process;
-    process.setStandardOutputFile("outputTraining.txt", QIODevice::ReadWrite);
-    process.setStandardErrorFile("errorTraining.txt", QIODevice::ReadWrite);
-
-    process.start(command ,arguments);
-    process.waitForStarted();
-    process.waitForFinished(-1);
+    
+    this->process.setStandardOutputFile("outputTraining.txt", QIODevice::ReadWrite);
+    this->process.setStandardErrorFile("errorTraining.txt", QIODevice::ReadWrite);
+    this->process.start(command ,arguments);
+    this->process.waitForStarted();
+    this->process.waitForFinished(-1);
 }
 
 DeepLearningThread::DeepLearningThread(QString pathToClassifier, QString pathToTrainingSet, QString pathToTestingSet, QString numberOfEpochs, QString widthOfImages, QString heightOfImages)
