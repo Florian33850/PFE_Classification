@@ -16,6 +16,7 @@ class ClassificationThread : public QThread
     
     protected:
         QString pathToClassifier;
+        QProcess process;
 };
 #endif // CLASSIFICATION_THREAD_H
 

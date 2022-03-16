@@ -13,15 +13,16 @@
 #include <QGroupBox>
 #include <QIntValidator>
 #include <QComboBox>
+#include <QFileDialog>
+#include <QLineEdit>
 
 class ClassificationTrainingTab : public Tab
 {
     Q_OBJECT
     public:
-        ClassificationTrainingTab(Tab *parent = nullptr);
+        ClassificationTrainingTab();
 
     private:
-        QGridLayout *mainLayout;
         QVBoxLayout *parametersLayout;
         QVBoxLayout *trainingOutputLayout;
 

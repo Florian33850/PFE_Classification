@@ -4,6 +4,7 @@
 #include "classification_training_tab.h"
 #include "preprocessing_tab.h"
 #include "result_tab.h"
+#include "data_augmentation_tab.h"
 
 #include <iostream>
 
@@ -23,17 +24,21 @@ class ApplicationViewer : public QMainWindow
         QVBoxLayout *mainLayout;
         QWidget *mainWidget;
         QTabWidget *tabWidget;
-        DataHandler *dataHandler;
+        DataHandler *preprocessingDataHandler;
+        DataHandler *dataAugmentationDataHandler;
 
         PreprocessingTab *preprocessingTab;
+        DataAugmentationTab *dataAugmentationTab;
         ClassificationTrainingTab *classificationTrainingTab;
         ResultTab *resultTab;
 
         void addSettingMenu(ApplicationViewer *applicationViewer);
         void addPreprocessingTab(QTabWidget *mainTabWidget);
+        void addDataAugmentationTab(QTabWidget *mainTabWidget);
         void addClassificationTrainingTab(QTabWidget *mainTabWidget);
         void addResultTab(QTabWidget *mainTabWidget);
         
         void handleOpenImageSelectionDataHandler();
+        void handleOpenLymeDatabaseDataHandler();
 };
 #endif // APPLICATION_VIEWER_H

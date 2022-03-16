@@ -13,15 +13,16 @@
 #include <QGroupBox>
 #include <QFormLayout>
 #include <QScrollArea>
+#include <QLineEdit>
+#include <QFileDialog>
 
 class ResultTab : public Tab
 {
     Q_OBJECT
     public:
-        ResultTab(Tab *parent = nullptr);
+        ResultTab();
 
     private:
-        QGridLayout *mainLayout;
         QBoxLayout *classificationParametersLayout;
         QBoxLayout *resultOutputLayout;
 

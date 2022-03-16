@@ -42,6 +42,7 @@ class ClassificationTrainingWidget : public QWidget
 
 class DeepLearningWidget : public ClassificationTrainingWidget
 {
+    Q_OBJECT
     public:
         DeepLearningWidget(QVBoxLayout *parametersLayout, QVBoxLayout *trainingOutputLayout);
     
@@ -65,6 +66,7 @@ class DeepLearningWidget : public ClassificationTrainingWidget
 
 class RandomForestWidget : public ClassificationTrainingWidget
 {
+    Q_OBJECT
     public:
         RandomForestWidget(QVBoxLayout *parametersLayout, QVBoxLayout *trainingOutputLayout);
 
