@@ -6,6 +6,7 @@
 #include <iostream>
 #include <QVBoxLayout>
 #include <QComboBox>
+#include <QVector>
 
 class PreprocessingViewer : public QWidget
 {
@@ -13,6 +14,8 @@ class PreprocessingViewer : public QWidget
         PreprocessingViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parent = nullptr);
 
         void launchActivatedPreprocesses();
+
+        QVector<QImage> imagesToSave;
 
     private:
         QVBoxLayout *mainLayout;
@@ -33,5 +36,6 @@ class PreprocessingViewer : public QWidget
         void handleLaunchPreprocessingButton();
         void handlePreprocessingComboBox();
         void handleDeleteImageTransformationWidgetButton(ImageTransformationWidget* imageTransformationWidget);
+
 };
 #endif // PREPROCESSING_VIEWER_H

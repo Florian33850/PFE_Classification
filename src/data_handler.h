@@ -17,6 +17,8 @@ class DataHandler
         virtual bool selectDataBasePath() = 0;
         virtual bool loadPreview() = 0;
         virtual bool loadPreviousPreview() = 0;
+        //virtual bool saveImagesInFile() = 0;
+        virtual bool saveImagesInFile(QString saveFolderName, QVector<QImage> imagesToSave) = 0;
 
     protected:
         QWidget *parent;
@@ -34,9 +36,12 @@ class ImageSelectionLoader : public DataHandler
         bool selectDataBasePath();
         bool loadPreview();
         bool loadPreviousPreview();
+        //bool saveImagesInFile();
+        bool saveImagesInFile(QString saveFolderName, QVector<QImage> imagesToSave);
 
     private:
         int indexPathToImagesList;
         QStringList pathToImages;
+        QString buildPath;
 };
 #endif //data_handler_H

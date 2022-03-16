@@ -47,7 +47,14 @@ void PreprocessingTab::addNextPreviewButton()
 {
     QPushButton *nextDataBasePreview = new QPushButton("Next");
     connect(nextDataBasePreview, &QPushButton::released, this, &PreprocessingTab::handleLoadNextPreviewButton);
-    this->mainLayout->addWidget(nextDataBasePreview, 3, 2, 1, 1);
+    this->mainLayout->addWidget(nextDataBasePreview, 3, 1, 1, 1);
+}
+
+void PreprocessingTab::addSaveButton()
+{
+    QPushButton *saveImages = new QPushButton("&Save");
+    connect(saveImages, &QPushButton::released, this, &PreprocessingTab::handleSaveButton);
+    this->mainLayout->addWidget(saveImages, 3, 3, 1, 1);
 }
 
 void PreprocessingTab::handleLoadDataBase()
@@ -58,6 +65,8 @@ void PreprocessingTab::handleLoadDataBase()
     displayDataBasePreview();
     addPreviousPreviewButton();
     addNextPreviewButton();
+    addSaveButton();
+    std::cout << preprocessingViewer->imagesToSave.size() << std::endl;
 }
 
 void PreprocessingTab::handleLoadNextPreviewButton()
@@ -79,4 +88,16 @@ void PreprocessingTab::handleLoadPreviousPreviewButton()
         this->preprocessingViewer->launchActivatedPreprocesses();
         displayDataBasePreview();
     }
+}
+
+void PreprocessingTab::handleSaveButton()
+{
+    QVector<QImage> ok;
+    std::cout << "image preview size : " << imagePreviewList->size() << std::endl;
+    for(int i = 0; i < imagePreviewList->size() ; i++)
+    {
+        ok.append(imagePreviewList->at(i)->getQImage());
+    }
+    //this->dataHandler->saveImagesInFile("Preprocessing", this->preprocessingViewer->imagesToSave);
+    this->dataHandler->saveImagesInFile("Preprocessing", ok);
 }

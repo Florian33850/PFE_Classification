@@ -21,10 +21,12 @@ class PreprocessingTab : public Tab
         void displayDataBasePreview();
         void addPreviousPreviewButton();
         void addNextPreviewButton();
+        void addSaveButton();
 
         void handleLoadDataBase();
         void handleLoadPreviousPreviewButton();
         void handleLoadNextPreviewButton();
+        void handleSaveButton();
 
     private:
         QGridLayout *mainLayout;
