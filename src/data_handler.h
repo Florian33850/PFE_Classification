@@ -41,6 +41,19 @@ class ImageSelectionLoader : public DataHandler
 
         bool selectDataBasePath();
         bool loadNextPreview();
+<<<<<<< HEAD
+=======
+        bool loadPreviousPreview();
+};
+
+class LymeDatabaseLoader : public DataHandler
+{
+    public:
+        LymeDatabaseLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
+
+        bool selectDataBasePath();
+        bool loadNextPreview();
+>>>>>>> main
         bool loadPreviousPreview();
 };
 
@@ -55,7 +68,10 @@ class LymeDatabaseLoader : public DataHandler
         bool saveImagesInFile(QString saveFolderName, QVector<QImage> imagesToSave);
 
     private:
+<<<<<<< HEAD
         QString buildPath;
+=======
+>>>>>>> main
         QString pathToDatabase;
 };
 #endif //data_handler_H

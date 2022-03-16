@@ -198,6 +198,7 @@ bool ImageSelectionLoader::saveImagesInFile(QString saveFolderName, QVector<QIma
         
     return true;
 }
+
 bool LymeDatabaseLoader::loadPreviousPreview()
 {
     int previousIndex = this->indexPathToImagesList - 2*this->maxNumberOfImagesToLoad;
