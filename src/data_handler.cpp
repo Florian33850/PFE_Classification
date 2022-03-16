@@ -91,7 +91,6 @@ bool ImageSelectionLoader::loadPreviousPreview()
         return true;
     }
 }
-//bool ImageSelectionLoader::saveImagesInFile()
 
 bool ImageSelectionLoader::saveImagesInFile(QString saveFolderName, QVector<QImage> imagesToSave)
 {
