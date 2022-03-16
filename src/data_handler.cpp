@@ -18,7 +18,7 @@ QImage DataHandler::loadImageFromPath(QString pathToImage)
     return qImage;
 }
 
-void DataHandler::addImageToImageDataBasePreview(QImage qImage)
+void DataHandler::addImageToImagePreviewList(QImage qImage)
 {
     ImageLabel *newImageLabel = new ImageLabel();
     newImageLabel->setImage(qImage);
@@ -41,20 +41,20 @@ bool DataHandler::reloadPreview()
             break;
         }
         QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
-        addImageToImageDataBasePreview(qImage);
+        addImageToImagePreviewList(qImage);
     }
     return true;
 }
 
 
 
-ImageSelectionLoader::ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
+ImageSelectionHandler::ImageSelectionHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
 {
     this->indexPathToImagesList = 0;
     this->maxNumberOfImagesToLoad = 10;
 }
 
-bool ImageSelectionLoader::selectDataBasePath()
+bool ImageSelectionHandler::selectDataBasePath()
 {
     QStringList newPathToImages = QFileDialog::getOpenFileNames(this->parent, "Select images to open", "Images (*.jpg *.jpeg *.png *.tiff)");
     if (newPathToImages.size() == 0)
@@ -66,7 +66,7 @@ bool ImageSelectionLoader::selectDataBasePath()
     return true;
 }
 
-bool ImageSelectionLoader::loadNextPreview()
+bool ImageSelectionHandler::loadNextPreview()
 {
     if(this->indexPathToImagesList >= pathToImages.size())
     {
@@ -83,14 +83,14 @@ bool ImageSelectionLoader::loadNextPreview()
                 break;
             }
             QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
-            addImageToImageDataBasePreview(qImage);
+            addImageToImagePreviewList(qImage);
         }
         this->indexPathToImagesList += this->maxNumberOfImagesToLoad;
         return true;
     }
 }
 
-bool ImageSelectionLoader::loadPreviousPreview()
+bool ImageSelectionHandler::loadPreviousPreview()
 {
     int previousIndex = this->indexPathToImagesList - 2*this->maxNumberOfImagesToLoad;
     if(previousIndex < 0)
@@ -104,7 +104,7 @@ bool ImageSelectionLoader::loadPreviousPreview()
         for(int fileIndex = previousIndex; fileIndex < this->indexPathToImagesList - this->maxNumberOfImagesToLoad; fileIndex++)
         {
             QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
-            addImageToImageDataBasePreview(qImage);
+            addImageToImagePreviewList(qImage);
         }
         this->indexPathToImagesList -= this->maxNumberOfImagesToLoad;
         return true;
@@ -113,13 +113,13 @@ bool ImageSelectionLoader::loadPreviousPreview()
 
 
 
-LymeDatabaseLoader::LymeDatabaseLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
+LymeDatabaseHandler::LymeDatabaseHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
 {
     this->indexPathToImagesList = 0;
     this->maxNumberOfImagesToLoad = 10;
 }
 
-bool LymeDatabaseLoader::selectDataBasePath()
+bool LymeDatabaseHandler::selectDataBasePath()
 {
     QString newPathToDatabase = QFileDialog::getExistingDirectory(this->parent, "Select lyme database to open");
     if (newPathToDatabase.size() == 0)
@@ -141,7 +141,7 @@ bool LymeDatabaseLoader::selectDataBasePath()
     return true;
 }
 
-bool LymeDatabaseLoader::loadNextPreview()
+bool LymeDatabaseHandler::loadNextPreview()
 {
     if(indexPathToImagesList >= pathToImages.size())
     {
@@ -159,14 +159,14 @@ bool LymeDatabaseLoader::loadNextPreview()
             }
             QString pathToImage = this->pathToImages.at(fileIndex);
             QImage qImage = loadImageFromPath(pathToImage);
-            addImageToImageDataBasePreview(qImage);
+            addImageToImagePreviewList(qImage);
         }
         this->indexPathToImagesList += this->maxNumberOfImagesToLoad;
         return true;
     }
 }
 
-bool LymeDatabaseLoader::loadPreviousPreview()
+bool LymeDatabaseHandler::loadPreviousPreview()
 {
     int previousIndex = this->indexPathToImagesList - 2*this->maxNumberOfImagesToLoad;
     if(previousIndex < 0)
@@ -180,7 +180,7 @@ bool LymeDatabaseLoader::loadPreviousPreview()
         for(int fileIndex = previousIndex; fileIndex < this->indexPathToImagesList - this->maxNumberOfImagesToLoad; fileIndex++)
         {
             QImage qImage = loadImageFromPath(this->pathToImages.at(fileIndex));
-            addImageToImageDataBasePreview(qImage);
+            addImageToImagePreviewList(qImage);
         }
         this->indexPathToImagesList -= this->maxNumberOfImagesToLoad;
         return true;

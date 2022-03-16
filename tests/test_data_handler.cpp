@@ -11,14 +11,16 @@ TEST(ImageSelectionHandler, TestImageSelectionHandlerInstantiation)
 {
     QWidget *parent = NULL;
     std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
-    ASSERT_TRUE(new ImageSelectionHandler(parent, imagePreviewList) != NULL);
+    ImageSelectionHandler *dataHandler = new ImageSelectionHandler(parent, imagePreviewList);
+    ASSERT_TRUE(dataHandler != NULL);
 }
 
 TEST(LymeDatabaseHandler, TestLymeDatabaseHandlerInstantiation)
 {
     QWidget *parent = NULL;
     std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
-    ASSERT_TRUE(new LymeDatabaseHandler(parent, imagePreviewList) != NULL);
+    LymeDatabaseHandler *dataHandler = new LymeDatabaseHandler(parent, imagePreviewList);
+    ASSERT_TRUE(dataHandler != NULL);
 }
 
 bool createAndSaveBlackImage(int height, int width)
@@ -44,7 +46,7 @@ TEST(DataHandler, TestLoadImageFromPath)
 
     if(createAndSaveBlackImage(200, 200) == false)
     {
-        //FAIL() << "[INFO] Cannot create Image to correctly execute the test.\n";
+        FAIL() << "[INFO] Cannot create Image to correctly execute the test.\n";
     }
     
     QString pathToImage = "testImage.png";
@@ -61,6 +63,6 @@ TEST(DataHandler, TestAddImageToImagePreviewList)
 
     int sizeAtBegin = datahandler->imagePreviewList->size();
     QImage newImageToAdd;
-    addImageToImagePreviewList(newImageToAdd);
+    datahandler->addImageToImagePreviewList(newImageToAdd);
     ASSERT_TRUE(datahandler->imagePreviewList->size() == sizeAtBegin + 1);
 }
