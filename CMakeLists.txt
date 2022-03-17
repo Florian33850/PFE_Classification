@@ -20,12 +20,10 @@ set(CMAKE_AUTOUIC ON)
 ADD_DEFINITIONS(-DQT_NO_KEYWORDS)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5Test REQUIRED)
 find_package(OpenCV REQUIRED)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3")
 
-#add the executable
-add_executable(application_viewer
-  src/main.cpp
+set(SOURCES
   src/application_viewer.cpp
   src/image_label.cpp
   src/preprocessing_tab.cpp
@@ -44,12 +42,19 @@ add_executable(application_viewer
   src/classification_training_widget.cpp
   )
 
-target_link_libraries(application_viewer Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS})
+#add the executable
+add_executable(application_viewer
+  src/main.cpp
+  ${SOURCES}
+  )
+
+target_link_libraries(application_viewer Qt5::Widgets ${OpenCV_LIBS})
 
 # Create the gcov target. Run coverage tests with 'make gcov'
 add_custom_target(gcov
     COMMAND mkdir -p coverage
     COMMAND ${CMAKE_MAKE_PROGRAM} test
+    COMMAND "cmake make program equal = ${CMAKE_MAKE_PROGRAM}"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 add_custom_command(TARGET gcov
@@ -102,26 +107,16 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(UnitTests
-    tests/result_thread_test.cpp
-    tests/classification_thread_test.cpp
-    tests/image_transformation_test.cpp
-    src/application_viewer.cpp
-    src/image_label.cpp
-    src/preprocessing_tab.cpp
-    src/data_augmentation_tab.cpp
-    src/data_augmentation_widget.cpp
-    src/classification_training_tab.cpp
-    src/result_tab.cpp
-    src/tab.cpp
-    src/image_transformation.cpp
-    src/image_transformation_viewer.cpp
-    src/image_transformation_widget.cpp
-    src/data_handler.cpp
-    src/images_preview_widget.cpp
-    src/classification_thread.cpp
-    src/result_thread.cpp
-    src/classification_training_widget.cpp)
+  tests/result_thread_test.cpp
+  ${SOURCES})
 target_link_libraries(UnitTests gtest_main Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS})
 
 include(GoogleTest)
 gtest_discover_tests(UnitTests)
+
+add_executable(qtTest
+  tests/testgui.cpp
+  ${SOURCES})
+add_test(NAME qtTest COMMAND qtTest)
+
+target_link_libraries(qtTest Qt5::Widgets Qt5::Test)
