@@ -16,7 +16,6 @@ private Q_SLOTS:
 
 void TestGui::testELODIE()
 {
-  ImageLabel *imageLabel = new ImageLabel();
   QLineEdit lineEdit;
   
   QTest::keyClicks(&lineEdit, "hello world");
