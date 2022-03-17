@@ -18,7 +18,6 @@ class DataHandler
         int totalNumberOfImages;
         int indexPathToImagesList;
         
-
         bool reloadPreview();
 
         virtual bool selectDataBasePath() = 0;

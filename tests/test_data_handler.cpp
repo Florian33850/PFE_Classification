@@ -2,6 +2,7 @@
 #define private public
 #define protected public
 #include "../src/data_handler.h"
+#include <string>
 
 #include "opencv2/highgui/highgui.hpp"
 using namespace cv;
@@ -23,9 +24,10 @@ TEST(LymeDatabaseHandler, TestLymeDatabaseHandlerInstantiation)
     ASSERT_TRUE(dataHandler != NULL);
 }
 
-bool createAndSaveBlackImage(int height, int width)
+bool createAndSaveRandomNoiseColorImage(int height, int width, String pathToSave)
 {
-    Mat testImage(height, width, CV_8UC3, Scalar(0, 0, 0));
+    Mat testImage(height, width, CV_8UC3);
+    randu(testImage, Scalar(0, 0, 0), Scalar(255, 255, 255));
 
     if(testImage.empty())
     {
@@ -33,36 +35,65 @@ bool createAndSaveBlackImage(int height, int width)
         return false;
     }
 
-    imwrite("testImage.png", testImage);
+    imwrite(pathToSave, testImage);
     return true;
+}
+
+ImageSelectionHandler* createImageSelectionHandler()
+{
+    QWidget *parent = NULL;
+    std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
+    ImageSelectionHandler *dataHandler = new ImageSelectionHandler(parent, imagePreviewList);
+    return dataHandler;
 }
 
 TEST(DataHandler, TestLoadImageFromPath)
 {
-    //DataHandler Instantiation
-    QWidget *parent = NULL;
-    std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
-    ImageSelectionHandler *datahandler = new ImageSelectionHandler(parent, imagePreviewList);
+    ImageSelectionHandler *dataHandler = createImageSelectionHandler();
 
-    if(createAndSaveBlackImage(200, 200) == false)
+    if(createAndSaveRandomNoiseColorImage(200, 200, "testImage.png") == false)
     {
         FAIL() << "[INFO] Cannot create Image to correctly execute the test.\n";
     }
     
-    QString pathToImage = "testImage.png";
     QImage emptyImage;
-    ASSERT_TRUE(datahandler->loadImageFromPath(pathToImage) != emptyImage);
+    ASSERT_TRUE(dataHandler->loadImageFromPath("testImage.png") != emptyImage);
 }
 
 TEST(DataHandler, TestAddImageToImagePreviewList)
 {
-    //DataHandler Instantiation
-    QWidget *parent = NULL;
-    std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
-    ImageSelectionHandler *datahandler = new ImageSelectionHandler(parent, imagePreviewList);
+    ImageSelectionHandler *dataHandler = createImageSelectionHandler();
 
-    int sizeAtBegin = datahandler->imagePreviewList->size();
+    long unsigned int sizeAtBegin = dataHandler->imagePreviewList->size();
     QImage newImageToAdd;
-    datahandler->addImageToImagePreviewList(newImageToAdd);
-    ASSERT_TRUE(datahandler->imagePreviewList->size() == sizeAtBegin + 1);
+    dataHandler->addImageToImagePreviewList(newImageToAdd);
+    ASSERT_TRUE(dataHandler->imagePreviewList->size() == sizeAtBegin + 1);
+}
+
+TEST(DataHandler, TestReloadPreviewFail)
+{
+    ImageSelectionHandler *dataHandler = createImageSelectionHandler();
+    dataHandler->indexPathToImagesList = 0;
+    dataHandler->maxNumberOfImagesToLoad = 10;
+    ASSERT_FALSE(dataHandler->reloadPreview());
+}
+
+TEST(DataHandler, TestReloadPreviewSuccess)
+{
+    ImageSelectionHandler *dataHandler = createImageSelectionHandler();
+    dataHandler->indexPathToImagesList = 10;
+    dataHandler->maxNumberOfImagesToLoad = 10;
+
+    createAndSaveRandomNoiseColorImage(200, 200, "testImage.png");
+
+    QString pathToImage = "testImage.png";
+    dataHandler->pathToImages.push_back(pathToImage);
+
+    QImage qImageA = dataHandler->loadImageFromPath(pathToImage);
+    QImage qImageTransform = dataHandler->loadImageFromPath(pathToImage).convertToFormat(QImage::Format_Grayscale8);
+    dataHandler->addImageToImagePreviewList(qImageTransform);
+
+    dataHandler->reloadPreview();
+
+    ASSERT_TRUE(dataHandler->imagePreviewList->at(0)->rawImage == qImageA);
 }

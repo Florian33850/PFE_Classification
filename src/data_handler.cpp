@@ -30,7 +30,7 @@ bool DataHandler::reloadPreview()
     int previousIndex = indexPathToImagesList - maxNumberOfImagesToLoad;
     if(previousIndex < 0)
     {
-        std::cout << "No more images to load" << std::endl;
+        std::cout << "Impossible to reload" << std::endl;
         return false;
     }
     imagePreviewList->clear();
