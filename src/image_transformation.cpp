@@ -42,6 +42,7 @@ void GrayscaleImageTransformation::runImageTransformation(std::vector<ImageLabel
 
 AutomaticRotationImageTransformation::AutomaticRotationImageTransformation()
 {
+    dilationSizeMax = 20;
 }
 
 
@@ -68,7 +69,7 @@ float AutomaticRotationImageTransformation::getAngleBetweenVectors(const cv::Poi
     }
 }
 
-cv::PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vector<cv::Point> &pointList)
+cv::PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vector<cv::Point> pointList)
 {
     int pointListSize = static_cast<int>(pointList.size());
     cv::Mat dataPointsMat = cv::Mat(pointListSize, 2, CV_64F);
@@ -166,11 +167,11 @@ void AutomaticRotationImageTransformation::runImageTransformation(std::vector<Im
             threshold(grayMat, thresholdMat, 50, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
             std::vector<std::vector<cv::Point> > contours;
             findContours(thresholdMat, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
-            int dilation_size = 0;
-            while(contours.size() >2)
+            int dilationSize = 0;
+            while(contours.size() > 2 && dilationSize < dilationSizeMax)
             {
-                this->dilatation(thresholdMat, dilation_size);
-                dilation_size++;
+                this->dilatation(thresholdMat, dilationSize);
+                dilationSize++;
                 findContours(thresholdMat, contours, cv::RETR_LIST, cv::CHAIN_APPROX_TC89_L1);
             }
 
@@ -190,6 +191,12 @@ void AutomaticRotationImageTransformation::runImageTransformation(std::vector<Im
                     areaMin = area;
                     indexMin = i;
                 }
+            }
+
+            // Check if no contours of the right size are found
+            if(areaMin == DBL_MAX)
+            {
+                indexMin = 0;
             }
 
             cv::PCA pcaAnalysis = createPCAAnalysis(contours[indexMin]);

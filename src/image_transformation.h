@@ -46,8 +46,10 @@ class AutomaticRotationImageTransformation : public ImageTransformation
         AutomaticRotationImageTransformation();
     
     private:
+        int dilationSizeMax;
+
         float getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector);
-        cv::PCA createPCAAnalysis(const std::vector<cv::Point> &pointList);
+        cv::PCA createPCAAnalysis(const std::vector<cv::Point> pointList);
         double getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis);
         void dilatation(cv::Mat &imageMat, int dilatationSize);
         void centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter);
