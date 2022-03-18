@@ -9,8 +9,6 @@
 
 #include <iostream>
 
-using namespace cv;
-
 class ImageTransformation
 {
     public:
@@ -48,11 +46,11 @@ class AutomaticRotationImageTransformation : public ImageTransformation
         AutomaticRotationImageTransformation();
     
     private:
-        float getAngleBetweenVectors(const Point &vec1, const Point &shapeOrientationVector);
-        PCA createPCAAnalysis(const std::vector<Point> &pointList);
-        double getMinAngleRadian(Point shapeCenter, PCA pcaAnalysis);
-        void dilatation(Mat &imageMat, int dilatationSize);
-        void centerTranslation(Mat &imageMat, const Point shapeCenter);
+        float getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector);
+        cv::PCA createPCAAnalysis(const std::vector<cv::Point> &pointList);
+        double getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis);
+        void dilatation(cv::Mat &imageMat, int dilatationSize);
+        void centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter);
         void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
 };
 

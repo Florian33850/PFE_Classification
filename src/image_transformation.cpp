@@ -1,7 +1,5 @@
 #include "image_transformation.h"
 
-#include <iostream>
-
 MirrorImageTransformation::MirrorImageTransformation()
 {
     horizontalMirror = false;
@@ -47,7 +45,7 @@ AutomaticRotationImageTransformation::AutomaticRotationImageTransformation()
 }
 
 
-float AutomaticRotationImageTransformation::getAngleBetweenVectors(const Point &vec1, const Point &shapeOrientationVector)
+float AutomaticRotationImageTransformation::getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector)
 {
     float length1 = sqrt(vec1.x * vec1.x + vec1.y * vec1.y);
     float length2 = sqrt(shapeOrientationVector.x * shapeOrientationVector.x + shapeOrientationVector.y * shapeOrientationVector.y);
@@ -70,36 +68,36 @@ float AutomaticRotationImageTransformation::getAngleBetweenVectors(const Point &
     }
 }
 
-PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vector<Point> &pointList)
+cv::PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vector<cv::Point> &pointList)
 {
     int pointListSize = static_cast<int>(pointList.size());
-    Mat dataPointsMat = Mat(pointListSize, 2, CV_64F);
+    cv::Mat dataPointsMat = cv::Mat(pointListSize, 2, CV_64F);
     for (int i = 0; i < dataPointsMat.rows; i++)
     {
         dataPointsMat.at<double>(i, 0) = pointList[i].x;
         dataPointsMat.at<double>(i, 1) = pointList[i].y;
     }
 
-    PCA pcaAnalysis(dataPointsMat, Mat(), PCA::DATA_AS_ROW);
+    cv::PCA pcaAnalysis(dataPointsMat, cv::Mat(), cv::PCA::DATA_AS_ROW);
     return pcaAnalysis;
 }
 
-double AutomaticRotationImageTransformation::getMinAngleRadian(Point shapeCenter, PCA pcaAnalysis)
+double AutomaticRotationImageTransformation::getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis)
 {
-    Point verticalPoint = Point(shapeCenter.x, shapeCenter.y-10.);
-    Point verticalVector = verticalPoint-shapeCenter;
+    cv::Point verticalPoint = cv::Point(shapeCenter.x, shapeCenter.y-10.);
+    cv::Point verticalVector = verticalPoint-shapeCenter;
 
-    std::vector<Point2d> eigenVecs(2);
+    std::vector<cv::Point2d> eigenVecs(2);
     std::vector<double> eigenVal(2);
     for (int i = 0; i < 2; i++)
     {
-        eigenVecs[i] = Point2d(pcaAnalysis.eigenvectors.at<double>(i, 0),
+        eigenVecs[i] = cv::Point2d(pcaAnalysis.eigenvectors.at<double>(i, 0),
                                 pcaAnalysis.eigenvectors.at<double>(i, 1));
         eigenVal[i] = pcaAnalysis.eigenvalues.at<double>(i);
     }
 
-    Point shapePoint = shapeCenter + 0.02 * Point(static_cast<int>(eigenVecs[0].x * eigenVal[0]), static_cast<int>(eigenVecs[0].y * eigenVal[0]));
-    Point shapeOrientationVector = shapePoint-shapeCenter;
+    cv::Point shapePoint = shapeCenter + 0.02 * cv::Point(static_cast<int>(eigenVecs[0].x * eigenVal[0]), static_cast<int>(eigenVecs[0].y * eigenVal[0]));
+    cv::Point shapeOrientationVector = shapePoint-shapeCenter;
 
     double angleRadian;
     if(getAngleBetweenVectors(verticalVector, shapeOrientationVector) < getAngleBetweenVectors(-verticalVector, shapeOrientationVector))
@@ -128,33 +126,33 @@ double AutomaticRotationImageTransformation::getMinAngleRadian(Point shapeCenter
     return angleRadian;
 }
 
-void AutomaticRotationImageTransformation::dilatation(Mat &imageMat, int dilatationSize)
+void AutomaticRotationImageTransformation::dilatation(cv::Mat &imageMat, int dilatationSize)
 {
-  Mat structuringElement = getStructuringElement( MORPH_RECT,
-                       Size( 2*dilatationSize + 1, 2*dilatationSize+1 ),
-                       Point( dilatationSize, dilatationSize ) );
+  cv::Mat structuringElement = getStructuringElement( cv::MORPH_RECT,
+                       cv::Size( 2*dilatationSize + 1, 2*dilatationSize+1 ),
+                       cv::Point( dilatationSize, dilatationSize ) );
   dilate(imageMat, imageMat, structuringElement);
 }
 
-void AutomaticRotationImageTransformation::centerTranslation(Mat &imageMat, const Point shapeCenter)
+void AutomaticRotationImageTransformation::centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter)
 {
-    Point imageMatCenter = {imageMat.cols/2, imageMat.rows/2};
+    cv::Point imageMatCenter = {imageMat.cols/2, imageMat.rows/2};
     float translationX = imageMatCenter.x-shapeCenter.x;
     float translationY = imageMatCenter.y-shapeCenter.y;
     float warpValues[] = {1.0, 0.0, translationX, 0.0, 1.0, translationY};
-    cv::Mat translationMat = Mat(2, 3, CV_32F, warpValues);
+    cv::Mat translationMat = cv::Mat(2, 3, CV_32F, warpValues);
 
     cv::warpAffine(imageMat, imageMat, translationMat, imageMat.size());
 }
 
 void AutomaticRotationImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
 {
-    for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
+    for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
     {
         QImage qImage = imagePreviewList->at(imageNumber)->getQImage();
         qImage.save("imageTmp.tif");
 
-        Mat imageMat = imread("imageTmp.tif");
+        cv::Mat imageMat = cv::imread("imageTmp.tif");
         if(imageMat.empty())
         {
             std::cout << "Problem loading image !!!" << std::endl;
@@ -162,23 +160,23 @@ void AutomaticRotationImageTransformation::runImageTransformation(std::vector<Im
         else
         {
 
-            Mat grayMat;
-            cvtColor(imageMat, grayMat, COLOR_BGR2GRAY);
-            Mat thresholdMat;
-            threshold(grayMat, thresholdMat, 50, 255, THRESH_BINARY | THRESH_OTSU);
-            std::vector<std::vector<Point> > contours;
-            findContours(thresholdMat, contours, RETR_LIST, CHAIN_APPROX_NONE);
+            cv::Mat grayMat;
+            cvtColor(imageMat, grayMat, cv::COLOR_BGR2GRAY);
+            cv::Mat thresholdMat;
+            threshold(grayMat, thresholdMat, 50, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+            std::vector<std::vector<cv::Point> > contours;
+            findContours(thresholdMat, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
             int dilation_size = 0;
             while(contours.size() >2)
             {
                 this->dilatation(thresholdMat, dilation_size);
                 dilation_size++;
-                findContours(thresholdMat, contours, RETR_LIST, CHAIN_APPROX_TC89_L1);
+                findContours(thresholdMat, contours, cv::RETR_LIST, cv::CHAIN_APPROX_TC89_L1);
             }
 
             double areaMin = DBL_MAX;
             int indexMin = INT_MAX;
-            for(int i = 0; i < contours.size(); i++)
+            for(int i = 0; i < (int) contours.size(); i++)
             {
                 double area = contourArea(contours[i]);
                 
@@ -194,8 +192,8 @@ void AutomaticRotationImageTransformation::runImageTransformation(std::vector<Im
                 }
             }
 
-            PCA pcaAnalysis = createPCAAnalysis(contours[indexMin]);
-            Point shapeCenter = Point(static_cast<int>(pcaAnalysis.mean.at<double>(0, 0)), static_cast<int>(pcaAnalysis.mean.at<double>(0, 1)));
+            cv::PCA pcaAnalysis = createPCAAnalysis(contours[indexMin]);
+            cv::Point shapeCenter = cv::Point(static_cast<int>(pcaAnalysis.mean.at<double>(0, 0)), static_cast<int>(pcaAnalysis.mean.at<double>(0, 1)));
             double angleRadian = getMinAngleRadian(shapeCenter, pcaAnalysis);
             double angleDegree = angleRadian*(180.0/CV_PI);
 

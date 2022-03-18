@@ -119,4 +119,4 @@ add_executable(qtTest
   ${SOURCES})
 add_test(NAME qtTest COMMAND qtTest)
 
-target_link_libraries(qtTest Qt5::Widgets Qt5::Test)
+target_link_libraries(qtTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
