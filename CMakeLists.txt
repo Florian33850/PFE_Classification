@@ -109,7 +109,6 @@ FetchContent_MakeAvailable(googletest)
 add_executable(UnitTests
     tests/result_thread_test.cpp
     tests/classification_thread_test.cpp
-    tests/classification_training_tab_test.cpp
     tests/image_transformation_test.cpp
     ${SOURCES})
     target_link_libraries(UnitTests gtest_main Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS}

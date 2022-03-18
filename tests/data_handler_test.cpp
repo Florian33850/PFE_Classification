@@ -29,7 +29,6 @@ class DataHandlerTests: public QObject
         void testLoadNextPreviewSuccess();
         void testLoadPreviousPreviewFail();
         void testLoadPreviousPreviewSuccess();
-
 };
 
 void DataHandlerTests::testImageSelectionHandlerInstantiation()
@@ -78,7 +77,7 @@ void DataHandlerTests::testLoadImageFromPath()
     {
         QFAIL("[INFO] Cannot create Image to correctly execute the test.\n");
     }
-    
+
     QImage emptyImage;
     QVERIFY(dataHandler->loadImageFromPath("testImage.png") != emptyImage);
 }
