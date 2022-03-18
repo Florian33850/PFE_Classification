@@ -11,6 +11,7 @@
 
 #define MIRRORED_WIDGET_MAXIMUM_HEIGHT 110
 #define GRAYSCALE_WIDGET_MAXIMUM_HEIGHT 65
+#define AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT 65
 
 class ImageTransformationWidget : public QWidget
 {
@@ -55,4 +56,11 @@ class GrayscaleWidget : public ImageTransformationWidget
         void displayUI(int indexInLayout);
 };
 
+class AutomaticRotationWidget : public ImageTransformationWidget
+{
+    public:
+        AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationImageTransformation *automaticRotationImageTransformation);
+
+        void displayUI(int indexInLayout);
+};
 #endif // IMAGE_TRANSFORMATION_WIDGET_H
