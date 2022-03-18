@@ -3,11 +3,12 @@
 
 #include "image_label.h"
 #include <stdio.h>
+#include <iostream>
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 
-#include <iostream>
+#define AUTOMATIC_ROTATION_MAX_DILATATION_SIZE 20;
 
 class ImageTransformation
 {
@@ -44,14 +45,14 @@ class AutomaticRotationImageTransformation : public ImageTransformation
 {
     public:
         AutomaticRotationImageTransformation();
-    
+
     private:
         int dilationSizeMax;
 
         float getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector);
         cv::PCA createPCAAnalysis(const std::vector<cv::Point> pointList);
         double getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis);
-        void dilatation(cv::Mat &imageMat, int dilatationSize);
+        void applyDilatation(cv::Mat &imageMat, int dilatationSize);
         void centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter);
         void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
 };
