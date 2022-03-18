@@ -70,13 +70,13 @@ bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTran
     for(int unsigned image_index = 0 ; image_index < pathToImages.size() ; image_index++)
     {
         QImage qImage = loadImageFromPath(pathToImages.at(image_index));
-        QImage modifiedImage;
+        QImage modifiedImage = qImage;
         
         for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
         {
             if(imageTransformationWidget->isActivated)
             {
-                modifiedImage = imageTransformationWidget->imageTransformation->runImageTransformation(qImage);
+                modifiedImage = imageTransformationWidget->imageTransformation->runImageTransformation(modifiedImage);
             }
         }
 
