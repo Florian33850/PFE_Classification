@@ -57,8 +57,8 @@ void ApplicationViewer::addResultTab(QTabWidget *mainTabWidget)
 
 void ApplicationViewer::handleOpenImageSelectionDataHandler()
 {
-    this->preprocessingDataHandler = new ImageSelectionLoader(mainWidget, preprocessingTab->imagePreviewList);
-    this->dataAugmentationDataHandler = new ImageSelectionLoader(mainWidget, dataAugmentationTab->imagePreviewList);
+    this->preprocessingDataHandler = new ImageSelectionHandler(mainWidget, preprocessingTab->imagePreviewList);
+    this->dataAugmentationDataHandler = new ImageSelectionHandler(mainWidget, dataAugmentationTab->imagePreviewList);
 
     this->preprocessingDataHandler->selectDataBasePath();
     this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;
@@ -69,8 +69,8 @@ void ApplicationViewer::handleOpenImageSelectionDataHandler()
 
 void ApplicationViewer::handleOpenLymeDatabaseDataHandler()
 {
-    this->preprocessingDataHandler = new LymeDatabaseLoader(mainWidget, preprocessingTab->imagePreviewList);
-    this->dataAugmentationDataHandler = new LymeDatabaseLoader(mainWidget, dataAugmentationTab->imagePreviewList);
+    this->preprocessingDataHandler = new LymeDatabaseHandler(mainWidget, preprocessingTab->imagePreviewList);
+    this->dataAugmentationDataHandler = new LymeDatabaseHandler(mainWidget, dataAugmentationTab->imagePreviewList);
     
     this->preprocessingDataHandler->selectDataBasePath();
     this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;

@@ -18,39 +18,34 @@ class DataHandler
         int totalNumberOfImages;
         int indexPathToImagesList;
         
-
         bool reloadPreview();
+        bool loadNextPreview();
+        bool loadPreviousPreview();
 
         virtual bool selectDataBasePath() = 0;
-        virtual bool loadNextPreview() = 0;
-        virtual bool loadPreviousPreview() = 0;
         
     protected:
         QWidget *parent;
         std::vector<ImageLabel*> *imagePreviewList;
 
         QImage loadImageFromPath(QString pathToImage);
-        void addImageToImageDataBasePreview(QImage qImage);
+        void addImageToImagePreviewList(QImage qImage);
 };
 
-class ImageSelectionLoader : public DataHandler
+class ImageSelectionHandler : public DataHandler
 {
     public:
-        ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
+        ImageSelectionHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
 
         bool selectDataBasePath();
-        bool loadNextPreview();
-        bool loadPreviousPreview();
 };
 
-class LymeDatabaseLoader : public DataHandler
+class LymeDatabaseHandler : public DataHandler
 {
     public:
-        LymeDatabaseLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
+        LymeDatabaseHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
 
         bool selectDataBasePath();
-        bool loadNextPreview();
-        bool loadPreviousPreview();
 
     private:
         QString pathToDatabase;
