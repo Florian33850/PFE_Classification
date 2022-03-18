@@ -7,6 +7,7 @@ class ImageTransformation
 {
     public:
         virtual void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList) = 0;
+        virtual ~ImageTransformation() = default;
 };
 
 class MirrorImageTransformation : public ImageTransformation

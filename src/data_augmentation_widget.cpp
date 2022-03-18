@@ -71,13 +71,13 @@ void DataAugmentationWidget::handleImageTransformationCheckBox(ImageTransformati
     {
         imageTransformationWidget = initialiseImageTransformationWidget(imageTransformationWidget, index);
         imageTransformationWidgetList.push_back(imageTransformationWidget);
-        QPushButton *test = imageTransformationWidget->getDeleteImageTransformationWidgetButton();
         connect(imageTransformationWidget->getDeleteImageTransformationWidgetButton(), &QPushButton::released, this,
             [=]{handleDeleteImageTransformationWidgetButton(imageTransformationWidget, imageTransformationCheckbox);});
         imageTransformationWidget->displayUI(this->mainLayout->indexOf(imageTransformationCheckbox) + 1);
     }
     else
     {
+        // segfault when trying to call the next commented function and imageTransformationCheckbox try to uncheck
         //this->deleteImageTransformationWidget(imageTransformationWidget);
     }
 }

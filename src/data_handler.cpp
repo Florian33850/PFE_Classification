@@ -30,7 +30,7 @@ bool DataHandler::reloadPreview()
     int previousIndex = indexPathToImagesList - maxNumberOfImagesToLoad;
     if(previousIndex < 0)
     {
-        std::cout << "Impossible to reload" << std::endl;
+        std::cerr << "Impossible to reload." << std::endl;
         return false;
     }
     imagePreviewList->clear();
@@ -46,27 +46,7 @@ bool DataHandler::reloadPreview()
     return true;
 }
 
-
-
-ImageSelectionHandler::ImageSelectionHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
-{
-    this->indexPathToImagesList = 0;
-    this->maxNumberOfImagesToLoad = 10;
-}
-
-bool ImageSelectionHandler::selectDataBasePath()
-{
-    QStringList newPathToImages = QFileDialog::getOpenFileNames(this->parent, "Select images to open", "Images (*.jpg *.jpeg *.png *.tiff)");
-    if (newPathToImages.size() == 0)
-    {
-        printf("Loading problem, cannot open selected files.\n");
-        return false;
-    }
-    this->pathToImages = newPathToImages;
-    return true;
-}
-
-bool ImageSelectionHandler::loadNextPreview()
+bool DataHandler::loadNextPreview()
 {
     if(this->indexPathToImagesList >= pathToImages.size())
     {
@@ -90,7 +70,7 @@ bool ImageSelectionHandler::loadNextPreview()
     }
 }
 
-bool ImageSelectionHandler::loadPreviousPreview()
+bool DataHandler::loadPreviousPreview()
 {
     int previousIndex = this->indexPathToImagesList - 2*this->maxNumberOfImagesToLoad;
     if(previousIndex < 0)
@@ -109,6 +89,26 @@ bool ImageSelectionHandler::loadPreviousPreview()
         this->indexPathToImagesList -= this->maxNumberOfImagesToLoad;
         return true;
     }
+}
+
+
+
+ImageSelectionHandler::ImageSelectionHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
+{
+    this->indexPathToImagesList = 0;
+    this->maxNumberOfImagesToLoad = 10;
+}
+
+bool ImageSelectionHandler::selectDataBasePath()
+{
+    QStringList newPathToImages = QFileDialog::getOpenFileNames(this->parent, "Select images to open", "Images (*.jpg *.jpeg *.png *.tiff)");
+    if (newPathToImages.size() == 0)
+    {
+        std::cerr << "Loading problem, cannot open selected files.\n" << std::endl;
+        return false;
+    }
+    this->pathToImages = newPathToImages;
+    return true;
 }
 
 
@@ -139,50 +139,4 @@ bool LymeDatabaseHandler::selectDataBasePath()
     } while (files.next() != "");
 
     return true;
-}
-
-bool LymeDatabaseHandler::loadNextPreview()
-{
-    if(indexPathToImagesList >= pathToImages.size())
-    {
-        std::cout << "No more images to load" << std::endl;
-        return false;
-    }
-    else
-    {
-        imagePreviewList->clear();
-        for(int fileIndex = this->indexPathToImagesList; fileIndex < this->indexPathToImagesList + this->maxNumberOfImagesToLoad; fileIndex++)
-        {
-            if(fileIndex == pathToImages.size())
-            {
-                break;
-            }
-            QString pathToImage = this->pathToImages.at(fileIndex);
-            QImage qImage = loadImageFromPath(pathToImage);
-            addImageToImagePreviewList(qImage);
-        }
-        this->indexPathToImagesList += this->maxNumberOfImagesToLoad;
-        return true;
-    }
-}
-
-bool LymeDatabaseHandler::loadPreviousPreview()
-{
-    int previousIndex = this->indexPathToImagesList - 2*this->maxNumberOfImagesToLoad;
-    if(previousIndex < 0)
-    {
-        std::cout << "No more images to load" << std::endl;
-        return false;
-    }
-    else
-    {
-        imagePreviewList->clear();
-        for(int fileIndex = previousIndex; fileIndex < this->indexPathToImagesList - this->maxNumberOfImagesToLoad; fileIndex++)
-        {
-            QImage qImage = loadImageFromPath(this->pathToImages.at(fileIndex));
-            addImageToImagePreviewList(qImage);
-        }
-        this->indexPathToImagesList -= this->maxNumberOfImagesToLoad;
-        return true;
-    }
 }
