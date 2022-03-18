@@ -25,15 +25,15 @@ void ClassificationTrainingTab::addChooseTrainingMethodComboBox()
 void ClassificationTrainingTab::handleTrainingMethodComboBox()
 {
     QString newTrainingMethod = chooseTrainingMethodComboBox->currentText();
-    ClassificationTrainingWidget *classificationTrainingWidget;
+
     if(newTrainingMethod.compare("Deep Learning") == 0)
     {
         clearLayout(this->parametersLayout);
-        classificationTrainingWidget = new DeepLearningWidget(this->parametersLayout, this->trainingOutputLayout);
+        new DeepLearningWidget(this->parametersLayout, this->trainingOutputLayout);
     }
     else if(newTrainingMethod.compare("Random Forest") == 0)
     {
         clearLayout(this->parametersLayout);
-        classificationTrainingWidget = new RandomForestWidget(this->parametersLayout, this->trainingOutputLayout);
+        new RandomForestWidget(this->parametersLayout, this->trainingOutputLayout);
     }
 }

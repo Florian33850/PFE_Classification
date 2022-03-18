@@ -15,10 +15,7 @@ class ImageTransformation
 {
     public:
         virtual void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList) = 0;
-
-    protected:
-        Mat qImageToMat(QImage qImage);
-        QImage matToQImage(Mat imageMat);
+        virtual ~ImageTransformation() = default;
 };
 
 class MirrorImageTransformation : public ImageTransformation

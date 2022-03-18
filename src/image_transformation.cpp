@@ -2,18 +2,6 @@
 
 #include <iostream>
 
-Mat ImageTransformation::qImageToMat(QImage qImage)
-{
-    cv::Mat imageMat(qImage.height(), qImage.width(), CV_8UC4, (uchar*)qImage.bits(), qImage.bytesPerLine());
-    return imageMat;
-}
-
-QImage ImageTransformation::matToQImage(Mat imageMat)
-{
-    QImage qImage = QImage((uchar*) imageMat.data, imageMat.cols, imageMat.rows, static_cast<int>(imageMat.step), QImage::Format_RGB32 );
-    return qImage;
-}
-
 MirrorImageTransformation::MirrorImageTransformation()
 {
     horizontalMirror = false;
@@ -32,7 +20,7 @@ void MirrorImageTransformation::changeVerticalMirrorMode()
 
 void MirrorImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
 {
-    for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
+    for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
     {
         QImage mirrorImage = imagePreviewList->at(imageNumber)->getQImage().mirrored(horizontalMirror, verticalMirror);
         imagePreviewList->at(imageNumber)->setImage(mirrorImage);
@@ -47,7 +35,7 @@ GrayscaleImageTransformation::GrayscaleImageTransformation()
 
 void GrayscaleImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
 {
-    for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
+    for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
     {
         QImage grayscaleImage = imagePreviewList->at(imageNumber)->getQImage().convertToFormat(QImage::Format_Grayscale8);
         imagePreviewList->at(imageNumber)->setImage(grayscaleImage);
