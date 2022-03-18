@@ -25,7 +25,7 @@ void ClassificationTrainingTab::addChooseTrainingMethodComboBox()
 void ClassificationTrainingTab::handleTrainingMethodComboBox()
 {
     QString newTrainingMethod = chooseTrainingMethodComboBox->currentText();
-    
+
     if(newTrainingMethod.compare("Deep Learning") == 0)
     {
         clearLayout(this->parametersLayout);
