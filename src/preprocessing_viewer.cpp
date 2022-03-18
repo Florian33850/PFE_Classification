@@ -21,7 +21,7 @@ void PreprocessingViewer::launchActivatedPreprocesses()
     {
         if(imageTransformationWidget->isActivated)
         {
-            this->imagesToSave = imageTransformationWidget->imageTransformation->runImageTransformation(imagePreviewList);
+            imageTransformationWidget->imageTransformation->runImageTransformation(imagePreviewList);
         }
     }
 }

@@ -46,6 +46,52 @@ bool DataHandler::reloadPreview()
     return true;
 }
 
+bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList, ImageTransformationViewer *imageTransformationViewer)
+{
+    QString buildPath = QDir::currentPath();
+
+    //Initialize the path for saving images next to build repository and create the repository
+    QString savedImagesPath = buildPath;
+    savedImagesPath = savedImagesPath.left(savedImagesPath.lastIndexOf(QChar('/')));
+
+    QDir directoryForSave(savedImagesPath);
+    if (!directoryForSave.exists())
+    {
+        qWarning("Cannot find the directory to save images");
+        return false;
+    }
+    
+    directoryForSave.setPath(savedImagesPath.append("/savedData/"+saveFolderName));
+
+    //Save each selected image in a repository with the same name as the original
+    QString imageToSavePath, repositoryName, imageAndItsRepositoryName;
+    QString transformationsPerformed;
+
+    for(int unsigned image_index = 0 ; image_index < pathToImages.size() ; image_index++)
+    {
+        QImage qImage = loadImageFromPath(pathToImages.at(image_index));
+        QImage modifiedImage;
+        
+        for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+        {
+            if(imageTransformationWidget->isActivated)
+            {
+                modifiedImage = imageTransformationWidget->imageTransformation->runImageTransformation(qImage);
+            }
+        }
+
+        imageAndItsRepositoryName = pathToImages[image_index].section("/", -2);
+        repositoryName = imageAndItsRepositoryName.left(imageAndItsRepositoryName.lastIndexOf(QChar('/'))+1);
+
+        directoryForSave.mkpath(repositoryName);
+
+        imageToSavePath = directoryForSave.path() + "/" + imageAndItsRepositoryName;
+        
+        modifiedImage.save(imageToSavePath);
+    }
+    return true;
+}
+
 
 
 ImageSelectionLoader::ImageSelectionLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
@@ -63,7 +109,6 @@ bool ImageSelectionLoader::selectDataBasePath()
         return false;
     }
     this->pathToImages = newPathToImages;
-    this->buildPath = QDir::currentPath();
 
     return true;
 }
@@ -166,37 +211,6 @@ bool LymeDatabaseLoader::loadNextPreview()
         this->indexPathToImagesList += this->maxNumberOfImagesToLoad;
         return true;
     }
-}
-
-bool ImageSelectionLoader::saveImagesInFile(QString saveFolderName, QVector<QImage> imagesToSave)
-{
-    //Initialize the path for saving images next to build repository and create the repository
-    QString savedImagesPath = buildPath;
-    savedImagesPath = savedImagesPath.left(savedImagesPath.lastIndexOf(QChar('/')));
-
-    QDir directoryForSave(savedImagesPath);
-    if (!directoryForSave.exists())
-    {
-        qWarning("Cannot find the directory to save images");
-        return false;
-    }
-
-    directoryForSave.setPath(savedImagesPath.append("/savedData/"+saveFolderName));
-
-    //Save each selected image in a repository with the same name as the original
-    QString imageToSavePath, repositoryName, imageAndItsRepositoryName;
-    for(int unsigned index_image = 0 ; index_image < imagesToSave.size() ; index_image++)
-    {
-        imageAndItsRepositoryName = pathToImages[index_image].section("/", -2);
-        repositoryName = imageAndItsRepositoryName.left(imageAndItsRepositoryName.lastIndexOf(QChar('/'))+1);
-
-        directoryForSave.mkpath(repositoryName);
-
-        imageToSavePath = directoryForSave.path() + "/"+ imageAndItsRepositoryName;
-        imagesToSave[index_image].save(imageToSavePath);
-    }
-        
-    return true;
 }
 
 bool LymeDatabaseLoader::loadPreviousPreview()

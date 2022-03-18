@@ -17,5 +17,7 @@ class DataAugmentationTab : public Tab
         QVBoxLayout *dataBaseCountLayout;
 
         void addDataBaseCountDisplay();
+        void handleSaveButton();
+        void addSaveButton();
 };
 #endif // DATA_AUGMENTATION_TAB_H

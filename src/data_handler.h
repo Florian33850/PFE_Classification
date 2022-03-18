@@ -2,6 +2,7 @@
 #define data_handler_H
 
 #include "image_label.h"
+#include "image_transformation_viewer.h"
 
 #include <QStringList>
 #include <QFileDialog>
@@ -24,11 +25,12 @@ class DataHandler
         virtual bool selectDataBasePath() = 0;
         virtual bool loadNextPreview() = 0;
         virtual bool loadPreviousPreview() = 0;
-        virtual bool saveImagesInFile(QString saveFolderName, QVector<QImage> imagesToSave) = 0;
+        bool saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList, ImageTransformationViewer *imageTransformationViewer);
 
     protected:
         QWidget *parent;
         std::vector<ImageLabel*> *imagePreviewList;
+        ImageTransformationViewer *imageTransformationViewer;
 
         QImage loadImageFromPath(QString pathToImage);
         void addImageToImageDataBasePreview(QImage qImage);
@@ -41,19 +43,6 @@ class ImageSelectionLoader : public DataHandler
 
         bool selectDataBasePath();
         bool loadNextPreview();
-<<<<<<< HEAD
-=======
-        bool loadPreviousPreview();
-};
-
-class LymeDatabaseLoader : public DataHandler
-{
-    public:
-        LymeDatabaseLoader(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
-
-        bool selectDataBasePath();
-        bool loadNextPreview();
->>>>>>> main
         bool loadPreviousPreview();
 };
 
@@ -65,13 +54,8 @@ class LymeDatabaseLoader : public DataHandler
         bool selectDataBasePath();
         bool loadNextPreview();
         bool loadPreviousPreview();
-        bool saveImagesInFile(QString saveFolderName, QVector<QImage> imagesToSave);
 
     private:
-<<<<<<< HEAD
-        QString buildPath;
-=======
->>>>>>> main
         QString pathToDatabase;
 };
 #endif //data_handler_H

@@ -14,7 +14,7 @@ void PreprocessingTab::addSaveButton()
 {
     QPushButton *saveImages = new QPushButton("&Save");
     connect(saveImages, &QPushButton::released, this, &PreprocessingTab::handleSaveButton);
-    this->mainLayout->addWidget(saveImages, 3, 3, 1, 1);
+    this->mainLayout->addWidget(saveImages, 2, 3, 1, 1);
 }
 
 void PreprocessingTab::handleNewDataHandler(DataHandler *dataHandler)
@@ -27,12 +27,5 @@ void PreprocessingTab::handleNewDataHandler(DataHandler *dataHandler)
 
 void PreprocessingTab::handleSaveButton()
 {
-    QVector<QImage> ok;
-    std::cout << "image preview size : " << imagePreviewList->size() << std::endl;
-    for(int i = 0; i < imagePreviewList->size() ; i++)
-    {
-        ok.append(imagePreviewList->at(i)->getQImage());
-    }
-    //this->dataHandler->saveImagesInFile("Preprocessing", this->preprocessingViewer->imagesToSave);
-    this->dataHandler->saveImagesInFile("Preprocessing", ok);
+    this->dataHandler->saveImagesInFile("Preprocessing", this->imageTransformationViewer->getImageTransformationWidgetList(), this->imageTransformationViewer);
 }

@@ -8,6 +8,14 @@ DataAugmentationTab::DataAugmentationTab() : Tab()
     connect(this->imageTransformationViewer, &ImageTransformationViewer::reloadPreviewSignal, this->imagesPreviewWidget, &ImagesPreviewWidget::reloadPreview);
     this->mainLayout->addWidget(this->imagesPreviewWidget, 0, 0, 3, 3);
     this->mainLayout->addWidget(this->imageTransformationViewer, 0, 3, 3, 1);
+    addSaveButton();
+}
+
+void DataAugmentationTab::addSaveButton()
+{
+    QPushButton *saveImages = new QPushButton("&Save");
+    connect(saveImages, &QPushButton::released, this, &DataAugmentationTab::handleSaveButton);
+    this->mainLayout->addWidget(saveImages, 5, 3, 3, 1);
 }
 
 void DataAugmentationTab::handleNewDataHandler(DataHandler *dataHandler)
@@ -28,4 +36,9 @@ void DataAugmentationTab::addDataBaseCountDisplay()
 
     QString numberBasicImages = QString::number(dataHandler->pathToImages.size());
     basicImagesLabel->setText("Basic images: " + numberBasicImages);
+}
+
+void DataAugmentationTab::handleSaveButton()
+{
+    this->dataHandler->saveImagesInFile("Data_augmentation", imageTransformationViewer->getImageTransformationWidgetList(), this->imageTransformationViewer);
 }

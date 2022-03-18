@@ -58,6 +58,9 @@ void ImageTransformationViewer::handleLaunchImageTransformationButton()
     launchActivatedPreprocesses();
 }
 
+std::vector<ImageTransformationWidget*> ImageTransformationViewer::getImageTransformationWidgetList(){
+    return this->imageTransformationWidgetList;
+}
 
 void ImageTransformationViewer::handleDeleteImageTransformationWidgetButton(ImageTransformationWidget *imageTransformationWidgetToDelete)
 {

@@ -15,8 +15,6 @@ class PreprocessingViewer : public QWidget
 
         void launchActivatedPreprocesses();
 
-        QVector<QImage> imagesToSave;
-
     private:
         QVBoxLayout *mainLayout;
         std::vector<ImageLabel*> *imagePreviewList;
