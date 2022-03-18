@@ -8,8 +8,8 @@ class TestGui: public QObject
 {
     Q_OBJECT
 
-private Q_SLOTS:
-    void testGui();
+    private Q_SLOTS:
+        void testGui();
 };
 
 void TestGui::testGui()
