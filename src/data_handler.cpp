@@ -13,7 +13,7 @@ QImage DataHandler::loadImageFromPath(QString pathToImage)
     QImage qImage;
     if(qImage.load(pathToImage) == false)
     {
-        std::cout << "Cannot open image\n" << std::endl;
+        std::cout << "Cannot open image : " << pathToImage.toUtf8().constData() << std::endl;
     }
     return qImage;
 }

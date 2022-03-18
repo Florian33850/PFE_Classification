@@ -132,4 +132,3 @@ add_test(NAME qtTest_DataHandlerTest COMMAND qtTest_DataHandlerTest)
 
 target_link_libraries(qtTest_TestGUI Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
 target_link_libraries(qtTest_DataHandlerTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
-
