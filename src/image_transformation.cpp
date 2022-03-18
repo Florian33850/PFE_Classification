@@ -84,7 +84,6 @@ float AutomaticRotationImageTransformation::getAngleBetweenVectors(const Point &
 
 PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vector<Point> &pointList)
 {
-    //Construct a buffer used by the pca analysis
     int pointListSize = static_cast<int>(pointList.size());
     Mat dataPointsMat = Mat(pointListSize, 2, CV_64F);
     for (int i = 0; i < dataPointsMat.rows; i++)
@@ -92,7 +91,7 @@ PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vector<Po
         dataPointsMat.at<double>(i, 0) = pointList[i].x;
         dataPointsMat.at<double>(i, 1) = pointList[i].y;
     }
-    //Perform PCA analysis
+
     PCA pcaAnalysis(dataPointsMat, Mat(), PCA::DATA_AS_ROW);
     return pcaAnalysis;
 }
@@ -101,7 +100,7 @@ double AutomaticRotationImageTransformation::getMinAngleRadian(Point shapeCenter
 {
     Point verticalPoint = Point(shapeCenter.x, shapeCenter.y-10.);
     Point verticalVector = verticalPoint-shapeCenter;
-    //Store the eigenvalues and eigenvectors
+
     std::vector<Point2d> eigenVecs(2);
     std::vector<double> eigenVal(2);
     for (int i = 0; i < 2; i++)
@@ -151,16 +150,13 @@ void AutomaticRotationImageTransformation::dilatation(Mat &imageMat, int dilatat
 
 void AutomaticRotationImageTransformation::centerTranslation(Mat &imageMat, const Point shapeCenter)
 {
-        // get tx and ty values for translation
-        Point imageMatCenter = {imageMat.cols/2, imageMat.rows/2};
-        float translationX = imageMatCenter.x-shapeCenter.x;
-        float translationY = imageMatCenter.y-shapeCenter.y;
-        // create the translation matrix using tx and ty
-        float warpValues[] = { 1.0, 0.0, translationX, 0.0, 1.0, translationY };
-        cv::Mat translationMat = Mat(2, 3, CV_32F, warpValues);
+    Point imageMatCenter = {imageMat.cols/2, imageMat.rows/2};
+    float translationX = imageMatCenter.x-shapeCenter.x;
+    float translationY = imageMatCenter.y-shapeCenter.y;
+    float warpValues[] = {1.0, 0.0, translationX, 0.0, 1.0, translationY};
+    cv::Mat translationMat = Mat(2, 3, CV_32F, warpValues);
 
-        // You can try more different parameters
-        cv::warpAffine(imageMat, imageMat, translationMat, imageMat.size());
+    cv::warpAffine(imageMat, imageMat, translationMat, imageMat.size());
 }
 
 void AutomaticRotationImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
@@ -168,72 +164,67 @@ void AutomaticRotationImageTransformation::runImageTransformation(std::vector<Im
     for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
     {
         QImage qImage = imagePreviewList->at(imageNumber)->getQImage();
-        qImage.save("qImage.tif");
+        qImage.save("imageTmp.tif");
 
-        // Mat imageMat = qImageToMat(qImage);
-        // cv::imwrite("Tmat1.tif", imageMat);
-        Mat imageMat = imread("qImage.tif");
+        Mat imageMat = imread("imageTmp.tif");
         if(imageMat.empty())
         {
             std::cout << "Problem loading image !!!" << std::endl;
         }
-
-        Mat grayMat;
-        cvtColor(imageMat, grayMat, COLOR_BGR2GRAY);
-        Mat thresholdMat;
-        threshold(grayMat, thresholdMat, 50, 255, THRESH_BINARY | THRESH_OTSU);
-        std::vector<std::vector<Point> > contours;
-        findContours(thresholdMat, contours, RETR_LIST, CHAIN_APPROX_NONE);
-        int dilation_size = 0;
-        while(contours.size() >2)
+        else
         {
-            this->dilatation(thresholdMat, dilation_size);
-            dilation_size++;
-            findContours(thresholdMat, contours, RETR_LIST, CHAIN_APPROX_TC89_L1);
-        }
 
-        double areaMin = DBL_MAX;
-        int indexMin = INT_MAX;
-        for(int i = 0; i < contours.size(); i++)
-        {
-            double area = contourArea(contours[i]);
-            
-            if (area < 1e2 || 1e5 < area) 
+            Mat grayMat;
+            cvtColor(imageMat, grayMat, COLOR_BGR2GRAY);
+            Mat thresholdMat;
+            threshold(grayMat, thresholdMat, 50, 255, THRESH_BINARY | THRESH_OTSU);
+            std::vector<std::vector<Point> > contours;
+            findContours(thresholdMat, contours, RETR_LIST, CHAIN_APPROX_NONE);
+            int dilation_size = 0;
+            while(contours.size() >2)
             {
-                continue; // Ignore contours that are too small or too large
+                this->dilatation(thresholdMat, dilation_size);
+                dilation_size++;
+                findContours(thresholdMat, contours, RETR_LIST, CHAIN_APPROX_TC89_L1);
             }
 
-            if(area < areaMin)
+            double areaMin = DBL_MAX;
+            int indexMin = INT_MAX;
+            for(int i = 0; i < contours.size(); i++)
             {
-                areaMin = area;
-                indexMin = i;
+                double area = contourArea(contours[i]);
+                
+                if (area < 1e2 || 1e5 < area) 
+                {
+                    continue; // Ignore contours that are too small or too large
+                }
+
+                if(area < areaMin)
+                {
+                    areaMin = area;
+                    indexMin = i;
+                }
             }
+
+            PCA pcaAnalysis = createPCAAnalysis(contours[indexMin]);
+            Point shapeCenter = Point(static_cast<int>(pcaAnalysis.mean.at<double>(0, 0)), static_cast<int>(pcaAnalysis.mean.at<double>(0, 1)));
+            double angleRadian = getMinAngleRadian(shapeCenter, pcaAnalysis);
+            double angleDegree = angleRadian*(180.0/CV_PI);
+
+            cv::Mat rotationMat = cv::getRotationMatrix2D(shapeCenter, angleDegree, 1.0);
+
+            cv::Mat rotatedImageMat;
+            cv::warpAffine(imageMat, rotatedImageMat, rotationMat, imageMat.size());
+
+            cv::Mat translatedImageMat = rotatedImageMat.clone();
+            centerTranslation(translatedImageMat, shapeCenter);
+
+            cv::imwrite("imageTmp.tif", translatedImageMat);
+
+            QImage rotatedQImage;
+            rotatedQImage.load("imageTmp.tif");
+            remove("imageTmp.tif");
+            imagePreviewList->at(imageNumber)->setImage(rotatedQImage);
         }
-        // Find the shape orientation
-        PCA pcaAnalysis = createPCAAnalysis(contours[indexMin]);
-        Point shapeCenter = Point(static_cast<int>(pcaAnalysis.mean.at<double>(0, 0)), static_cast<int>(pcaAnalysis.mean.at<double>(0, 1)));
-        double angleRadian = getMinAngleRadian(shapeCenter, pcaAnalysis);
-        double angleDegree = angleRadian*(180.0/CV_PI);
-
-        cv::Mat rotationMat = cv::getRotationMatrix2D(shapeCenter, angleDegree, 1.0);
-        // Determine bounding rectangle, center not relevant
-        // cv::Rect2f boundingRectangle = cv::RotatedRect(cv::Point2f(), imageMat.size(), angleDegree).boundingRect2f();
-        // // Adjust transformation matrix
-        // rotationMat.at<double>(0,2) += boundingRectangle.width/2.0 - imageMat.cols/2.0;
-        // rotationMat.at<double>(1,2) += boundingRectangle.height/2.0 - imageMat.rows/2.0;
-
-        cv::Mat rotatedImageMat;
-        cv::warpAffine(imageMat, rotatedImageMat, rotationMat, imageMat.size());
-
-        cv::Mat translatedImageMat = rotatedImageMat.clone();
-        centerTranslation(translatedImageMat, shapeCenter);
-
-        cv::imwrite("rotatedImage.tif", translatedImageMat);
-
-        // QImage rotatedQImage = matToQImage(rotatedImageMat);
-        // rotatedQImage.save("TqImage2.tif");
-        QImage rotatedQImage;
-        rotatedQImage.load("rotatedImage.tif");
-        imagePreviewList->at(imageNumber)->setImage(rotatedQImage);
     }
 }
