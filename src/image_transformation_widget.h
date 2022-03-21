@@ -10,11 +10,6 @@
 #include <QGroupBox>
 #include <QGridLayout>
 
-#define MIRRORED_WIDGET_MAXIMUM_HEIGHT 110
-#define GRAYSCALE_WIDGET_MAXIMUM_HEIGHT 65
-#define AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT 65
-#define MORPHOLOGICAL_TRANSFORMATION_WIDGET_MAXIMUM_HEIGHT 170
-
 class ImageTransformationWidget : public QWidget
 {
     public:
