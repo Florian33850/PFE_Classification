@@ -52,40 +52,39 @@ bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTran
     QString savedImagesPath = buildPath;
     savedImagesPath = savedImagesPath.left(savedImagesPath.lastIndexOf(QChar('/')));
 
-    QDir directoryForSave(savedImagesPath);
-    if (!directoryForSave.exists())
+    QDir saveDirectory(savedImagesPath);
+    if (!saveDirectory.exists())
     {
         qWarning("Cannot find the directory to save images");
         return false;
     }
     
-    directoryForSave.setPath(savedImagesPath.append("/savedData/"+saveFolderName));
+    saveDirectory.setPath(savedImagesPath.append("/savedData/" + saveFolderName));
 
     //Save each selected image in a repository with the same name as the original
-    QString imageToSavePath, repositoryName, imageAndItsRepositoryName;
+    QString imageSavePath, repositoryName, imageAndItsRepositoryName;
     QString transformationsPerformed;
 
     for(int unsigned image_index = 0 ; image_index < pathToImages.size() ; image_index++)
     {
         QImage qImage = loadImageFromPath(pathToImages.at(image_index));
-        QImage modifiedImage;
         
         for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
         {
             if(imageTransformationWidget->isActivated)
             {
-                modifiedImage = imageTransformationWidget->imageTransformation->applyImageTransformation(qImage);
+                qImage = imageTransformationWidget->imageTransformation->applyImageTransformation(qImage);
             }
         }
 
         imageAndItsRepositoryName = pathToImages[image_index].section("/", -2);
         repositoryName = imageAndItsRepositoryName.left(imageAndItsRepositoryName.lastIndexOf(QChar('/'))+1);
 
-        directoryForSave.mkpath(repositoryName);
+        saveDirectory.mkpath(repositoryName);
 
-        imageToSavePath = directoryForSave.path() + "/" + imageAndItsRepositoryName;
+        imageSavePath = saveDirectory.path() + "/" + imageAndItsRepositoryName;
         
-        modifiedImage.save(imageToSavePath);
+        qImage.save(imageSavePath);
     }
     return true;
 }

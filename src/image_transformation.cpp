@@ -1,6 +1,15 @@
 #include "image_transformation.h"
 #include <iostream>
 
+void ImageTransformation::runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList)
+{
+    for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
+    {
+        QImage qImage = applyImageTransformation(imagePreviewList->at(imageNumber)->getQImage());
+        imagePreviewList->at(imageNumber)->setImage(qImage);
+    }
+}
+
 MirrorImageTransformation::MirrorImageTransformation()
 {
     horizontalMirror = false;
@@ -17,15 +26,6 @@ void MirrorImageTransformation::changeVerticalMirrorMode()
     verticalMirror = !verticalMirror;
 }
 
-void MirrorImageTransformation::runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList)
-{
-    for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
-    {
-        QImage mirrorImage = applyImageTransformation(imagePreviewList->at(imageNumber)->getQImage());
-        imagePreviewList->at(imageNumber)->setImage(mirrorImage);
-    }
-}
-
 QImage MirrorImageTransformation::applyImageTransformation(QImage qImage)
 {
     QImage mirrorImage = qImage.mirrored(horizontalMirror, verticalMirror);
@@ -34,15 +34,6 @@ QImage MirrorImageTransformation::applyImageTransformation(QImage qImage)
 
 GrayscaleImageTransformation::GrayscaleImageTransformation()
 {
-}
-
-void GrayscaleImageTransformation::runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList)
-{
-    for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
-    {
-        QImage grayscaleImage = applyImageTransformation(imagePreviewList->at(imageNumber)->getQImage());
-        imagePreviewList->at(imageNumber)->setImage(grayscaleImage);
-    }
 }
 
 QImage GrayscaleImageTransformation::applyImageTransformation(QImage qImage)
