@@ -40,5 +40,5 @@ void DataAugmentationTab::addDataBaseCountDisplay()
 
 void DataAugmentationTab::handleSaveButton()
 {
-    this->dataHandler->saveImagesInFile("Data_augmentation", imageTransformationViewer->getImageTransformationWidgetList());
+    this->dataHandler->saveImagesInFile(imageTransformationViewer->getImageTransformationWidgetList(), "SavedData/Data_augmentation");
 }

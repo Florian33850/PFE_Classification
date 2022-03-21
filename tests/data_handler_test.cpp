@@ -17,6 +17,7 @@ class DataHandlerTests: public QObject
     private:
         bool createAndSaveRandomNoiseColorImage(int height, int width, std::string pathToSave);
         ImageSelectionHandler* createImageSelectionHandler();
+        std::vector<ImageTransformationWidget*> createFullAndActivatedImageTransformationWidgetList();
 
     private Q_SLOTS:
         void testImageSelectionHandlerInstantiation();
@@ -29,6 +30,7 @@ class DataHandlerTests: public QObject
         void testLoadNextPreviewSuccess();
         void testLoadPreviousPreviewFail();
         void testLoadPreviousPreviewSuccess();
+        void testSaveImagesInFile();
 };
 
 void DataHandlerTests::testImageSelectionHandlerInstantiation()
@@ -207,6 +209,51 @@ void DataHandlerTests::testLoadPreviousPreviewSuccess()
     }
 
     QVERIFY(true);
+}
+
+std::vector<ImageTransformationWidget*> DataHandlerTests::createFullAndActivatedImageTransformationWidgetList()
+{
+    std::vector<ImageTransformationWidget*> imageTransformationWidgetList;
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    QWidget *parentWidget = new QWidget();
+
+    MirrorImageTransformation *mirrorTransformation = new MirrorImageTransformation();
+    mirrorTransformation->verticalMirror = true;
+    mirrorTransformation->horizontalMirror = true;
+    MirrorWidget *mirrorWidget = new MirrorWidget(mainLayout, parentWidget, mirrorTransformation);
+    mirrorWidget->isActivated = true;
+    imageTransformationWidgetList.push_back(mirrorWidget);
+
+    GrayscaleImageTransformation *grayscaleTransformation = new GrayscaleImageTransformation();
+    GrayscaleWidget *grayscaleWidget = new GrayscaleWidget(mainLayout, parentWidget, grayscaleTransformation);
+    imageTransformationWidgetList.push_back(grayscaleWidget);
+    grayscaleWidget->isActivated = true;
+
+    AutomaticRotationImageTransformation *automaticRotationTransformation = new AutomaticRotationImageTransformation();
+    AutomaticRotationWidget *automaticRotationWidget = new AutomaticRotationWidget(mainLayout, parentWidget, automaticRotationTransformation);
+    imageTransformationWidgetList.push_back(automaticRotationWidget);
+    automaticRotationWidget->isActivated = true;
+
+    return imageTransformationWidgetList;
+}
+
+void DataHandlerTests::testSaveImagesInFile()
+{
+    ImageSelectionHandler *dataHandler = createImageSelectionHandler();
+    createAndSaveRandomNoiseColorImage(100, 100, "testImage.png");
+    dataHandler->pathToImages.push_back("testImage.png");
+
+    QImage imageA = dataHandler->loadImageFromPath("testImage.png");
+    std::vector<ImageTransformationWidget*> imageTransformationWidgetList = createFullAndActivatedImageTransformationWidgetList();
+    for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+    {
+        imageA = imageTransformationWidget->imageTransformation->applyImageTransformation(imageA);
+    }
+
+    dataHandler->saveImagesInFile(imageTransformationWidgetList, "/build");
+    QImage imageB = dataHandler->loadImageFromPath("testImage.png");
+
+    QVERIFY(imageA == imageB);
 }
 
 QTEST_MAIN(DataHandlerTests)

@@ -44,7 +44,7 @@ bool DataHandler::reloadPreview()
     return true;
 }
 
-bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList)
+bool DataHandler::saveImagesInFile(std::vector<ImageTransformationWidget*> imageTransformationWidgetList, QString saveFolderName)
 {
     QString buildPath = QDir::currentPath();
 
@@ -59,13 +59,13 @@ bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTran
         return false;
     }
     
-    saveDirectory.setPath(savedImagesPath.append("/savedData/" + saveFolderName));
+    saveDirectory.setPath(savedImagesPath.append(saveFolderName));
 
     //Save each selected image in a repository with the same name as the original
     QString imageSavePath, repositoryName, imageAndItsRepositoryName;
     QString transformationsPerformed;
 
-    for(int unsigned image_index = 0 ; image_index < pathToImages.size() ; image_index++)
+    for(int unsigned image_index = 0 ; (int) image_index < pathToImages.size() ; image_index++)
     {
         QImage qImage = loadImageFromPath(pathToImages.at(image_index));
         
@@ -79,12 +79,20 @@ bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTran
 
         imageAndItsRepositoryName = pathToImages[image_index].section("/", -2);
         repositoryName = imageAndItsRepositoryName.left(imageAndItsRepositoryName.lastIndexOf(QChar('/'))+1);
-
-        saveDirectory.mkpath(repositoryName);
-
+        if(!repositoryName.isEmpty())
+        {
+            saveDirectory.mkpath(repositoryName);
+        }
         imageSavePath = saveDirectory.path() + "/" + imageAndItsRepositoryName;
-        
-        qImage.save(imageSavePath);
+        std::cout << imageSavePath.toUtf8().constData() << std::endl;
+        if(qImage.save(imageSavePath))
+        {
+            std::cout << "good" << std::endl;
+        }
+        else
+        {
+            std::cout << "bad" << std::endl;
+        }
     }
     return true;
 }

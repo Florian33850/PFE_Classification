@@ -21,7 +21,7 @@ class DataHandler
         int totalNumberOfImages;
         int indexPathToImagesList;
         
-        bool saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList);
+        bool saveImagesInFile(std::vector<ImageTransformationWidget*> imageTransformationWidgetList, QString saveFolderName = "");
         bool reloadPreview();
         bool loadNextPreview();
         bool loadPreviousPreview();
