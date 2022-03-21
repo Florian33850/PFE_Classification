@@ -19,7 +19,7 @@ void ImageTransformationViewer::launchActivatedPreprocesses()
     {
         if(imageTransformationWidget->isActivated)
         {
-            imageTransformationWidget->imageTransformation->runImageTransformation(imagePreviewList);
+            imageTransformationWidget->imageTransformation->runImageTransformationOnPreviewList(imagePreviewList);
         }
     }
 }

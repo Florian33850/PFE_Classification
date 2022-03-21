@@ -1,6 +1,4 @@
 #include "data_handler.h"
-#include <iostream>
-#include <QImage>
 
 DataHandler::DataHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList)
 {
@@ -46,7 +44,7 @@ bool DataHandler::reloadPreview()
     return true;
 }
 
-bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList, ImageTransformationViewer *imageTransformationViewer)
+bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList)
 {
     QString buildPath = QDir::currentPath();
 
@@ -76,7 +74,7 @@ bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTran
         {
             if(imageTransformationWidget->isActivated)
             {
-                modifiedImage = imageTransformationWidget->imageTransformation->runImageTransformation(qImage);
+                modifiedImage = imageTransformationWidget->imageTransformation->applyImageTransformation(qImage);
             }
         }
 

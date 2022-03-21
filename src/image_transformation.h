@@ -6,8 +6,8 @@
 class ImageTransformation
 {
     public:
-        virtual void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList) = 0;
-        virtual QImage runImageTransformation(QImage qImage) = 0;
+        virtual void runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList) = 0;
+        virtual QImage applyImageTransformation(QImage qImage) = 0;
 };
 
 class MirrorImageTransformation : public ImageTransformation
@@ -22,8 +22,8 @@ class MirrorImageTransformation : public ImageTransformation
         void changeVerticalMirrorMode();
 
     private:
-        void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
-        QImage runImageTransformation(QImage qImage);
+        void runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList);
+        QImage applyImageTransformation(QImage qImage);
 
 };
 
@@ -33,8 +33,8 @@ class GrayscaleImageTransformation : public ImageTransformation
         GrayscaleImageTransformation();
     
     private:
-        void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
-        QImage runImageTransformation(QImage qImage);
+        void runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList);
+        QImage applyImageTransformation(QImage qImage);
 };
 
 #endif // IMAGE_TRANSFORMATION_H

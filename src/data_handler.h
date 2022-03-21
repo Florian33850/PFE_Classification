@@ -2,12 +2,14 @@
 #define data_handler_H
 
 #include "image_label.h"
-#include "image_transformation_viewer.h"
+#include "image_transformation_widget.h"
 
+#include <iostream>
 #include <QStringList>
 #include <QFileDialog>
 #include <QDirIterator>
 #include <QDir>
+
 
 class DataHandler
 {
@@ -19,18 +21,16 @@ class DataHandler
         int totalNumberOfImages;
         int indexPathToImagesList;
         
-
         bool reloadPreview();
+        bool saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList);
 
         virtual bool selectDataBasePath() = 0;
         virtual bool loadNextPreview() = 0;
         virtual bool loadPreviousPreview() = 0;
-        bool saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList, ImageTransformationViewer *imageTransformationViewer);
 
     protected:
         QWidget *parent;
         std::vector<ImageLabel*> *imagePreviewList;
-        ImageTransformationViewer *imageTransformationViewer;
 
         QImage loadImageFromPath(QString pathToImage);
         void addImageToImageDataBasePreview(QImage qImage);

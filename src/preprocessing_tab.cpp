@@ -27,5 +27,5 @@ void PreprocessingTab::handleNewDataHandler(DataHandler *dataHandler)
 
 void PreprocessingTab::handleSaveButton()
 {
-    this->dataHandler->saveImagesInFile("Preprocessing", this->imageTransformationViewer->getImageTransformationWidgetList(), this->imageTransformationViewer);
+    this->dataHandler->saveImagesInFile("Preprocessing", this->imageTransformationViewer->getImageTransformationWidgetList());
 }
