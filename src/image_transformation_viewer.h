@@ -22,7 +22,7 @@ class ImageTransformationViewer : public QWidget
         QWidget *parent;
         std::vector<ImageTransformationWidget*> imageTransformationWidgetList;
         std::vector<ImageTransformation*> imageTransformationList;
-        QStringList preprocessingStringList = {"Add Preprocessing", "Mirror", "Grayscale", "Automatic Rotation"};
+        QStringList preprocessingStringList = {"Add Preprocessing", "Mirror", "Grayscale", "Automatic Rotation", "Erosion"};
 
         MirrorWidget* createMirrorImageTransformation();
         GrayscaleWidget* createGrayscaleImageTransformation();

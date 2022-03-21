@@ -91,3 +91,28 @@ void AutomaticRotationWidget::displayUI(int indexInLayout)
     this->mainWidgetGroupBox->setLayout(automaticRotationLayout);
     this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
 }
+
+
+ErosionWidget::ErosionWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, ErosionImageTransformation *erosionImageTransformation)
+    : ImageTransformationWidget(mainLayout, parentWidget)
+{
+    this->imageTransformation = erosionImageTransformation;
+    this->kernelSizeSlider = new QSlider(Qt::Horizontal, this);
+    this->numberIterationErosionSlider = new QSlider(Qt::Horizontal, this);
+
+    this->mainWidgetGroupBox->setMaximumHeight(EROSION_WIDGET_MAXIMUM_HEIGHT);
+}
+
+void ErosionWidget::displayUI(int indexInLayout)
+{
+    parentWidget->connect(this->kernelSizeSlider, &QSlider::valueChanged, [=](){static_cast<ErosionImageTransformation*>(this->imageTransformation)->changeKernelSize(this->kernelSizeSlider->value());});
+    parentWidget->connect(this->numberIterationErosionSlider, &QSlider::valueChanged, [=](){static_cast<ErosionImageTransformation*>(this->imageTransformation)->changeNumberIterationErosion(this->numberIterationErosionSlider->value());});
+
+    QLabel *erosionWidgetTitle = new QLabel("Erosion");
+    QHBoxLayout *erosionLayout = new QHBoxLayout();
+    erosionLayout->addWidget(erosionWidgetTitle);
+    erosionLayout->addWidget(deleteImageTransformationWidgetButton);
+
+    this->mainWidgetGroupBox->setLayout(erosionLayout);
+    this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
+}

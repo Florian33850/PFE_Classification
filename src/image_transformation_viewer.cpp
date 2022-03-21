@@ -60,6 +60,18 @@ AutomaticRotationWidget* ImageTransformationViewer::createAutomaticRotationImage
     return newAutomaticRotationWidget;
 }
 
+ErosionWidget* ImageTransformationViewer::createErosionImageTransformation()
+{
+    ErosionImageTransformation *newErosionImageTransformation = new ErosionImageTransformation();
+    imageTransformationList.push_back(newErosionImageTransformation);
+
+    ErosionWidget *newErosionWidget = new ErosionWidget(mainLayout, this, newErosionImageTransformation);
+    imageTransformationWidgetList.push_back(newErosionWidget);
+
+    newErosionWidget->displayUI(newErosionWidget->getLayoutCount()-1);
+    return newErosionWidget;
+}
+
 void ImageTransformationViewer::handleLaunchImageTransformationButton()
 {
     Q_EMIT reloadPreviewSignal();
@@ -124,6 +136,10 @@ void PreprocessingViewer::handleImageTransformationComboBox()
         imageTransformationWidget = createGrayscaleImageTransformation();
     }
     else if(newImageTransformation.compare("Automatic Rotation") == 0)
+    {
+        imageTransformationWidget = createAutomaticRotationImageTransformation();
+    }
+    else if(newImageTransformation.compare("Erosion") == 0)
     {
         imageTransformationWidget = createAutomaticRotationImageTransformation();
     }

@@ -57,4 +57,19 @@ class AutomaticRotationImageTransformation : public ImageTransformation
         void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
 };
 
+class ErosionImageTransformation : public ImageTransformation
+{
+    public:
+        ErosionImageTransformation();
+
+        int kernelSize;
+        int numberIterationErosion;
+
+        void changeKernelSize(int newKernelSize);
+        void changeNumberIterationErosion(int newNumberIterationErosion);
+
+    private:
+        void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
+};
+
 #endif // IMAGE_TRANSFORMATION_H

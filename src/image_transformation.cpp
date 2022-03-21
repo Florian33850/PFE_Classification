@@ -154,9 +154,9 @@ void AutomaticRotationImageTransformation::runImageTransformation(std::vector<Im
     for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
     {
         QImage qImage = imagePreviewList->at(imageNumber)->getQImage();
-        qImage.save("imageTmp.tif");
+        qImage.save("imageRotationTmp.tif");
 
-        cv::Mat imageMat = cv::imread("imageTmp.tif");
+        cv::Mat imageMat = cv::imread("imageRotationTmp.tif");
         if(imageMat.empty())
         {
             std::cout << "Problem loading image !!!" << std::endl;
@@ -217,12 +217,62 @@ void AutomaticRotationImageTransformation::runImageTransformation(std::vector<Im
             cv::Mat translatedImageMat = rotatedImageMat.clone();
             centerTranslation(translatedImageMat, shapeCenter);
 
-            cv::imwrite("imageTmp.tif", translatedImageMat);
+            cv::imwrite("imageRotationTmp.tif", translatedImageMat);
 
             QImage rotatedQImage;
-            rotatedQImage.load("imageTmp.tif");
-            remove("imageTmp.tif");
+            rotatedQImage.load("imageRotationTmp.tif");
+            remove("imageRotationTmp.tif");
             imagePreviewList->at(imageNumber)->setImage(rotatedQImage);
         }
+    }
+}
+
+
+
+ErosionImageTransformation::ErosionImageTransformation()
+{
+    this->kernelSize = 0;
+    this->numberIterationErosion = 1;
+}
+
+void ErosionImageTransformation::changeKernelSize(int newKernelSize)
+{
+    this->kernelSize = newKernelSize;
+}
+
+void ErosionImageTransformation::changeNumberIterationErosion(int newNumberIterationErosion)
+{
+    this->numberIterationErosion = newNumberIterationErosion;
+}
+
+void ErosionImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
+{
+    for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
+    {
+        QImage erosionImage = imagePreviewList->at(imageNumber)->getQImage();
+        qImage.save("imageErosionTmp.tif");
+
+        cv::Mat imageMat = cv::imread("imageErosionTmp.tif");
+        if(imageMat.empty())
+        {
+            std::cout << "Problem loading image !!!" << std::endl;
+        }
+        else
+        {
+            for(int i=0; i<this->numberIterationErosion; i++)
+            {
+                Mat structuringElement = getStructuringElement(cv::MORPH_RECT,
+                                                                cv::Size(2*this->kernelSize+1, 2*this->kernelSize+1),
+                                                                cv::Point(this->kernelSize, this->kernelSize);
+                erode(imageMat, imageMat, structuringElement);
+            }
+        }
+
+        cv::imwrite("imageErosionTmp.tif", imageMat);
+
+        QImage erodedQImage;
+        erodedQImage.load("imageErosionTmp.tif");
+        remove("imageErosionTmp.tif");
+        imagePreviewList->at(imageNumber)->setImage(erodedQImage);
     }
 }

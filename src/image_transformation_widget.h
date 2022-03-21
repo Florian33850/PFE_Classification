@@ -12,6 +12,7 @@
 #define MIRRORED_WIDGET_MAXIMUM_HEIGHT 110
 #define GRAYSCALE_WIDGET_MAXIMUM_HEIGHT 65
 #define AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT 65
+#define EROSION_WIDGET_MAXIMUM_HEIGHT 110
 
 class ImageTransformationWidget : public QWidget
 {
@@ -59,8 +60,20 @@ class GrayscaleWidget : public ImageTransformationWidget
 class AutomaticRotationWidget : public ImageTransformationWidget
 {
     public:
-        AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationImageTransformation *automaticRotationImageTransformation);
+        AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationImageTransformation *erosionImageTransformation);
 
         void displayUI(int indexInLayout);
+};
+
+class ErosionWidget : public ImageTransformationWidget
+{
+    public:
+        AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, ErosionImageTransformation *automaticRotationImageTransformation);
+
+        void displayUI(int indexInLayout);
+    
+    private:
+        QSlider *kernelSizeSlider;
+        QSlider *numberIterationErosionSlider;
 };
 #endif // IMAGE_TRANSFORMATION_WIDGET_H
