@@ -14,10 +14,6 @@ class PreprocessingTab : public Tab
         PreprocessingTab();
 
         void addSaveButton();
-        void handleSaveButton();
         void handleNewDataHandler(DataHandler *dataHandler);
-
-    private:
-        ImageTransformationViewer *imageTransformationViewer;
 };
 #endif // PREPROCESSING_TAB_H

@@ -26,3 +26,15 @@ void Tab::clearLayout(QLayout *layout)
         delete itemLayout;
     }
 }
+
+void Tab::handleSaveButton(QString pathToSave)
+{
+    printf("path: %s\n", pathToSave.toUtf8().constData());
+    if(this->dataHandler->saveImagesInFile(this->imageTransformationViewer->getImageTransformationWidgetList(), pathToSave))
+    {
+        QMessageBox saveMessage;
+        saveMessage.setText("Data Base correctly saved.");
+        saveMessage.setWindowTitle("Information");
+        saveMessage.exec();
+    }
+}

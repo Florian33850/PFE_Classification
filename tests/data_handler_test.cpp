@@ -22,7 +22,8 @@ class DataHandlerTests: public QObject
     private Q_SLOTS:
         void testImageSelectionHandlerInstantiation();
         void testLymeDatabaseHandlerInstantiation();
-        void testLoadImageFromPath();
+        void testLoadImageFromPathFail();
+        void testLoadImageFromPathSuccess();
         void testAddImageToImagePreviewList();
         void testReloadPreviewFail();
         void testReloadPreviewSuccess();
@@ -71,7 +72,13 @@ ImageSelectionHandler* DataHandlerTests::createImageSelectionHandler()
     return dataHandler;
 }
 
-void DataHandlerTests::testLoadImageFromPath()
+void DataHandlerTests::testLoadImageFromPathFail()
+{
+    ImageSelectionHandler *dataHandler = createImageSelectionHandler();
+    QVERIFY(dataHandler->loadImageFromPath("").isNull());
+}
+
+void DataHandlerTests::testLoadImageFromPathSuccess()
 {
     ImageSelectionHandler *dataHandler = createImageSelectionHandler();
 

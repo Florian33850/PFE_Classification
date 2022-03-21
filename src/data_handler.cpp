@@ -46,6 +46,7 @@ bool DataHandler::reloadPreview()
 
 bool DataHandler::saveImagesInFile(std::vector<ImageTransformationWidget*> imageTransformationWidgetList, QString saveFolderName)
 {
+    printf("test\n");
     QString buildPath = QDir::currentPath();
 
     //Initialize the path for saving images next to build repository and create the repository
@@ -84,14 +85,10 @@ bool DataHandler::saveImagesInFile(std::vector<ImageTransformationWidget*> image
             saveDirectory.mkpath(repositoryName);
         }
         imageSavePath = saveDirectory.path() + "/" + imageAndItsRepositoryName;
-        std::cout << imageSavePath.toUtf8().constData() << std::endl;
-        if(qImage.save(imageSavePath))
+        printf("image path: %s \n", imageSavePath.toUtf8().constData());
+        if(!qImage.save(imageSavePath))
         {
-            std::cout << "good" << std::endl;
-        }
-        else
-        {
-            std::cout << "bad" << std::endl;
+            std::cout << "save error for file: " << imageSavePath.toUtf8().constData() << "\n" << std::endl;
         }
     }
     return true;

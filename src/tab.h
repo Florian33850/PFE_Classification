@@ -8,6 +8,7 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QMessageBox>
 
 #define IMAGES_PREVIEW_MAXIMUM_ROWS 2
 #define IMAGES_PREVIEW_MAXIMUM_COLLUMNS 5
@@ -25,6 +26,10 @@ class Tab : public QWidget
 
     protected:
         QGridLayout *mainLayout;
+        ImageTransformationViewer *imageTransformationViewer;
+
         void clearLayout(QLayout *layout);
+
+        void handleSaveButton(QString pathToSave);
 };
 #endif // TAB_H
