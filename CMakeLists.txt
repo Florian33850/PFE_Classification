@@ -12,6 +12,7 @@ set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE ON)
 set(OBJECT_DIR ${CMAKE_BINARY_DIR}/CMakeFiles/PfeApplication.dir/src)
 message("-- Object files will be output to: ${OBJECT_DIR}")
 
+execute_process(COMMAND unset SESSION_MANAGER)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -60,7 +61,7 @@ add_custom_command(TARGET gcov
     COMMAND echo "=================== GCOV ===================="
     COMMAND gcov -b ${CMAKE_SOURCE_DIR}/src/*.cpp -o ${OBJECT_DIR}
     COMMAND echo "-- Coverage files have been output to ${CMAKE_BINARY_DIR}/coverage"
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage  # Need separate command for this line
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/coverage
 )
 add_dependencies(gcov application_viewer)
 
@@ -72,7 +73,7 @@ add_custom_target(lcov
 add_custom_command(TARGET lcov
     COMMAND echo "=================== LCOV ===================="
     COMMAND echo "-- Passing lcov tool under code coverage"
-    COMMAND lcov --capture --directory CMakeFiles/UnitTests.dir/ --output-file lcoverage/main_coverage.info
+    COMMAND lcov --capture --directory CMakeFiles/ --output-file lcoverage/main_coverage.info
     COMMAND lcov --quiet --remove lcoverage/main_coverage.info '/usr/*' '*/include/*' '*/build/*' '*/*.h' --output-file lcoverage/main_coverage.info.cleaned
     COMMAND echo "-- Generating HTML output files"
     COMMAND genhtml lcoverage/main_coverage.info.cleaned --output-directory lcoverage
@@ -93,9 +94,6 @@ add_custom_target(scrub
 # Testing
 enable_testing()
 
-#add_test(output_test ${CMAKE_CURRENT_BINARY_DIR}/RunAdder)
-#set_tests_properties(output_test PROPERTIES PASS_REGULAR_EXPRESSION "0;5;10")
-
 include(FetchContent)
 FetchContent_Declare(
     googletest
@@ -110,7 +108,7 @@ add_executable(UnitTests
     tests/classification_thread_test.cpp
     tests/image_transformation_test.cpp
     ${SOURCES})
-    target_link_libraries(UnitTests gtest_main Qt5::Widgets ${TORCH_LIBRARIES} ${OpenCV_LIBS}
+    target_link_libraries(UnitTests gtest_main Qt5::Widgets ${OpenCV_LIBS}
 )
     
 include(GoogleTest)
