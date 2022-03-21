@@ -27,6 +27,7 @@ class ImageTransformationViewer : public QWidget
         MirrorWidget* createMirrorImageTransformation();
         GrayscaleWidget* createGrayscaleImageTransformation();
         AutomaticRotationWidget* createAutomaticRotationImageTransformation();
+        ErosionWidget* createErosionImageTransformation();
 
         void handleLaunchImageTransformationButton();
         void handleImageTransformationComboBox();

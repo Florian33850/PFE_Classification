@@ -2,6 +2,7 @@
 #define IMAGE_TRANSFORMATION_WIDGET_H
 
 #include "image_transformation.h"
+#include "integer_slider.h"
 
 #include <QWidget>
 #include <QPushButton>
@@ -12,7 +13,7 @@
 #define MIRRORED_WIDGET_MAXIMUM_HEIGHT 110
 #define GRAYSCALE_WIDGET_MAXIMUM_HEIGHT 65
 #define AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT 65
-#define EROSION_WIDGET_MAXIMUM_HEIGHT 110
+#define EROSION_WIDGET_MAXIMUM_HEIGHT 140
 
 class ImageTransformationWidget : public QWidget
 {
@@ -68,12 +69,12 @@ class AutomaticRotationWidget : public ImageTransformationWidget
 class ErosionWidget : public ImageTransformationWidget
 {
     public:
-        AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, ErosionImageTransformation *automaticRotationImageTransformation);
+        ErosionWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, ErosionImageTransformation *erosionImageTransformation);
 
         void displayUI(int indexInLayout);
     
     private:
-        QSlider *kernelSizeSlider;
-        QSlider *numberIterationErosionSlider;
+        IntegerSlider *kernelSizeSlider;
+        IntegerSlider *numberIterationErosionSlider;
 };
 #endif // IMAGE_TRANSFORMATION_WIDGET_H

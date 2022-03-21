@@ -141,7 +141,7 @@ void PreprocessingViewer::handleImageTransformationComboBox()
     }
     else if(newImageTransformation.compare("Erosion") == 0)
     {
-        imageTransformationWidget = createAutomaticRotationImageTransformation();
+        imageTransformationWidget = createErosionImageTransformation();
     }
     else
     {

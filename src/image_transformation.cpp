@@ -249,7 +249,7 @@ void ErosionImageTransformation::runImageTransformation(std::vector<ImageLabel*>
 {
     for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
     {
-        QImage erosionImage = imagePreviewList->at(imageNumber)->getQImage();
+        QImage qImage = imagePreviewList->at(imageNumber)->getQImage();
         qImage.save("imageErosionTmp.tif");
 
         cv::Mat imageMat = cv::imread("imageErosionTmp.tif");
@@ -259,11 +259,11 @@ void ErosionImageTransformation::runImageTransformation(std::vector<ImageLabel*>
         }
         else
         {
+            cv::Mat structuringElement = getStructuringElement(cv::MORPH_RECT,
+                                                                cv::Size(2*this->kernelSize+1, 2*this->kernelSize+1),
+                                                                cv::Point(this->kernelSize, this->kernelSize));
             for(int i=0; i<this->numberIterationErosion; i++)
             {
-                Mat structuringElement = getStructuringElement(cv::MORPH_RECT,
-                                                                cv::Size(2*this->kernelSize+1, 2*this->kernelSize+1),
-                                                                cv::Point(this->kernelSize, this->kernelSize);
                 erode(imageMat, imageMat, structuringElement);
             }
         }

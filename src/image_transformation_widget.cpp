@@ -97,21 +97,26 @@ ErosionWidget::ErosionWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, Ero
     : ImageTransformationWidget(mainLayout, parentWidget)
 {
     this->imageTransformation = erosionImageTransformation;
-    this->kernelSizeSlider = new QSlider(Qt::Horizontal, this);
-    this->numberIterationErosionSlider = new QSlider(Qt::Horizontal, this);
+    this->kernelSizeSlider = new IntegerSlider("Kernel Size", 0, 20);
+    this->numberIterationErosionSlider = new IntegerSlider("Number of Iteration", 1, 20);
 
     this->mainWidgetGroupBox->setMaximumHeight(EROSION_WIDGET_MAXIMUM_HEIGHT);
 }
 
 void ErosionWidget::displayUI(int indexInLayout)
 {
-    parentWidget->connect(this->kernelSizeSlider, &QSlider::valueChanged, [=](){static_cast<ErosionImageTransformation*>(this->imageTransformation)->changeKernelSize(this->kernelSizeSlider->value());});
-    parentWidget->connect(this->numberIterationErosionSlider, &QSlider::valueChanged, [=](){static_cast<ErosionImageTransformation*>(this->imageTransformation)->changeNumberIterationErosion(this->numberIterationErosionSlider->value());});
+    parentWidget->connect(this->kernelSizeSlider, &IntegerSlider::valueChanged, [=]()
+        {static_cast<ErosionImageTransformation*>(this->imageTransformation)->changeKernelSize(this->kernelSizeSlider->value());});
 
+    parentWidget->connect(this->numberIterationErosionSlider, &IntegerSlider::valueChanged, [=]()
+        {static_cast<ErosionImageTransformation*>(this->imageTransformation)->changeNumberIterationErosion(this->numberIterationErosionSlider->value());});
+
+    QGridLayout *erosionLayout = new QGridLayout();
     QLabel *erosionWidgetTitle = new QLabel("Erosion");
-    QHBoxLayout *erosionLayout = new QHBoxLayout();
-    erosionLayout->addWidget(erosionWidgetTitle);
-    erosionLayout->addWidget(deleteImageTransformationWidgetButton);
+    erosionLayout->addWidget(erosionWidgetTitle, 0, 0, Qt::AlignLeft);
+    erosionLayout->addWidget(this->kernelSizeSlider, 1, 0, Qt::AlignLeft);
+    erosionLayout->addWidget(this->numberIterationErosionSlider, 2, 0, Qt::AlignLeft);
+    erosionLayout->addWidget(deleteImageTransformationWidgetButton, 0, 1, Qt::AlignRight);
 
     this->mainWidgetGroupBox->setLayout(erosionLayout);
     this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
