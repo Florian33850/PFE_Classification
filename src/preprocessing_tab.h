@@ -13,6 +13,8 @@ class PreprocessingTab : public Tab
     public:
         PreprocessingTab();
 
+        void addSaveButton();
+        void handleSaveButton();
         void handleNewDataHandler(DataHandler *dataHandler);
 
     private:

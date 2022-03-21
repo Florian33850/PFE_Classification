@@ -1,7 +1,5 @@
 #include "data_handler.h"
 
-#include <iostream>
-
 DataHandler::DataHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList)
 {
     this->parent = parent;
@@ -42,6 +40,51 @@ bool DataHandler::reloadPreview()
         }
         QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
         addImageToImagePreviewList(qImage);
+    }
+    return true;
+}
+
+bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList)
+{
+    QString buildPath = QDir::currentPath();
+
+    //Initialize the path for saving images next to build repository and create the repository
+    QString savedImagesPath = buildPath;
+    savedImagesPath = savedImagesPath.left(savedImagesPath.lastIndexOf(QChar('/')));
+
+    QDir saveDirectory(savedImagesPath);
+    if (!saveDirectory.exists())
+    {
+        qWarning("Cannot find the directory to save images");
+        return false;
+    }
+    
+    saveDirectory.setPath(savedImagesPath.append("/savedData/" + saveFolderName));
+
+    //Save each selected image in a repository with the same name as the original
+    QString imageSavePath, repositoryName, imageAndItsRepositoryName;
+    QString transformationsPerformed;
+
+    for(int unsigned image_index = 0 ; image_index < pathToImages.size() ; image_index++)
+    {
+        QImage qImage = loadImageFromPath(pathToImages.at(image_index));
+        
+        for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+        {
+            if(imageTransformationWidget->isActivated)
+            {
+                qImage = imageTransformationWidget->imageTransformation->applyImageTransformation(qImage);
+            }
+        }
+
+        imageAndItsRepositoryName = pathToImages[image_index].section("/", -2);
+        repositoryName = imageAndItsRepositoryName.left(imageAndItsRepositoryName.lastIndexOf(QChar('/'))+1);
+
+        saveDirectory.mkpath(repositoryName);
+
+        imageSavePath = saveDirectory.path() + "/" + imageAndItsRepositoryName;
+        
+        qImage.save(imageSavePath);
     }
     return true;
 }

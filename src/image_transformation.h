@@ -13,7 +13,9 @@
 class ImageTransformation
 {
     public:
-        virtual void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList) = 0;
+        void runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList);
+        virtual QImage applyImageTransformation(QImage qImage) = 0;
+        
         virtual ~ImageTransformation() = default;
 };
 
@@ -29,7 +31,8 @@ class MirrorImageTransformation : public ImageTransformation
         void changeVerticalMirrorMode();
 
     private:
-        void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
+        QImage applyImageTransformation(QImage qImage);
+
 };
 
 class GrayscaleImageTransformation : public ImageTransformation
@@ -38,7 +41,7 @@ class GrayscaleImageTransformation : public ImageTransformation
         GrayscaleImageTransformation();
     
     private:
-        void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
+        QImage applyImageTransformation(QImage qImage);
 };
 
 class AutomaticRotationImageTransformation : public ImageTransformation
@@ -54,7 +57,7 @@ class AutomaticRotationImageTransformation : public ImageTransformation
         double getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis);
         void applyDilatation(cv::Mat &imageMat, int dilatationSize);
         void centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter);
-        void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
+        QImage applyImageTransformation(QImage qImage);
 };
 
 #endif // IMAGE_TRANSFORMATION_H

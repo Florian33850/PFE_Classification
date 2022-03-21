@@ -19,7 +19,7 @@ void ImageTransformationViewer::launchActivatedPreprocesses()
     {
         if(imageTransformationWidget->isActivated)
         {
-            imageTransformationWidget->imageTransformation->runImageTransformation(imagePreviewList);
+            imageTransformationWidget->imageTransformation->runImageTransformationOnPreviewList(imagePreviewList);
         }
     }
 }
@@ -70,6 +70,9 @@ void ImageTransformationViewer::handleLaunchImageTransformationButton()
     launchActivatedPreprocesses();
 }
 
+std::vector<ImageTransformationWidget*> ImageTransformationViewer::getImageTransformationWidgetList(){
+    return this->imageTransformationWidgetList;
+}
 
 void ImageTransformationViewer::handleDeleteImageTransformationWidgetButton(ImageTransformationWidget *imageTransformationWidgetToDelete)
 {

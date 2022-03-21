@@ -15,6 +15,7 @@ class ImageTransformationViewer : public QWidget
         ImageTransformationViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parentWidget = nullptr);
 
         void launchActivatedPreprocesses();
+        std::vector<ImageTransformationWidget*> getImageTransformationWidgetList();
 
     protected:
         QVBoxLayout *mainLayout;

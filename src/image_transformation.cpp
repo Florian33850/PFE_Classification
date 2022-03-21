@@ -1,4 +1,14 @@
 #include "image_transformation.h"
+#include <iostream>
+
+void ImageTransformation::runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList)
+{
+    for(int imageNumber=0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
+    {
+        QImage qImage = applyImageTransformation(imagePreviewList->at(imageNumber)->getQImage());
+        imagePreviewList->at(imageNumber)->setImage(qImage);
+    }
+}
 
 MirrorImageTransformation::MirrorImageTransformation()
 {
@@ -16,31 +26,21 @@ void MirrorImageTransformation::changeVerticalMirrorMode()
     verticalMirror = !verticalMirror;
 }
 
-void MirrorImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
+QImage MirrorImageTransformation::applyImageTransformation(QImage qImage)
 {
-    for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
-    {
-        QImage mirrorImage = imagePreviewList->at(imageNumber)->getQImage().mirrored(horizontalMirror, verticalMirror);
-        imagePreviewList->at(imageNumber)->setImage(mirrorImage);
-    }
+    QImage mirrorImage = qImage.mirrored(horizontalMirror, verticalMirror);
+    return mirrorImage;
 }
-
-
 
 GrayscaleImageTransformation::GrayscaleImageTransformation()
 {
 }
 
-void GrayscaleImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
+QImage GrayscaleImageTransformation::applyImageTransformation(QImage qImage)
 {
-    for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
-    {
-        QImage grayscaleImage = imagePreviewList->at(imageNumber)->getQImage().convertToFormat(QImage::Format_Grayscale8);
-        imagePreviewList->at(imageNumber)->setImage(grayscaleImage);
-    }
+    QImage grayscaleImage = qImage.convertToFormat(QImage::Format_Grayscale8);
+    return grayscaleImage;
 }
-
-
 
 AutomaticRotationImageTransformation::AutomaticRotationImageTransformation()
 {
@@ -149,80 +149,77 @@ void AutomaticRotationImageTransformation::centerTranslation(cv::Mat &imageMat, 
     cv::warpAffine(imageMat, imageMat, translationMat, imageMat.size());
 }
 
-void AutomaticRotationImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
+QImage AutomaticRotationImageTransformation::applyImageTransformation(QImage qImage)
 {
-    for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
+    qImage.save("imageTmp.tif");
+
+    cv::Mat imageMat = cv::imread("imageTmp.tif");
+    if(imageMat.empty())
     {
-        QImage qImage = imagePreviewList->at(imageNumber)->getQImage();
-        qImage.save("imageTmp.tif");
+        std::cout << "Problem loading image !!!" << std::endl;
+        return qImage;
+    }
+    else
+    {
+        cv::Mat grayMat;
+        cvtColor(imageMat, grayMat, cv::COLOR_BGR2GRAY);
+        cv::Mat thresholdMat;
+        threshold(grayMat, thresholdMat, 50, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+        std::vector<std::vector<cv::Point> > contours;
+        findContours(thresholdMat, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
 
-        cv::Mat imageMat = cv::imread("imageTmp.tif");
-        if(imageMat.empty())
+        int dilationSize = 0;
+        while(contours.size() > 2 && dilationSize < dilationSizeMax)
         {
-            std::cout << "Problem loading image !!!" << std::endl;
+            this->applyDilatation(thresholdMat, dilationSize);
+            dilationSize++;
+            findContours(thresholdMat, contours, cv::RETR_LIST, cv::CHAIN_APPROX_TC89_L1);
         }
-        else
+
+        double areaMin = DBL_MAX;
+        int indexMin = INT_MAX;
+
+        //Recover the smallest area
+        for(int i = 0; i < (int) contours.size(); i++)
         {
-            cv::Mat grayMat;
-            cvtColor(imageMat, grayMat, cv::COLOR_BGR2GRAY);
-            cv::Mat thresholdMat;
-            threshold(grayMat, thresholdMat, 50, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
-            std::vector<std::vector<cv::Point> > contours;
-            findContours(thresholdMat, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
-
-            int dilationSize = 0;
-            while(contours.size() > 2 && dilationSize < dilationSizeMax)
+            double area = contourArea(contours[i]);
+            
+            // Ignore areas that are too small or too large
+            if (area < 1e2 || 1e5 < area)
             {
-                this->applyDilatation(thresholdMat, dilationSize);
-                dilationSize++;
-                findContours(thresholdMat, contours, cv::RETR_LIST, cv::CHAIN_APPROX_TC89_L1);
+                continue;
             }
 
-            double areaMin = DBL_MAX;
-            int indexMin = INT_MAX;
-
-            //Recover the smallest area
-            for(int i = 0; i < (int) contours.size(); i++)
+            if(area < areaMin)
             {
-                double area = contourArea(contours[i]);
-                
-                // Ignore areas that are too small or too large
-                if (area < 1e2 || 1e5 < area)
-                {
-                    continue;
-                }
-
-                if(area < areaMin)
-                {
-                    areaMin = area;
-                    indexMin = i;
-                }
+                areaMin = area;
+                indexMin = i;
             }
-
-            // Check if no contours of the right size are found
-            if(areaMin == DBL_MAX)
-            {
-                indexMin = 0;
-            }
-
-            cv::PCA pcaAnalysis = createPCAAnalysis(contours[indexMin]);
-            cv::Point shapeCenter = cv::Point(static_cast<int>(pcaAnalysis.mean.at<double>(0, 0)), static_cast<int>(pcaAnalysis.mean.at<double>(0, 1)));
-            double angleDegree = getMinAngleRadian(shapeCenter, pcaAnalysis) * (180.0/CV_PI);
-
-            cv::Mat rotationMat = cv::getRotationMatrix2D(shapeCenter, angleDegree, 1.0);
-
-            cv::Mat rotatedImageMat;
-            cv::warpAffine(imageMat, rotatedImageMat, rotationMat, imageMat.size());
-
-            cv::Mat translatedImageMat = rotatedImageMat.clone();
-            centerTranslation(translatedImageMat, shapeCenter);
-
-            cv::imwrite("imageTmp.tif", translatedImageMat);
-
-            QImage rotatedQImage;
-            rotatedQImage.load("imageTmp.tif");
-            remove("imageTmp.tif");
-            imagePreviewList->at(imageNumber)->setImage(rotatedQImage);
         }
+
+        // Check if no contours of the right size are found
+        if(areaMin == DBL_MAX)
+        {
+            indexMin = 0;
+        }
+
+        cv::PCA pcaAnalysis = createPCAAnalysis(contours[indexMin]);
+        cv::Point shapeCenter = cv::Point(static_cast<int>(pcaAnalysis.mean.at<double>(0, 0)), static_cast<int>(pcaAnalysis.mean.at<double>(0, 1)));
+        double angleDegree = getMinAngleRadian(shapeCenter, pcaAnalysis) * (180.0/CV_PI);
+
+        cv::Mat rotationMat = cv::getRotationMatrix2D(shapeCenter, angleDegree, 1.0);
+
+        cv::Mat rotatedImageMat;
+        cv::warpAffine(imageMat, rotatedImageMat, rotationMat, imageMat.size());
+
+        cv::Mat translatedImageMat = rotatedImageMat.clone();
+        centerTranslation(translatedImageMat, shapeCenter);
+
+        cv::imwrite("imageTmp.tif", translatedImageMat);
+
+        QImage rotatedQImage;
+        rotatedQImage.load("imageTmp.tif");
+        remove("imageTmp.tif");
+        return rotatedQImage;
     }
 }
