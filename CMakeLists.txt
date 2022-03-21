@@ -54,7 +54,6 @@ target_link_libraries(application_viewer Qt5::Widgets ${OpenCV_LIBS})
 add_custom_target(gcov
     COMMAND mkdir -p coverage
     COMMAND ${CMAKE_MAKE_PROGRAM} test
-    COMMAND "cmake make program equal = ${CMAKE_MAKE_PROGRAM}"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 add_custom_command(TARGET gcov
