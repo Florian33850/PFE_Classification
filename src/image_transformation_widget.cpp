@@ -33,7 +33,7 @@ MirrorWidget::MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, Mirro
     this->horizontalMirrorCheckBox = new QCheckBox("Horizontal", this->parentWidget);
     this->verticalMirrorCheckBox = new QCheckBox("Vertical", this->parentWidget);
 
-    this->mainWidgetGroupBox->setMaximumHeight(MIRRORED_WIDGET_MAXIMUM_HEIGHT);
+    this->mainWidgetGroupBox->adjustSize();
 }
 
 void MirrorWidget::displayUI(int indexInLayout)
@@ -58,7 +58,7 @@ GrayscaleWidget::GrayscaleWidget(QVBoxLayout *mainLayout, QWidget *parentWidget,
     : ImageTransformationWidget(mainLayout, parentWidget)
 {
     this->imageTransformation = grayscaleImageTransformation;
-    this->mainWidgetGroupBox->setMaximumHeight(GRAYSCALE_WIDGET_MAXIMUM_HEIGHT);
+    this->mainWidgetGroupBox->adjustSize();
 }
 
 void GrayscaleWidget::displayUI(int indexInLayout)
@@ -78,7 +78,7 @@ AutomaticRotationLymeDataWidget::AutomaticRotationLymeDataWidget(QVBoxLayout *ma
     : ImageTransformationWidget(mainLayout, parentWidget)
 {
     this->imageTransformation = automaticRotationLymeDataImageTransformation;
-    this->mainWidgetGroupBox->setMaximumHeight(AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT);
+    this->mainWidgetGroupBox->adjustSize();
 }
 
 void AutomaticRotationLymeDataWidget::displayUI(int indexInLayout)
@@ -102,7 +102,7 @@ MorphologicalTransformationWidget::MorphologicalTransformationWidget(QVBoxLayout
     this->kernelSizeSlider = new IntegerSlider("Kernel Size", 0, 20);
     this->numberIterationMorphologialTransformationSlider = new IntegerSlider("Number of Iteration", 1, 20);
 
-    this->mainWidgetGroupBox->setMaximumHeight(MORPHOLOGICAL_TRANSFORMATION_WIDGET_MAXIMUM_HEIGHT);
+    this->mainWidgetGroupBox->adjustSize();
 }
 
 void MorphologicalTransformationWidget::displayUI(int indexInLayout)

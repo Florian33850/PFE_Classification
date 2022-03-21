@@ -15,7 +15,7 @@ ImageTransformationViewer::ImageTransformationViewer(std::vector<ImageLabel*> *i
 
 void ImageTransformationViewer::launchActivatedPreprocesses()
 {
-    for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+    for(ImageTransformationWidget *imageTransformationWidget : this->imageTransformationWidgetList)
     {
         if(imageTransformationWidget->isActivated)
         {
@@ -74,8 +74,11 @@ MorphologicalTransformationWidget* ImageTransformationViewer::createMorphologica
 
 void ImageTransformationViewer::handleLaunchImageTransformationButton()
 {
-    Q_EMIT reloadPreviewSignal();
-    for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+    if(!this->imageTransformationWidgetList.empty())
+    {
+        Q_EMIT reloadPreviewSignal();
+    }
+    for(ImageTransformationWidget *imageTransformationWidget : this->imageTransformationWidgetList)
     {
         imageTransformationWidget->isActivated = true;
     }

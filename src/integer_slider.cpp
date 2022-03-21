@@ -29,20 +29,20 @@ int IntegerSlider::value()
     return this->integerSlider->value(); 
 }
 
-void IntegerSlider::setValue(int new_value)
+void IntegerSlider::setValue(int newValue)
 { 
-    this->integerSlider->setValue(new_value);
+    this->integerSlider->setValue(newValue);
 }
 
-void IntegerSlider::setRange(int min, int max)
+void IntegerSlider::setRange(int minValue, int maxValue)
 { 
-    this->integerSlider->setRange(min, max);
+    this->integerSlider->setRange(minValue, maxValue);
 }
 
-void IntegerSlider::onValueChange(int new_value)
+void IntegerSlider::onValueChange(int newValue)
 {
   updateValueLabel();
-  valueChanged(new_value);
+  valueChanged(newValue);
 }
 
 void IntegerSlider::updateValueLabel()
