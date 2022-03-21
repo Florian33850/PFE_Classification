@@ -65,7 +65,7 @@ bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTran
     QString imageSavePath, repositoryName, imageAndItsRepositoryName;
     QString transformationsPerformed;
 
-    for(int unsigned image_index = 0 ; image_index < pathToImages.size() ; image_index++)
+    for(int unsigned image_index = 0 ; (int) image_index < pathToImages.size() ; image_index++)
     {
         QImage qImage = loadImageFromPath(pathToImages.at(image_index));
         
