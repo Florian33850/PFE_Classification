@@ -41,10 +41,10 @@ class GrayscaleImageTransformation : public ImageTransformation
         void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
 };
 
-class AutomaticRotationImageTransformation : public ImageTransformation
+class AutomaticRotationLymeDataImageTransformation : public ImageTransformation
 {
     public:
-        AutomaticRotationImageTransformation();
+        AutomaticRotationLymeDataImageTransformation();
 
     private:
         int dilationSizeMax;

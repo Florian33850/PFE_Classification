@@ -74,23 +74,24 @@ void GrayscaleWidget::displayUI(int indexInLayout)
 
 
 
-AutomaticRotationWidget::AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationImageTransformation *automaticRotationImageTransformation)
+AutomaticRotationLymeDataWidget::AutomaticRotationLymeDataWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationLymeDataImageTransformation *automaticRotationLymeDataImageTransformation)
     : ImageTransformationWidget(mainLayout, parentWidget)
 {
-    this->imageTransformation = automaticRotationImageTransformation;
+    this->imageTransformation = automaticRotationLymeDataImageTransformation;
     this->mainWidgetGroupBox->setMaximumHeight(AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT);
 }
 
-void AutomaticRotationWidget::displayUI(int indexInLayout)
+void AutomaticRotationLymeDataWidget::displayUI(int indexInLayout)
 {
-    QLabel *automaticRotationWidgetTitle = new QLabel("Automatic Rotation");
-    QHBoxLayout *automaticRotationLayout = new QHBoxLayout();
-    automaticRotationLayout->addWidget(automaticRotationWidgetTitle);
-    automaticRotationLayout->addWidget(deleteImageTransformationWidgetButton);
+    QLabel *automaticRotationLymeDataWidgetTitle = new QLabel("Automatic Rotation");
+    QHBoxLayout *automaticRotationLymeDataLayout = new QHBoxLayout();
+    automaticRotationLymeDataLayout->addWidget(automaticRotationLymeDataWidgetTitle);
+    automaticRotationLymeDataLayout->addWidget(deleteImageTransformationWidgetButton);
 
-    this->mainWidgetGroupBox->setLayout(automaticRotationLayout);
+    this->mainWidgetGroupBox->setLayout(automaticRotationLymeDataLayout);
     this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
 }
+
 
 
 ErosionWidget::ErosionWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, ErosionImageTransformation *erosionImageTransformation)

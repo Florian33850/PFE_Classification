@@ -48,12 +48,12 @@ GrayscaleWidget* ImageTransformationViewer::createGrayscaleImageTransformation()
     return newGrayscaleWidget;
 }
 
-AutomaticRotationWidget* ImageTransformationViewer::createAutomaticRotationImageTransformation()
+AutomaticRotationLymeDataWidget* ImageTransformationViewer::createAutomaticRotationLymeDataImageTransformation()
 {
-    AutomaticRotationImageTransformation *newAutomaticRotationImageTransformation = new AutomaticRotationImageTransformation();
+    AutomaticRotationLymeDataImageTransformation *newAutomaticRotationImageTransformation = new AutomaticRotationLymeDataImageTransformation();
     imageTransformationList.push_back(newAutomaticRotationImageTransformation);
 
-    AutomaticRotationWidget *newAutomaticRotationWidget = new AutomaticRotationWidget(mainLayout, this, newAutomaticRotationImageTransformation);
+    AutomaticRotationLymeDataWidget *newAutomaticRotationWidget = new AutomaticRotationLymeDataWidget(mainLayout, this, newAutomaticRotationImageTransformation);
     imageTransformationWidgetList.push_back(newAutomaticRotationWidget);
 
     newAutomaticRotationWidget->displayUI(newAutomaticRotationWidget->getLayoutCount()-1);
@@ -135,9 +135,9 @@ void PreprocessingViewer::handleImageTransformationComboBox()
     {
         imageTransformationWidget = createGrayscaleImageTransformation();
     }
-    else if(newImageTransformation.compare("Automatic Rotation") == 0)
+    else if(newImageTransformation.compare("Automatic Rotation for Lyme Data") == 0)
     {
-        imageTransformationWidget = createAutomaticRotationImageTransformation();
+        imageTransformationWidget = createAutomaticRotationLymeDataImageTransformation();
     }
     else if(newImageTransformation.compare("Erosion") == 0)
     {

@@ -42,12 +42,12 @@ void GrayscaleImageTransformation::runImageTransformation(std::vector<ImageLabel
 
 
 
-AutomaticRotationImageTransformation::AutomaticRotationImageTransformation()
+AutomaticRotationLymeDataImageTransformation::AutomaticRotationLymeDataImageTransformation()
 {
     dilationSizeMax = AUTOMATIC_ROTATION_MAX_DILATATION_SIZE;
 }
 
-float AutomaticRotationImageTransformation::getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector)
+float AutomaticRotationLymeDataImageTransformation::getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector)
 {
     float length1 = sqrt(vec1.x * vec1.x + vec1.y * vec1.y);
     float length2 = sqrt(shapeOrientationVector.x * shapeOrientationVector.x + shapeOrientationVector.y * shapeOrientationVector.y);
@@ -70,7 +70,7 @@ float AutomaticRotationImageTransformation::getAngleBetweenVectors(const cv::Poi
     }
 }
 
-cv::PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vector<cv::Point> pointList)
+cv::PCA AutomaticRotationLymeDataImageTransformation::createPCAAnalysis(const std::vector<cv::Point> pointList)
 {
     int pointListSize = static_cast<int>(pointList.size());
     cv::Mat dataPointsMat = cv::Mat(pointListSize, 2, CV_64F);
@@ -85,7 +85,7 @@ cv::PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vecto
     return pcaAnalysis;
 }
 
-double AutomaticRotationImageTransformation::getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis)
+double AutomaticRotationLymeDataImageTransformation::getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis)
 {
     cv::Point verticalPoint = cv::Point(shapeCenter.x, shapeCenter.y-10.);
     cv::Point verticalVector = verticalPoint-shapeCenter;
@@ -130,7 +130,7 @@ double AutomaticRotationImageTransformation::getMinAngleRadian(cv::Point shapeCe
     return angleRadian;
 }
 
-void AutomaticRotationImageTransformation::applyDilatation(cv::Mat &imageMat, int dilatationSize)
+void AutomaticRotationLymeDataImageTransformation::applyDilatation(cv::Mat &imageMat, int dilatationSize)
 {
     cv::Mat structuringElement = getStructuringElement(cv::MORPH_RECT,
                                                         cv::Size(2*dilatationSize + 1, 2*dilatationSize + 1),
@@ -138,7 +138,7 @@ void AutomaticRotationImageTransformation::applyDilatation(cv::Mat &imageMat, in
     dilate(imageMat, imageMat, structuringElement);
 }
 
-void AutomaticRotationImageTransformation::centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter)
+void AutomaticRotationLymeDataImageTransformation::centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter)
 {
     cv::Point imageMatCenter = {imageMat.cols/2, imageMat.rows/2};
     float translationX = imageMatCenter.x-shapeCenter.x;
@@ -149,7 +149,7 @@ void AutomaticRotationImageTransformation::centerTranslation(cv::Mat &imageMat, 
     cv::warpAffine(imageMat, imageMat, translationMat, imageMat.size());
 }
 
-void AutomaticRotationImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
+void AutomaticRotationLymeDataImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
 {
     for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
     {

@@ -58,10 +58,10 @@ class GrayscaleWidget : public ImageTransformationWidget
         void displayUI(int indexInLayout);
 };
 
-class AutomaticRotationWidget : public ImageTransformationWidget
+class AutomaticRotationLymeDataWidget : public ImageTransformationWidget
 {
     public:
-        AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationImageTransformation *erosionImageTransformation);
+        AutomaticRotationLymeDataWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationLymeDataImageTransformation *automaticRotationLymeDataImageTransformation);
 
         void displayUI(int indexInLayout);
 };
