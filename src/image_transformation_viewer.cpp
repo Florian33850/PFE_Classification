@@ -48,6 +48,18 @@ GrayscaleWidget* ImageTransformationViewer::createGrayscaleImageTransformation()
     return newGrayscaleWidget;
 }
 
+AutomaticRotationWidget* ImageTransformationViewer::createAutomaticRotationImageTransformation()
+{
+    AutomaticRotationImageTransformation *newAutomaticRotationImageTransformation = new AutomaticRotationImageTransformation();
+    imageTransformationList.push_back(newAutomaticRotationImageTransformation);
+
+    AutomaticRotationWidget *newAutomaticRotationWidget = new AutomaticRotationWidget(mainLayout, this, newAutomaticRotationImageTransformation);
+    imageTransformationWidgetList.push_back(newAutomaticRotationWidget);
+
+    newAutomaticRotationWidget->displayUI(newAutomaticRotationWidget->getLayoutCount()-1);
+    return newAutomaticRotationWidget;
+}
+
 void ImageTransformationViewer::handleLaunchImageTransformationButton()
 {
     Q_EMIT reloadPreviewSignal();
@@ -113,6 +125,10 @@ void PreprocessingViewer::handleImageTransformationComboBox()
     else if(newImageTransformation.compare("Grayscale") == 0)
     {
         imageTransformationWidget = createGrayscaleImageTransformation();
+    }
+    else if(newImageTransformation.compare("Automatic Rotation") == 0)
+    {
+        imageTransformationWidget = createAutomaticRotationImageTransformation();
     }
     else
     {

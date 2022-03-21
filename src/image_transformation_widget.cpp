@@ -71,3 +71,23 @@ void GrayscaleWidget::displayUI(int indexInLayout)
     this->mainWidgetGroupBox->setLayout(grayscaleLayout);
     this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
 }
+
+
+
+AutomaticRotationWidget::AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationImageTransformation *automaticRotationImageTransformation)
+    : ImageTransformationWidget(mainLayout, parentWidget)
+{
+    this->imageTransformation = automaticRotationImageTransformation;
+    this->mainWidgetGroupBox->setMaximumHeight(AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT);
+}
+
+void AutomaticRotationWidget::displayUI(int indexInLayout)
+{
+    QLabel *automaticRotationWidgetTitle = new QLabel("Automatic Rotation");
+    QHBoxLayout *automaticRotationLayout = new QHBoxLayout();
+    automaticRotationLayout->addWidget(automaticRotationWidgetTitle);
+    automaticRotationLayout->addWidget(deleteImageTransformationWidgetButton);
+
+    this->mainWidgetGroupBox->setLayout(automaticRotationLayout);
+    this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
+}
