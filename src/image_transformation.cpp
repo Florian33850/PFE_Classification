@@ -42,12 +42,12 @@ QImage GrayscaleImageTransformation::applyImageTransformation(QImage qImage)
     return grayscaleImage;
 }
 
-AutomaticRotationImageTransformation::AutomaticRotationImageTransformation()
+AutomaticRotationLymeDataImageTransformation::AutomaticRotationLymeDataImageTransformation()
 {
     dilationSizeMax = AUTOMATIC_ROTATION_MAX_DILATATION_SIZE;
 }
 
-float AutomaticRotationImageTransformation::getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector)
+float AutomaticRotationLymeDataImageTransformation::getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector)
 {
     float length1 = sqrt(vec1.x * vec1.x + vec1.y * vec1.y);
     float length2 = sqrt(shapeOrientationVector.x * shapeOrientationVector.x + shapeOrientationVector.y * shapeOrientationVector.y);
@@ -70,7 +70,7 @@ float AutomaticRotationImageTransformation::getAngleBetweenVectors(const cv::Poi
     }
 }
 
-cv::PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vector<cv::Point> pointList)
+cv::PCA AutomaticRotationLymeDataImageTransformation::createPCAAnalysis(const std::vector<cv::Point> pointList)
 {
     int pointListSize = static_cast<int>(pointList.size());
     cv::Mat dataPointsMat = cv::Mat(pointListSize, 2, CV_64F);
@@ -85,7 +85,7 @@ cv::PCA AutomaticRotationImageTransformation::createPCAAnalysis(const std::vecto
     return pcaAnalysis;
 }
 
-double AutomaticRotationImageTransformation::getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis)
+double AutomaticRotationLymeDataImageTransformation::getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis)
 {
     cv::Point verticalPoint = cv::Point(shapeCenter.x, shapeCenter.y-10.);
     cv::Point verticalVector = verticalPoint-shapeCenter;
@@ -130,7 +130,7 @@ double AutomaticRotationImageTransformation::getMinAngleRadian(cv::Point shapeCe
     return angleRadian;
 }
 
-void AutomaticRotationImageTransformation::applyDilatation(cv::Mat &imageMat, int dilatationSize)
+void AutomaticRotationLymeDataImageTransformation::applyDilatation(cv::Mat &imageMat, int dilatationSize)
 {
     cv::Mat structuringElement = getStructuringElement(cv::MORPH_RECT,
                                                         cv::Size(2*dilatationSize + 1, 2*dilatationSize + 1),
@@ -138,7 +138,7 @@ void AutomaticRotationImageTransformation::applyDilatation(cv::Mat &imageMat, in
     dilate(imageMat, imageMat, structuringElement);
 }
 
-void AutomaticRotationImageTransformation::centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter)
+void AutomaticRotationLymeDataImageTransformation::centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter)
 {
     cv::Point imageMatCenter = {imageMat.cols/2, imageMat.rows/2};
     float translationX = imageMatCenter.x-shapeCenter.x;
@@ -149,11 +149,11 @@ void AutomaticRotationImageTransformation::centerTranslation(cv::Mat &imageMat, 
     cv::warpAffine(imageMat, imageMat, translationMat, imageMat.size());
 }
 
-QImage AutomaticRotationImageTransformation::applyImageTransformation(QImage qImage)
+QImage AutomaticRotationLymeDataImageTransformation::applyImageTransformation(QImage qImage)
 {
-    qImage.save("imageTmp.tif");
+    qImage.save("imageRotationTmp.tif");
 
-    cv::Mat imageMat = cv::imread("imageTmp.tif");
+    cv::Mat imageMat = cv::imread("imageRotationTmp.tif");
     if(imageMat.empty())
     {
         std::cout << "Problem loading image !!!" << std::endl;
@@ -215,11 +215,83 @@ QImage AutomaticRotationImageTransformation::applyImageTransformation(QImage qIm
         cv::Mat translatedImageMat = rotatedImageMat.clone();
         centerTranslation(translatedImageMat, shapeCenter);
 
-        cv::imwrite("imageTmp.tif", translatedImageMat);
+        cv::imwrite("imageRotationTmp.tif", translatedImageMat);
 
         QImage rotatedQImage;
-        rotatedQImage.load("imageTmp.tif");
-        remove("imageTmp.tif");
+        rotatedQImage.load("imageRotationTmp.tif");
+        remove("imageRotationTmp.tif");
         return rotatedQImage;
     }
+}
+
+
+
+MorphologicalTransformationImageTransformation::MorphologicalTransformationImageTransformation()
+{
+    this->kernelSize = 0;
+    this->numberIterationMorphologicalTransformation = 1;
+    this->typeMorphologicalTransformation = 0;
+}
+
+void MorphologicalTransformationImageTransformation::changeKernelSize(int newKernelSize)
+{
+    this->kernelSize = newKernelSize;
+}
+
+void MorphologicalTransformationImageTransformation::changeNumberIterationMorphologicalTransformation(int newNumberIterationMorphologicalTransformation)
+{
+    this->numberIterationMorphologicalTransformation = newNumberIterationMorphologicalTransformation;
+}
+
+void MorphologicalTransformationImageTransformation::changeTypeMorphologicalTransformation(int newTypeMorphologicalTransformation)
+{
+    this->typeMorphologicalTransformation = newTypeMorphologicalTransformation;
+}
+
+void MorphologicalTransformationImageTransformation::dilatation(cv::Mat &imageMat, cv::Mat structuringElement)
+{
+    for(int i=0; i<this->numberIterationMorphologicalTransformation; i++)
+    {
+        dilate(imageMat, imageMat, structuringElement);
+    }
+}
+
+void MorphologicalTransformationImageTransformation::erosion(cv::Mat &imageMat, cv::Mat structuringElement)
+{
+    for(int i=0; i<this->numberIterationMorphologicalTransformation; i++)
+    {
+        erode(imageMat, imageMat, structuringElement);
+    }
+}
+
+QImage MorphologicalTransformationImageTransformation::applyImageTransformation(QImage qImage)
+{
+        qImage.save("imageMorphologicalTransformationTmp.tif");
+
+        cv::Mat imageMat = cv::imread("imageMorphologicalTransformationTmp.tif");
+        if(imageMat.empty())
+        {
+            std::cout << "Problem loading image !!!" << std::endl;
+        }
+        else
+        {
+            cv::Mat structuringElement = getStructuringElement(cv::MORPH_RECT,
+                                                                cv::Size(2*this->kernelSize+1, 2*this->kernelSize+1),
+                                                                cv::Point(this->kernelSize, this->kernelSize));
+            if(this->typeMorphologicalTransformation == 0)
+            {
+                this->erosion(imageMat, structuringElement);
+            }
+            else if(this->typeMorphologicalTransformation == 1)
+            {
+                this->dilatation(imageMat, structuringElement);
+            }
+        }
+
+        cv::imwrite("imageMorphologicalTransformationTmp.tif", imageMat);
+
+        QImage morphologicalTransformedQImage;
+        morphologicalTransformedQImage.load("imageMorphologicalTransformationTmp.tif");
+        remove("imageMorphologicalTransformationTmp.tif");
+        return morphologicalTransformedQImage;
 }

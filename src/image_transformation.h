@@ -44,10 +44,10 @@ class GrayscaleImageTransformation : public ImageTransformation
         QImage applyImageTransformation(QImage qImage);
 };
 
-class AutomaticRotationImageTransformation : public ImageTransformation
+class AutomaticRotationLymeDataImageTransformation : public ImageTransformation
 {
     public:
-        AutomaticRotationImageTransformation();
+        AutomaticRotationLymeDataImageTransformation();
 
     private:
         int dilationSizeMax;
@@ -60,4 +60,22 @@ class AutomaticRotationImageTransformation : public ImageTransformation
         QImage applyImageTransformation(QImage qImage);
 };
 
+class MorphologicalTransformationImageTransformation : public ImageTransformation
+{
+    public:
+        MorphologicalTransformationImageTransformation();
+
+        int kernelSize;
+        int numberIterationMorphologicalTransformation;
+        int typeMorphologicalTransformation;
+
+        void changeKernelSize(int newKernelSize);
+        void changeNumberIterationMorphologicalTransformation(int newNumberIterationMorphologicalTransformation);
+        void changeTypeMorphologicalTransformation(int newTypeMorphologicalTransformation);
+        void dilatation(cv::Mat &imageMat, cv::Mat structuringElement);
+        void erosion(cv::Mat &imageMat, cv::Mat structuringElement);
+
+    private:
+        QImage applyImageTransformation(QImage qImage);
+};
 #endif // IMAGE_TRANSFORMATION_H

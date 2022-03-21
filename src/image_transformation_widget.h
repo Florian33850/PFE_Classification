@@ -2,16 +2,13 @@
 #define IMAGE_TRANSFORMATION_WIDGET_H
 
 #include "image_transformation.h"
+#include "integer_slider.h"
 
 #include <QWidget>
 #include <QPushButton>
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QGridLayout>
-
-#define MIRRORED_WIDGET_MAXIMUM_HEIGHT 110
-#define GRAYSCALE_WIDGET_MAXIMUM_HEIGHT 65
-#define AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT 65
 
 class ImageTransformationWidget : public QWidget
 {
@@ -56,11 +53,24 @@ class GrayscaleWidget : public ImageTransformationWidget
         void displayUI(int indexInLayout);
 };
 
-class AutomaticRotationWidget : public ImageTransformationWidget
+class AutomaticRotationLymeDataWidget : public ImageTransformationWidget
 {
     public:
-        AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationImageTransformation *automaticRotationImageTransformation);
+        AutomaticRotationLymeDataWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationLymeDataImageTransformation *automaticRotationLymeDataImageTransformation);
 
         void displayUI(int indexInLayout);
+};
+
+class MorphologicalTransformationWidget : public ImageTransformationWidget
+{
+    public:
+        MorphologicalTransformationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MorphologicalTransformationImageTransformation *morphologicalTransformationImageTransformation);
+
+        void displayUI(int indexInLayout);
+    
+    private:
+        IntegerSlider *typeMorphologicalTransformation;
+        IntegerSlider *kernelSizeSlider;
+        IntegerSlider *numberIterationMorphologialTransformationSlider;
 };
 #endif // IMAGE_TRANSFORMATION_WIDGET_H

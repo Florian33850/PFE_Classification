@@ -15,7 +15,7 @@ ImageTransformationViewer::ImageTransformationViewer(std::vector<ImageLabel*> *i
 
 void ImageTransformationViewer::launchActivatedPreprocesses()
 {
-    for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+    for(ImageTransformationWidget *imageTransformationWidget : this->imageTransformationWidgetList)
     {
         if(imageTransformationWidget->isActivated)
         {
@@ -48,22 +48,37 @@ GrayscaleWidget* ImageTransformationViewer::createGrayscaleImageTransformation()
     return newGrayscaleWidget;
 }
 
-AutomaticRotationWidget* ImageTransformationViewer::createAutomaticRotationImageTransformation()
+AutomaticRotationLymeDataWidget* ImageTransformationViewer::createAutomaticRotationLymeDataImageTransformation()
 {
-    AutomaticRotationImageTransformation *newAutomaticRotationImageTransformation = new AutomaticRotationImageTransformation();
+    AutomaticRotationLymeDataImageTransformation *newAutomaticRotationImageTransformation = new AutomaticRotationLymeDataImageTransformation();
     imageTransformationList.push_back(newAutomaticRotationImageTransformation);
 
-    AutomaticRotationWidget *newAutomaticRotationWidget = new AutomaticRotationWidget(mainLayout, this, newAutomaticRotationImageTransformation);
+    AutomaticRotationLymeDataWidget *newAutomaticRotationWidget = new AutomaticRotationLymeDataWidget(mainLayout, this, newAutomaticRotationImageTransformation);
     imageTransformationWidgetList.push_back(newAutomaticRotationWidget);
 
     newAutomaticRotationWidget->displayUI(newAutomaticRotationWidget->getLayoutCount()-1);
     return newAutomaticRotationWidget;
 }
 
+MorphologicalTransformationWidget* ImageTransformationViewer::createMorphologicalTransformationImageTransformation()
+{
+    MorphologicalTransformationImageTransformation *newMorphologicalTransformationImageTransformation = new MorphologicalTransformationImageTransformation();
+    imageTransformationList.push_back(newMorphologicalTransformationImageTransformation);
+
+    MorphologicalTransformationWidget *newMorphologicalTransformationWidget = new MorphologicalTransformationWidget(mainLayout, this, newMorphologicalTransformationImageTransformation);
+    imageTransformationWidgetList.push_back(newMorphologicalTransformationWidget);
+
+    newMorphologicalTransformationWidget->displayUI(newMorphologicalTransformationWidget->getLayoutCount()-1);
+    return newMorphologicalTransformationWidget;
+}
+
 void ImageTransformationViewer::handleLaunchImageTransformationButton()
 {
-    Q_EMIT reloadPreviewSignal();
-    for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+    if(!this->imageTransformationWidgetList.empty())
+    {
+        Q_EMIT reloadPreviewSignal();
+    }
+    for(ImageTransformationWidget *imageTransformationWidget : this->imageTransformationWidgetList)
     {
         imageTransformationWidget->isActivated = true;
     }
@@ -126,9 +141,13 @@ void PreprocessingViewer::handleImageTransformationComboBox()
     {
         imageTransformationWidget = createGrayscaleImageTransformation();
     }
-    else if(newImageTransformation.compare("Automatic Rotation") == 0)
+    else if(newImageTransformation.compare("Automatic Rotation for Lyme Data") == 0)
     {
-        imageTransformationWidget = createAutomaticRotationImageTransformation();
+        imageTransformationWidget = createAutomaticRotationLymeDataImageTransformation();
+    }
+    else if(newImageTransformation.compare("Morphological Transformation") == 0)
+    {
+        imageTransformationWidget = createMorphologicalTransformationImageTransformation();
     }
     else
     {
