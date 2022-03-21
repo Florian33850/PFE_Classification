@@ -3,7 +3,7 @@
 
 void ImageTransformation::runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList)
 {
-    for(int imageNumber=0; imageNumber < imagePreviewList->size(); imageNumber++)
+    for(int imageNumber=0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
     {
         QImage qImage = applyImageTransformation(imagePreviewList->at(imageNumber)->getQImage());
         imagePreviewList->at(imageNumber)->setImage(qImage);
@@ -157,6 +157,7 @@ QImage AutomaticRotationImageTransformation::applyImageTransformation(QImage qIm
     if(imageMat.empty())
     {
         std::cout << "Problem loading image !!!" << std::endl;
+        return qImage;
     }
     else
     {
