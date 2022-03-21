@@ -60,16 +60,16 @@ AutomaticRotationLymeDataWidget* ImageTransformationViewer::createAutomaticRotat
     return newAutomaticRotationWidget;
 }
 
-ErosionWidget* ImageTransformationViewer::createErosionImageTransformation()
+MorphologicalTransformationWidget* ImageTransformationViewer::createMorphologicalTransformationImageTransformation()
 {
-    ErosionImageTransformation *newErosionImageTransformation = new ErosionImageTransformation();
-    imageTransformationList.push_back(newErosionImageTransformation);
+    MorphologicalTransformationImageTransformation *newMorphologicalTransformationImageTransformation = new MorphologicalTransformationImageTransformation();
+    imageTransformationList.push_back(newMorphologicalTransformationImageTransformation);
 
-    ErosionWidget *newErosionWidget = new ErosionWidget(mainLayout, this, newErosionImageTransformation);
-    imageTransformationWidgetList.push_back(newErosionWidget);
+    MorphologicalTransformationWidget *newMorphologicalTransformationWidget = new MorphologicalTransformationWidget(mainLayout, this, newMorphologicalTransformationImageTransformation);
+    imageTransformationWidgetList.push_back(newMorphologicalTransformationWidget);
 
-    newErosionWidget->displayUI(newErosionWidget->getLayoutCount()-1);
-    return newErosionWidget;
+    newMorphologicalTransformationWidget->displayUI(newMorphologicalTransformationWidget->getLayoutCount()-1);
+    return newMorphologicalTransformationWidget;
 }
 
 void ImageTransformationViewer::handleLaunchImageTransformationButton()
@@ -139,9 +139,9 @@ void PreprocessingViewer::handleImageTransformationComboBox()
     {
         imageTransformationWidget = createAutomaticRotationLymeDataImageTransformation();
     }
-    else if(newImageTransformation.compare("Erosion") == 0)
+    else if(newImageTransformation.compare("Morphological Transformation") == 0)
     {
-        imageTransformationWidget = createErosionImageTransformation();
+        imageTransformationWidget = createMorphologicalTransformationImageTransformation();
     }
     else
     {

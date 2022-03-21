@@ -13,7 +13,7 @@
 #define MIRRORED_WIDGET_MAXIMUM_HEIGHT 110
 #define GRAYSCALE_WIDGET_MAXIMUM_HEIGHT 65
 #define AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT 65
-#define EROSION_WIDGET_MAXIMUM_HEIGHT 140
+#define MORPHOLOGICAL_TRANSFORMATION_WIDGET_MAXIMUM_HEIGHT 170
 
 class ImageTransformationWidget : public QWidget
 {
@@ -66,15 +66,16 @@ class AutomaticRotationLymeDataWidget : public ImageTransformationWidget
         void displayUI(int indexInLayout);
 };
 
-class ErosionWidget : public ImageTransformationWidget
+class MorphologicalTransformationWidget : public ImageTransformationWidget
 {
     public:
-        ErosionWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, ErosionImageTransformation *erosionImageTransformation);
+        MorphologicalTransformationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MorphologicalTransformationImageTransformation *morphologicalTransformationImageTransformation);
 
         void displayUI(int indexInLayout);
     
     private:
+        IntegerSlider *typeMorphologicalTransformation;
         IntegerSlider *kernelSizeSlider;
-        IntegerSlider *numberIterationErosionSlider;
+        IntegerSlider *numberIterationMorphologialTransformationSlider;
 };
 #endif // IMAGE_TRANSFORMATION_WIDGET_H

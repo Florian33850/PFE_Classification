@@ -57,19 +57,22 @@ class AutomaticRotationLymeDataImageTransformation : public ImageTransformation
         void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
 };
 
-class ErosionImageTransformation : public ImageTransformation
+class MorphologicalTransformationImageTransformation : public ImageTransformation
 {
     public:
-        ErosionImageTransformation();
+        MorphologicalTransformationImageTransformation();
 
         int kernelSize;
-        int numberIterationErosion;
+        int numberIterationMorphologicalTransformation;
+        int typeMorphologicalTransformation;
 
         void changeKernelSize(int newKernelSize);
-        void changeNumberIterationErosion(int newNumberIterationErosion);
+        void changeNumberIterationMorphologicalTransformation(int newNumberIterationMorphologicalTransformation);
+        void changeTypeMorphologicalTransformation(int newTypeMorphologicalTransformation);
+        void dilatation(cv::Mat &imageMat, cv::Mat structuringElement);
+        void erosion(cv::Mat &imageMat, cv::Mat structuringElement);
 
     private:
         void runImageTransformation(std::vector<ImageLabel*> *imagePreviewList);
 };
-
 #endif // IMAGE_TRANSFORMATION_H

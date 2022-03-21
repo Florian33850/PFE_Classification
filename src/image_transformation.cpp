@@ -229,30 +229,52 @@ void AutomaticRotationLymeDataImageTransformation::runImageTransformation(std::v
 
 
 
-ErosionImageTransformation::ErosionImageTransformation()
+MorphologicalTransformationImageTransformation::MorphologicalTransformationImageTransformation()
 {
     this->kernelSize = 0;
-    this->numberIterationErosion = 1;
+    this->numberIterationMorphologicalTransformation = 1;
+    this->typeMorphologicalTransformation = 0;
 }
 
-void ErosionImageTransformation::changeKernelSize(int newKernelSize)
+void MorphologicalTransformationImageTransformation::changeKernelSize(int newKernelSize)
 {
     this->kernelSize = newKernelSize;
 }
 
-void ErosionImageTransformation::changeNumberIterationErosion(int newNumberIterationErosion)
+void MorphologicalTransformationImageTransformation::changeNumberIterationMorphologicalTransformation(int newNumberIterationMorphologicalTransformation)
 {
-    this->numberIterationErosion = newNumberIterationErosion;
+    this->numberIterationMorphologicalTransformation = newNumberIterationMorphologicalTransformation;
 }
 
-void ErosionImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
+void MorphologicalTransformationImageTransformation::changeTypeMorphologicalTransformation(int newTypeMorphologicalTransformation)
+{
+    this->typeMorphologicalTransformation = newTypeMorphologicalTransformation;
+}
+
+void MorphologicalTransformationImageTransformation::dilatation(cv::Mat &imageMat, cv::Mat structuringElement)
+{
+    for(int i=0; i<this->numberIterationMorphologicalTransformation; i++)
+    {
+        dilate(imageMat, imageMat, structuringElement);
+    }
+}
+
+void MorphologicalTransformationImageTransformation::erosion(cv::Mat &imageMat, cv::Mat structuringElement)
+{
+    for(int i=0; i<this->numberIterationMorphologicalTransformation; i++)
+    {
+        erode(imageMat, imageMat, structuringElement);
+    }
+}
+
+void MorphologicalTransformationImageTransformation::runImageTransformation(std::vector<ImageLabel*> *imagePreviewList)
 {
     for(int imageNumber = 0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
     {
         QImage qImage = imagePreviewList->at(imageNumber)->getQImage();
-        qImage.save("imageErosionTmp.tif");
+        qImage.save("imageMorphologicalTransformationTmp.tif");
 
-        cv::Mat imageMat = cv::imread("imageErosionTmp.tif");
+        cv::Mat imageMat = cv::imread("imageMorphologicalTransformationTmp.tif");
         if(imageMat.empty())
         {
             std::cout << "Problem loading image !!!" << std::endl;
@@ -262,17 +284,21 @@ void ErosionImageTransformation::runImageTransformation(std::vector<ImageLabel*>
             cv::Mat structuringElement = getStructuringElement(cv::MORPH_RECT,
                                                                 cv::Size(2*this->kernelSize+1, 2*this->kernelSize+1),
                                                                 cv::Point(this->kernelSize, this->kernelSize));
-            for(int i=0; i<this->numberIterationErosion; i++)
+            if(this->typeMorphologicalTransformation == 0)
             {
-                erode(imageMat, imageMat, structuringElement);
+                this->erosion(imageMat, structuringElement);
+            }
+            else if(this->typeMorphologicalTransformation == 1)
+            {
+                this->dilatation(imageMat, structuringElement);
             }
         }
 
-        cv::imwrite("imageErosionTmp.tif", imageMat);
+        cv::imwrite("imageMorphologicalTransformationTmp.tif", imageMat);
 
         QImage erodedQImage;
-        erodedQImage.load("imageErosionTmp.tif");
-        remove("imageErosionTmp.tif");
+        erodedQImage.load("imageMorphologicalTransformationTmp.tif");
+        remove("imageMorphologicalTransformationTmp.tif");
         imagePreviewList->at(imageNumber)->setImage(erodedQImage);
     }
 }

@@ -94,31 +94,31 @@ void AutomaticRotationLymeDataWidget::displayUI(int indexInLayout)
 
 
 
-ErosionWidget::ErosionWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, ErosionImageTransformation *erosionImageTransformation)
+MorphologicalTransformationWidget::MorphologicalTransformationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MorphologicalTransformationImageTransformation *morphologicalTransformationImageTransformation)
     : ImageTransformationWidget(mainLayout, parentWidget)
 {
-    this->imageTransformation = erosionImageTransformation;
+    this->imageTransformation = morphologicalTransformationImageTransformation;
+    this->typeMorphologicalTransformation = new IntegerSlider("Erosion(0), Dilatation(1)", 0, 1);
     this->kernelSizeSlider = new IntegerSlider("Kernel Size", 0, 20);
-    this->numberIterationErosionSlider = new IntegerSlider("Number of Iteration", 1, 20);
+    this->numberIterationMorphologialTransformationSlider = new IntegerSlider("Number of Iteration", 1, 20);
 
-    this->mainWidgetGroupBox->setMaximumHeight(EROSION_WIDGET_MAXIMUM_HEIGHT);
+    this->mainWidgetGroupBox->setMaximumHeight(MORPHOLOGICAL_TRANSFORMATION_WIDGET_MAXIMUM_HEIGHT);
 }
 
-void ErosionWidget::displayUI(int indexInLayout)
+void MorphologicalTransformationWidget::displayUI(int indexInLayout)
 {
-    parentWidget->connect(this->kernelSizeSlider, &IntegerSlider::valueChanged, [=]()
-        {static_cast<ErosionImageTransformation*>(this->imageTransformation)->changeKernelSize(this->kernelSizeSlider->value());});
+    parentWidget->connect(this->typeMorphologicalTransformation, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeTypeMorphologicalTransformation(this->typeMorphologicalTransformation->value());});
+    parentWidget->connect(this->kernelSizeSlider, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeKernelSize(this->kernelSizeSlider->value());});
+    parentWidget->connect(this->numberIterationMorphologialTransformationSlider, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeNumberIterationMorphologicalTransformation(this->numberIterationMorphologialTransformationSlider->value());});
 
-    parentWidget->connect(this->numberIterationErosionSlider, &IntegerSlider::valueChanged, [=]()
-        {static_cast<ErosionImageTransformation*>(this->imageTransformation)->changeNumberIterationErosion(this->numberIterationErosionSlider->value());});
+    QGridLayout *morphologicalTransformationLayout = new QGridLayout();
+    QLabel *morphologicalTransformationWidgetTitle = new QLabel("Morphological Transformation");
+    morphologicalTransformationLayout->addWidget(morphologicalTransformationWidgetTitle, 0, 0, Qt::AlignLeft);
+    morphologicalTransformationLayout->addWidget(this->typeMorphologicalTransformation, 1, 0, Qt::AlignLeft);
+    morphologicalTransformationLayout->addWidget(this->kernelSizeSlider, 2, 0, Qt::AlignLeft);
+    morphologicalTransformationLayout->addWidget(this->numberIterationMorphologialTransformationSlider, 3, 0, Qt::AlignLeft);
+    morphologicalTransformationLayout->addWidget(deleteImageTransformationWidgetButton, 0, 1, Qt::AlignRight);
 
-    QGridLayout *erosionLayout = new QGridLayout();
-    QLabel *erosionWidgetTitle = new QLabel("Erosion");
-    erosionLayout->addWidget(erosionWidgetTitle, 0, 0, Qt::AlignLeft);
-    erosionLayout->addWidget(this->kernelSizeSlider, 1, 0, Qt::AlignLeft);
-    erosionLayout->addWidget(this->numberIterationErosionSlider, 2, 0, Qt::AlignLeft);
-    erosionLayout->addWidget(deleteImageTransformationWidgetButton, 0, 1, Qt::AlignRight);
-
-    this->mainWidgetGroupBox->setLayout(erosionLayout);
+    this->mainWidgetGroupBox->setLayout(morphologicalTransformationLayout);
     this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
 }
