@@ -236,8 +236,8 @@ std::vector<ImageTransformationWidget*> DataHandlerTests::createFullAndActivated
     imageTransformationWidgetList.push_back(grayscaleWidget);
     grayscaleWidget->isActivated = true;
 
-    AutomaticRotationImageTransformation *automaticRotationTransformation = new AutomaticRotationImageTransformation();
-    AutomaticRotationWidget *automaticRotationWidget = new AutomaticRotationWidget(mainLayout, parentWidget, automaticRotationTransformation);
+    AutomaticRotationLymeDataImageTransformation *automaticRotationTransformation = new AutomaticRotationLymeDataImageTransformation();
+    AutomaticRotationLymeDataWidget *automaticRotationWidget = new AutomaticRotationLymeDataWidget(mainLayout, parentWidget, automaticRotationTransformation);
     imageTransformationWidgetList.push_back(automaticRotationWidget);
     automaticRotationWidget->isActivated = true;
 

@@ -29,12 +29,16 @@ void Tab::clearLayout(QLayout *layout)
 
 void Tab::handleSaveButton(QString pathToSave)
 {
-    printf("path: %s\n", pathToSave.toUtf8().constData());
+    QMessageBox saveStartMessage;
+    saveStartMessage.setWindowTitle("Information");
+    saveStartMessage.setText("Data Base is saving...");
+    saveStartMessage.exec();
+
     if(this->dataHandler->saveImagesInFile(this->imageTransformationViewer->getImageTransformationWidgetList(), pathToSave))
     {
-        QMessageBox saveMessage;
-        saveMessage.setText("Data Base correctly saved.");
-        saveMessage.setWindowTitle("Information");
-        saveMessage.exec();
+        QMessageBox saveEndMessage;
+        saveEndMessage.setWindowTitle("Information");
+        saveEndMessage.setText("Data Base correctly saved.");
+        saveEndMessage.exec();
     }
 }
