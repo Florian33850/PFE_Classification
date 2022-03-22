@@ -33,7 +33,7 @@ MirrorWidget::MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, Mirro
     this->horizontalMirrorCheckBox = new QCheckBox("Horizontal", this->parentWidget);
     this->verticalMirrorCheckBox = new QCheckBox("Vertical", this->parentWidget);
 
-    this->mainWidgetGroupBox->setMaximumHeight(MIRRORED_WIDGET_MAXIMUM_HEIGHT);
+    this->mainWidgetGroupBox->adjustSize();
 }
 
 void MirrorWidget::displayUI(int indexInLayout)
@@ -58,7 +58,7 @@ GrayscaleWidget::GrayscaleWidget(QVBoxLayout *mainLayout, QWidget *parentWidget,
     : ImageTransformationWidget(mainLayout, parentWidget)
 {
     this->imageTransformation = grayscaleImageTransformation;
-    this->mainWidgetGroupBox->setMaximumHeight(GRAYSCALE_WIDGET_MAXIMUM_HEIGHT);
+    this->mainWidgetGroupBox->adjustSize();
 }
 
 void GrayscaleWidget::displayUI(int indexInLayout)
@@ -74,20 +74,51 @@ void GrayscaleWidget::displayUI(int indexInLayout)
 
 
 
-AutomaticRotationWidget::AutomaticRotationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationImageTransformation *automaticRotationImageTransformation)
+AutomaticRotationLymeDataWidget::AutomaticRotationLymeDataWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, AutomaticRotationLymeDataImageTransformation *automaticRotationLymeDataImageTransformation)
     : ImageTransformationWidget(mainLayout, parentWidget)
 {
-    this->imageTransformation = automaticRotationImageTransformation;
-    this->mainWidgetGroupBox->setMaximumHeight(AUTOMATIC_ROTATION_WIDGET_MAXIMUM_HEIGHT);
+    this->imageTransformation = automaticRotationLymeDataImageTransformation;
+    this->mainWidgetGroupBox->adjustSize();
 }
 
-void AutomaticRotationWidget::displayUI(int indexInLayout)
+void AutomaticRotationLymeDataWidget::displayUI(int indexInLayout)
 {
-    QLabel *automaticRotationWidgetTitle = new QLabel("Automatic Rotation");
-    QHBoxLayout *automaticRotationLayout = new QHBoxLayout();
-    automaticRotationLayout->addWidget(automaticRotationWidgetTitle);
-    automaticRotationLayout->addWidget(deleteImageTransformationWidgetButton);
+    QLabel *automaticRotationLymeDataWidgetTitle = new QLabel("Automatic Rotation");
+    QHBoxLayout *automaticRotationLymeDataLayout = new QHBoxLayout();
+    automaticRotationLymeDataLayout->addWidget(automaticRotationLymeDataWidgetTitle);
+    automaticRotationLymeDataLayout->addWidget(deleteImageTransformationWidgetButton);
 
-    this->mainWidgetGroupBox->setLayout(automaticRotationLayout);
+    this->mainWidgetGroupBox->setLayout(automaticRotationLymeDataLayout);
+    this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
+}
+
+
+
+MorphologicalTransformationWidget::MorphologicalTransformationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MorphologicalTransformationImageTransformation *morphologicalTransformationImageTransformation)
+    : ImageTransformationWidget(mainLayout, parentWidget)
+{
+    this->imageTransformation = morphologicalTransformationImageTransformation;
+    this->typeMorphologicalTransformation = new IntegerSlider("Erosion(0), Dilatation(1)", 0, 1);
+    this->kernelSizeSlider = new IntegerSlider("Kernel Size", 0, 20);
+    this->numberIterationMorphologialTransformationSlider = new IntegerSlider("Number of Iteration", 1, 20);
+
+    this->mainWidgetGroupBox->adjustSize();
+}
+
+void MorphologicalTransformationWidget::displayUI(int indexInLayout)
+{
+    parentWidget->connect(this->typeMorphologicalTransformation, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeTypeMorphologicalTransformation(this->typeMorphologicalTransformation->value());});
+    parentWidget->connect(this->kernelSizeSlider, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeKernelSize(this->kernelSizeSlider->value());});
+    parentWidget->connect(this->numberIterationMorphologialTransformationSlider, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeNumberIterationMorphologicalTransformation(this->numberIterationMorphologialTransformationSlider->value());});
+
+    QGridLayout *morphologicalTransformationLayout = new QGridLayout();
+    QLabel *morphologicalTransformationWidgetTitle = new QLabel("Morphological Transformation");
+    morphologicalTransformationLayout->addWidget(morphologicalTransformationWidgetTitle, 0, 0, Qt::AlignLeft);
+    morphologicalTransformationLayout->addWidget(this->typeMorphologicalTransformation, 1, 0, Qt::AlignLeft);
+    morphologicalTransformationLayout->addWidget(this->kernelSizeSlider, 2, 0, Qt::AlignLeft);
+    morphologicalTransformationLayout->addWidget(this->numberIterationMorphologialTransformationSlider, 3, 0, Qt::AlignLeft);
+    morphologicalTransformationLayout->addWidget(deleteImageTransformationWidgetButton, 0, 1, Qt::AlignRight);
+
+    this->mainWidgetGroupBox->setLayout(morphologicalTransformationLayout);
     this->mainLayout->insertWidget(indexInLayout, mainWidgetGroupBox);
 }
