@@ -90,7 +90,7 @@ bool DataHandler::loadPreviousPreview()
     }
 }
 
-QDir DataHandler::getGlobalSavingDirectory()
+QDir getGlobalSavingDirectory()
 {
     QString buildPath = QDir::currentPath();
 
