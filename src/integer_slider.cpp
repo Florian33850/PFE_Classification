@@ -41,8 +41,8 @@ void IntegerSlider::setRange(int minValue, int maxValue)
 
 void IntegerSlider::onValueChange(int newValue)
 {
-  updateValueLabel();
-  valueChanged(newValue);
+    updateValueLabel();
+    valueChanged(newValue);
 }
 
 void IntegerSlider::updateValueLabel()

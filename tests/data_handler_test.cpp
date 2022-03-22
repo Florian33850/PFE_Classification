@@ -35,16 +35,16 @@ void DataHandlerTests::testImageSelectionHandlerInstantiation()
 {
     QWidget *parent = NULL;
     std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
-    ImageSelectionHandler *dataHandler = new ImageSelectionHandler(parent, imagePreviewList);
-    QVERIFY(dataHandler != NULL);
+    ImageSelectionHandler *imageSelectionHandler = new ImageSelectionHandler(parent, imagePreviewList);
+    QVERIFY(imageSelectionHandler != NULL);
 }
 
 void DataHandlerTests::testLymeDatabaseHandlerInstantiation()
 {
     QWidget *parent = NULL;
     std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
-    LymeDatabaseHandler *dataHandler = new LymeDatabaseHandler(parent, imagePreviewList);
-    QVERIFY(dataHandler != NULL);
+    LymeDatabaseHandler *lymeDatabaseHandler = new LymeDatabaseHandler(parent, imagePreviewList);
+    QVERIFY(lymeDatabaseHandler != NULL);
 }
 
 bool DataHandlerTests::createAndSaveRandomNoiseColorImage(int height, int width, std::string pathToSave)
