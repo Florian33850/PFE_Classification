@@ -19,12 +19,12 @@ void ClassificationTrainingTab::addChooseTrainingMethodComboBox()
     this->chooseTrainingMethodComboBox = new QComboBox();
     this->chooseTrainingMethodComboBox->addItems(this->trainingMethodStringList);
     connect(this->chooseTrainingMethodComboBox, QOverload<int>::of(&QComboBox::activated), this, &ClassificationTrainingTab::handleTrainingMethodComboBox);
-    mainLayout->addWidget(this->chooseTrainingMethodComboBox, 0, 0);
+    this->mainLayout->addWidget(this->chooseTrainingMethodComboBox, 0, 0);
 }
 
 void ClassificationTrainingTab::handleTrainingMethodComboBox()
 {
-    QString newTrainingMethod = chooseTrainingMethodComboBox->currentText();
+    QString newTrainingMethod = this->chooseTrainingMethodComboBox->currentText();
 
     if(newTrainingMethod.compare("Deep Learning") == 0)
     {
