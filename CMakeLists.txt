@@ -125,8 +125,16 @@ add_executable(qtTest_DataHandlerTest
     ${SOURCES}
 )
 
+add_executable(qtTest_ClassificationTrainingTabTest
+    tests/classification_training_tab_test.cpp
+    ${SOURCES}
+)
+
 add_test(NAME qtTest_TestGUI COMMAND qtTest_TestGUI)
 add_test(NAME qtTest_DataHandlerTest COMMAND qtTest_DataHandlerTest)
+add_test(NAME qtTest_ClassificationTrainingTabTest COMMAND qtTest_ClassificationTrainingTabTest)
+
 
 target_link_libraries(qtTest_TestGUI Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
 target_link_libraries(qtTest_DataHandlerTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
+target_link_libraries(qtTest_ClassificationTrainingTabTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
