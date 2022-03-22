@@ -14,6 +14,18 @@ TEST(InstantiationTest, TestIfInstantiationOfGrayscaleImageTransformationIsNotNu
     ASSERT_TRUE(grayscaleImageTransformation != NULL);
 }
 
+TEST(InstantiationTest, TestIfInstantiationOfAutomaticRotationLymeDataImageTransformationIsNotNull)
+{
+    AutomaticRotationLymeDataImageTransformation *automaticRotationImageTransformation = new AutomaticRotationLymeDataImageTransformation();
+    ASSERT_TRUE(automaticRotationImageTransformation != NULL);
+}
+
+TEST(InstantiationTest, TestIfInstantiationOfMorphologicalTransformationImageTransformationIsNotNull)
+{
+    MorphologicalTransformationImageTransformation *morphologicalTransformationImageTransformation = new MorphologicalTransformationImageTransformation();
+    ASSERT_TRUE(morphologicalTransformationImageTransformation != NULL);
+}
+
 TEST(MirrorModeTest, TestIfChangeHorizontalMirrorModeIsCorrect)
 {
     MirrorImageTransformation *mirrorImageTransformation = new MirrorImageTransformation();
