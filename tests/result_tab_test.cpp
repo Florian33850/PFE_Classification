@@ -7,10 +7,10 @@ class ResultTabTests: public QObject
     Q_OBJECT
 
     private Q_SLOTS:
-        void testImageSelectionHandlerInstantiation();
+        void testResultTabInstantiation();
 };
 
-void ResultTabTests::testImageSelectionHandlerInstantiation()
+void ResultTabTests::testResultTabInstantiation()
 {
     ResultTab *resultTab = new ResultTab();
     QVERIFY(resultTab != NULL);

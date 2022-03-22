@@ -125,15 +125,50 @@ add_executable(qtTest_DataHandlerTest
     ${SOURCES}
 )
 
+add_executable(qtTest_ClassificationTrainingTabTest
+    tests/classification_training_tab_test.cpp
+    ${SOURCES}
+)
+
 add_executable(qtTest_ResultTabTest
     tests/result_tab_test.cpp
     ${SOURCES}
 )
 
+add_executable(qtTest_PreprocessingTabTest
+    tests/preprocessing_tab_test.cpp
+    ${SOURCES}
+)
+
+add_executable(qtTest_IntegerSliderTest
+    tests/integer_slider_test.cpp
+    ${SOURCES}
+)
+
+add_executable(qtTest_ImagesPreviewWidgetTest
+    tests/images_preview_widget_test.cpp
+    ${SOURCES}
+)
+
+add_executable(qtTest_ImageTransformationWidgetTest
+    tests/image_transformation_widget_test.cpp
+    ${SOURCES}
+)
+
 add_test(NAME qtTest_TestGUI COMMAND qtTest_TestGUI)
 add_test(NAME qtTest_DataHandlerTest COMMAND qtTest_DataHandlerTest)
+add_test(NAME qtTest_ClassificationTrainingTabTest COMMAND qtTest_ClassificationTrainingTabTest)
 add_test(NAME qtTest_ResultTabTest COMMAND qtTest_ResultTabTest)
+add_test(NAME qtTest_PreprocessingTabTest COMMAND qtTest_PreprocessingTabTest)
+add_test(NAME qtTest_IntegerSliderTest COMMAND qtTest_IntegerSliderTest)
+add_test(NAME qtTest_ImagesPreviewWidgetTest COMMAND qtTest_ImagesPreviewWidgetTest)
+add_test(NAME qtTest_ImageTransformationWidgetTest COMMAND qtTest_ImageTransformationWidgetTest)
 
 target_link_libraries(qtTest_TestGUI Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
 target_link_libraries(qtTest_DataHandlerTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
+target_link_libraries(qtTest_ClassificationTrainingTabTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
 target_link_libraries(qtTest_ResultTabTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
+target_link_libraries(qtTest_PreprocessingTabTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
+target_link_libraries(qtTest_IntegerSliderTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
+target_link_libraries(qtTest_ImagesPreviewWidgetTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
+target_link_libraries(qtTest_ImageTransformationWidgetTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
