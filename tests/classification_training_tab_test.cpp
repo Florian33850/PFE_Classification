@@ -1,6 +1,5 @@
 #include <QtTest/QtTest>
 
-#define private public
 #define protected public
 
 #include "../src/classification_training_tab.h"
@@ -14,7 +13,7 @@ class ClassificationTrainingTabTests: public QObject
     private Q_SLOTS:
         void testClassificationTrainingTabInstantiation();
         void testChooseTrainingMethodComboBoxInstantiation();
-        void testHandleTrainingMethodComboBox();
+        // void testHandleTrainingMethodComboBox();
 };
 
 void ClassificationTrainingTabTests::testClassificationTrainingTabInstantiation()
@@ -30,21 +29,11 @@ void ClassificationTrainingTabTests::testChooseTrainingMethodComboBoxInstantiati
     QVERIFY(classificationTrainingTab->chooseTrainingMethodComboBox != NULL);
 }
 
-void ClassificationTrainingTabTests::testHandleTrainingMethodComboBox()
-{
-    ClassificationTrainingTab *classificationTrainingTab = new ClassificationTrainingTab();
-    
-}
-
-// void DataHandlerTests::testReloadPreviewSuccess()
+// void ClassificationTrainingTabTests::testHandleTrainingMethodComboBox()
 // {
-//     if(dataHandler->reloadPreview() != true)
-//     {
-//         QFAIL("[INFO] Fail to reload");
-//     }
-
+//     ClassificationTrainingTab *classificationTrainingTab = new ClassificationTrainingTab();
+//     classificationTrainingTab->chooseTrainingMethodComboBox->setCurrentText("Deep Learning");
 // }
-
 
 QTEST_MAIN(ClassificationTrainingTabTests)
 #include "classification_training_tab_test.moc"
