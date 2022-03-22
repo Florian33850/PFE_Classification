@@ -89,7 +89,7 @@ void ResultTab::handleLaunchModelButton()
     QString pathToImage = imageLineEdit->text();
     QString pathToLabels = labelsLineEdit->text();
 
-    if(pathToPredictionFile != NULL && pathToModel != NULL && pathToImage != NULL)
+    if(!pathToPredictionFile.isEmpty() && !pathToModel.isEmpty() && !pathToImage.isEmpty())
     {
         QImage image;
         image.load(pathToImage);
@@ -97,10 +97,10 @@ void ResultTab::handleLaunchModelButton()
         imageLabel->setImage(image);
         this->resultOutputLayout->insertWidget(this->resultOutputLayout->count()-1, imageLabel);
 
-        ResultThread *thread = new ResultThread(pathToPredictionFile, pathToModel, pathToImage, pathToLabels);
-        connect(thread, &QThread::started, this, &ResultTab::handleWaitingResult);
-        connect(thread, &QThread::finished, this, &ResultTab::handleEndingResult);
-        thread->start();
+        this->resultThread = new ResultThread(pathToPredictionFile, pathToModel, pathToImage, pathToLabels);
+        connect(resultThread, &QThread::started, this, &ResultTab::handleWaitingResult);
+        connect(resultThread, &QThread::finished, this, &ResultTab::handleEndingResult);
+        resultThread->start();
     }
 }
 

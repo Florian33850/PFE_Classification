@@ -125,8 +125,15 @@ add_executable(qtTest_DataHandlerTest
     ${SOURCES}
 )
 
+add_executable(qtTest_ResultTabTest
+    tests/result_tab_test.cpp
+    ${SOURCES}
+)
+
 add_test(NAME qtTest_TestGUI COMMAND qtTest_TestGUI)
 add_test(NAME qtTest_DataHandlerTest COMMAND qtTest_DataHandlerTest)
+add_test(NAME qtTest_ResultTabTest COMMAND qtTest_ResultTabTest)
 
 target_link_libraries(qtTest_TestGUI Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
 target_link_libraries(qtTest_DataHandlerTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
+target_link_libraries(qtTest_ResultTabTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})

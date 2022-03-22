@@ -38,6 +38,8 @@ class ResultTab : public Tab
         QLineEdit *imageLineEdit;
 
         QPushButton *launchModelButton;
+
+        ResultThread *resultThread;
         
         void readAndDisplayOutputResultFile();
 
