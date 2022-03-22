@@ -22,7 +22,7 @@ class ClassificationTrainingTab : public Tab
     public:
         ClassificationTrainingTab();
 
-    private:
+    protected:
         QVBoxLayout *parametersLayout;
         QVBoxLayout *trainingOutputLayout;
 
