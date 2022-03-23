@@ -129,7 +129,7 @@ void DataHandlerTests::testReloadPreviewSuccess()
         QFAIL("[INFO] Fail to reload");
     }
 
-    QVERIFY(dataHandler->imagePreviewList->at(0)->rawImage == qImageA);
+    QVERIFY(dataHandler->imagePreviewList->at(0)->qImage == qImageA);
 }
 
 void DataHandlerTests::testLoadNextPreviewFail()
@@ -159,14 +159,14 @@ void DataHandlerTests::testLoadNextPreviewSuccess()
 
     dataHandler->loadNextPreview();
 
-    if(dataHandler->imagePreviewList->at(0)->rawImage != imageA)
+    if(dataHandler->imagePreviewList->at(0)->qImage != imageA)
     {
         QFAIL("[INFO] Fail to load first batch\n");
     }
 
     dataHandler->loadNextPreview();
     
-    if(dataHandler->imagePreviewList->at(0)->rawImage != imageB)
+    if(dataHandler->imagePreviewList->at(0)->qImage != imageB)
     {
         QFAIL("[INFO] Fail to load second batch\n");
     }
@@ -203,14 +203,14 @@ void DataHandlerTests::testLoadPreviousPreviewSuccess()
 
     dataHandler->loadPreviousPreview();
 
-    if(dataHandler->imagePreviewList->at(0)->rawImage != imageB)
+    if(dataHandler->imagePreviewList->at(0)->qImage != imageB)
     {
         QFAIL("[INFO] Fail to load first batch\n");
     }
 
     dataHandler->loadPreviousPreview();
     
-    if(dataHandler->imagePreviewList->at(0)->rawImage != imageA)
+    if(dataHandler->imagePreviewList->at(0)->qImage != imageA)
     {
         QFAIL("[INFO] Fail to load second batch\n");
     }

@@ -6,7 +6,7 @@ DataHandler::DataHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreview
     this->imagePreviewList = imagePreviewList; 
 }
 
-QImage DataHandler::loadImageFromPath(QString pathToImage)
+QImage loadImageFromPath(QString pathToImage)
 {
     QImage qImage;
     if(qImage.load(pathToImage) == false)
@@ -31,7 +31,9 @@ bool DataHandler::reloadPreview()
         std::cerr << "Impossible to reload." << std::endl;
         return false;
     }
+
     imagePreviewList->clear();
+
     for(int fileIndex = previousIndex; fileIndex < indexPathToImagesList; fileIndex++)
     {
         if(fileIndex == pathToImages.size())
@@ -44,7 +46,6 @@ bool DataHandler::reloadPreview()
     return true;
 }
 
-
 bool DataHandler::loadNextPreview()
 {
     if(this->indexPathToImagesList >= pathToImages.size())
@@ -52,21 +53,20 @@ bool DataHandler::loadNextPreview()
         std::cout << "[INFO] No more images to load" << std::endl;
         return false;
     }
-    else
+
+    imagePreviewList->clear();
+
+    for(int fileIndex = this->indexPathToImagesList; fileIndex < this->indexPathToImagesList + this->maxNumberOfImagesToLoad; fileIndex++)
     {
-        imagePreviewList->clear();
-        for(int fileIndex = this->indexPathToImagesList; fileIndex < this->indexPathToImagesList + this->maxNumberOfImagesToLoad; fileIndex++)
+        if(fileIndex == this->pathToImages.size())
         {
-            if(fileIndex == this->pathToImages.size())
-            {
-                break;
-            }
-            QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
-            addImageToImagePreviewList(qImage);
+            break;
         }
-        this->indexPathToImagesList += this->maxNumberOfImagesToLoad;
-        return true;
+        QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
+        addImageToImagePreviewList(qImage);
     }
+    this->indexPathToImagesList += this->maxNumberOfImagesToLoad;
+    return true;
 }
 
 bool DataHandler::loadPreviousPreview()
@@ -77,24 +77,23 @@ bool DataHandler::loadPreviousPreview()
         std::cout << "[INFO] No more images to load" << std::endl;
         return false;
     }
-    else
+
+    imagePreviewList->clear();
+
+    for(int fileIndex = previousIndex; fileIndex < this->indexPathToImagesList - this->maxNumberOfImagesToLoad; fileIndex++)
     {
-        imagePreviewList->clear();
-        for(int fileIndex = previousIndex; fileIndex < this->indexPathToImagesList - this->maxNumberOfImagesToLoad; fileIndex++)
-        {
-            QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
-            addImageToImagePreviewList(qImage);
-        }
-        this->indexPathToImagesList -= this->maxNumberOfImagesToLoad;
-        return true;
+        QImage qImage = loadImageFromPath(pathToImages.at(fileIndex));
+        addImageToImagePreviewList(qImage);
     }
+    this->indexPathToImagesList -= this->maxNumberOfImagesToLoad;
+    return true;
 }
 
 QDir getGlobalSavingDirectory()
 {
     QString buildPath = QDir::currentPath();
 
-    //Initialize the path for saving images next to build repository and create the repository
+    //Initialize the path for saving images next to build repository
     QString applicationPath = buildPath;
     applicationPath = applicationPath.left(applicationPath.lastIndexOf(QChar('/')));
 
@@ -106,12 +105,10 @@ QDir getGlobalSavingDirectory()
     return globalSaveDirectory;
 }
 
-
-
 ImageSelectionHandler::ImageSelectionHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
 {
     this->indexPathToImagesList = 0;
-    this->maxNumberOfImagesToLoad = 10;
+    this->maxNumberOfImagesToLoad = MAX_NUMBER_OF_IMAGES_TO_LOAD_IMAGESELECTION;
 }
 
 bool ImageSelectionHandler::selectDataBasePath()
@@ -165,7 +162,7 @@ bool ImageSelectionHandler::saveImagesInFile(std::vector<ImageTransformationWidg
 LymeDatabaseHandler::LymeDatabaseHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
 {
     this->indexPathToImagesList = 0;
-    this->maxNumberOfImagesToLoad = 10;
+    this->maxNumberOfImagesToLoad = MAX_NUMBER_OF_IMAGES_TO_LOAD_LYMEDATABASE;
 }
 
 bool LymeDatabaseHandler::selectDataBasePath()
