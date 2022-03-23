@@ -64,7 +64,7 @@ class RandomForestWidget : public ClassificationTrainingWidget
     public:
         RandomForestWidget(QVBoxLayout *parametersLayout, QVBoxLayout *trainingOutputLayout);
 
-    protected:
+    private:
         QLineEdit *numberOfTreesLineEdit;
 
         void handleLaunchTrainingClassifierButton();
