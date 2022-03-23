@@ -15,6 +15,8 @@ class IntegerSlider : public QWidget
         IntegerSlider(const QString &sliderName, int minValue, int maxValue, QWidget *parentWidget = nullptr);
         ~IntegerSlider();
 
+        void initializeIntegerSlider(int minValue, int maxValue);
+        void initializeSizePolicy();
         int value();
 
     public Q_SLOTS:
@@ -30,6 +32,7 @@ class IntegerSlider : public QWidget
         QLabel *nameLabel;
         QSlider *integerSlider;
         QLabel *valueLabel;
+        QSizePolicy size_policy;
 
         void updateValueLabel();
 };

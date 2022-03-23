@@ -45,22 +45,21 @@ void ResultTab::addClassificationParametersFormLayout()
     this->predictionFileLineEdit = new QLineEdit();
     this->predictionFileLineEdit->setReadOnly(true);
     connect(addPredicitonFileButton, &QPushButton::released, [=](){this->predictionFileLineEdit->setText(QFileDialog::getOpenFileName(this));});
-    
+
     this->addModelClassifierButton = new QPushButton("Add");
     this->modelClassifierLineEdit = new QLineEdit();
     this->modelClassifierLineEdit->setReadOnly(true);
     connect(addModelClassifierButton, &QPushButton::released, [=](){this->modelClassifierLineEdit->setText(QFileDialog::getOpenFileName(this));});
-    
+
     this->addImageButton = new QPushButton("Add");
     this->imageLineEdit = new QLineEdit();
     this->imageLineEdit->setReadOnly(true);
     connect(addImageButton, &QPushButton::released, [=](){this->imageLineEdit->setText(QFileDialog::getOpenFileName(this));});
-    
+
     this->addLabelsButton = new QPushButton("Add");
     this->labelsLineEdit = new QLineEdit();
     this->labelsLineEdit->setReadOnly(true);
     connect(addLabelsButton, &QPushButton::released, [=](){this->labelsLineEdit->setText(QFileDialog::getOpenFileName(this));});
-
 
     this->formLayout->addRow(tr("&File for prediction :"), addPredicitonFileButton);
     this->formLayout->addRow(predictionFileLineEdit);
