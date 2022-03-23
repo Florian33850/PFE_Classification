@@ -96,7 +96,7 @@ MorphologicalTransformationWidget::MorphologicalTransformationWidget(QVBoxLayout
     this->imageTransformation = morphologicalTransformationImageTransformation;
     this->typeMorphologicalTransformation = new IntegerSlider("Erosion(0), Dilatation(1)", 0, 1);
     this->kernelSizeSlider = new IntegerSlider("Kernel Size", MORPHOLOGICAL_TRANSFORMATION_MINIMUM_KERNEL_SIZE, MORPHOLOGICAL_TRANSFORMATION_MAXIMUM_KERNEL_SIZE);
-    this->numberIterationMorphologialTransformationSlider = new IntegerSlider("Number of Iteration", MORPHOLOGICAL_TRANSFORMATION_MINIMUM_NUMBER_ITERATION, MORPHOLOGICAL_TRANSFORMATION_MAXIMUM_NUMBER_ITERATION);
+    this->numberIterationMorphologicalTransformationSlider = new IntegerSlider("Number of Iteration", MORPHOLOGICAL_TRANSFORMATION_MINIMUM_NUMBER_ITERATION, MORPHOLOGICAL_TRANSFORMATION_MAXIMUM_NUMBER_ITERATION);
 
     this->mainWidgetGroupBox->adjustSize();
 }
@@ -105,14 +105,14 @@ void MorphologicalTransformationWidget::displayUI(int indexInLayout)
 {
     parentWidget->connect(this->typeMorphologicalTransformation, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeTypeMorphologicalTransformation(this->typeMorphologicalTransformation->value());});
     parentWidget->connect(this->kernelSizeSlider, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeKernelSize(this->kernelSizeSlider->value());});
-    parentWidget->connect(this->numberIterationMorphologialTransformationSlider, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeNumberIterationMorphologicalTransformation(this->numberIterationMorphologialTransformationSlider->value());});
+    parentWidget->connect(this->numberIterationMorphologicalTransformationSlider, &IntegerSlider::valueChanged, [=](){static_cast<MorphologicalTransformationImageTransformation*>(this->imageTransformation)->changeNumberIterationMorphologicalTransformation(this->numberIterationMorphologicalTransformationSlider->value());});
 
     QGridLayout *morphologicalTransformationLayout = new QGridLayout();
     QLabel *morphologicalTransformationWidgetTitle = new QLabel("Morphological Transformation");
     morphologicalTransformationLayout->addWidget(morphologicalTransformationWidgetTitle, ROW_MORPHOLOGICAL_TRANSFORMATION_WIDGET_TITLE, COLUMN_MORPHOLOGICAL_TRANSFORMATION_WIDGET_TITLE, Qt::AlignLeft);
     morphologicalTransformationLayout->addWidget(this->typeMorphologicalTransformation, ROW_MORPHOLOGICAL_TRANSFORMATION_TYPE, COLUMN_MORPHOLOGICAL_TRANSFORMATION_TYPE, Qt::AlignLeft);
     morphologicalTransformationLayout->addWidget(this->kernelSizeSlider, ROW_MORPHOLOGICAL_TRANSFORMATION_KERNEL_SIZE_SLIDER, COLUMN_MORPHOLOGICAL_TRANSFORMATION_KERNEL_SIZE_SLIDER, Qt::AlignLeft);
-    morphologicalTransformationLayout->addWidget(this->numberIterationMorphologialTransformationSlider, ROW_MORPHOLOGICAL_TRANSFORMATION_NUMBER_ITERATION, COLUMN_MORPHOLOGICAL_TRANSFORMATION_NUMBER_ITERATION, Qt::AlignLeft);
+    morphologicalTransformationLayout->addWidget(this->numberIterationMorphologicalTransformationSlider, ROW_MORPHOLOGICAL_TRANSFORMATION_NUMBER_ITERATION, COLUMN_MORPHOLOGICAL_TRANSFORMATION_NUMBER_ITERATION, Qt::AlignLeft);
     morphologicalTransformationLayout->addWidget(this->deleteImageTransformationWidgetButton, ROW_MORPHOLOGICAL_TRANSFORMATION_DELETE_WIDGET_BUTTON, COLUMN_MORPHOLOGICAL_TRANSFORMATION_DELETE_WIDGET_BUTTON, Qt::AlignRight);
 
     this->mainWidgetGroupBox->setLayout(morphologicalTransformationLayout);

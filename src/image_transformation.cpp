@@ -40,7 +40,7 @@ QImage GrayscaleImageTransformation::applyImageTransformation(QImage qImage)
 
 AutomaticRotationLymeDataImageTransformation::AutomaticRotationLymeDataImageTransformation()
 {
-    dilationSizeMax = AUTOMATIC_ROTATION_MAX_DILATATION_SIZE;
+    dilatationSizeMax = AUTOMATIC_ROTATION_MAX_DILATATION_SIZE;
 }
 
 float AutomaticRotationLymeDataImageTransformation::getAngleBetweenVectors(const cv::Point &vector1, const cv::Point &vector2)
@@ -165,7 +165,7 @@ QImage AutomaticRotationLymeDataImageTransformation::applyImageTransformation(QI
         findContours(thresholdMat, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
 
         int dilationSize = 0;
-        while(contours.size() > 2 && dilationSize < dilationSizeMax)
+        while(contours.size() > 2 && dilationSize < dilatationSizeMax)
         {
             this->applyDilatation(thresholdMat, dilationSize);
             dilationSize++;

@@ -46,7 +46,7 @@ class AutomaticRotationLymeDataImageTransformation : public ImageTransformation
         QImage applyImageTransformation(QImage qImage);
 
     private:
-        int dilationSizeMax;
+        int dilatationSizeMax;
 
         float getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector);
         cv::PCA createPCAAnalysis(const std::vector<cv::Point> pointList);
