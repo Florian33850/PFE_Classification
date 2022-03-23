@@ -45,7 +45,7 @@ class PreprocessingViewer : public ImageTransformationViewer
 {
     Q_OBJECT
     public:
-        PreprocessingViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parentWidget = nullptr);
+        PreprocessingViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parentWidget = nullptr);
     private:
         QPushButton *launchPreprocessingButton;
         QComboBox *addPreprocessingComboBox;
