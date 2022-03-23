@@ -32,10 +32,6 @@ QImage MirrorImageTransformation::applyImageTransformation(QImage qImage)
     return mirrorImage;
 }
 
-GrayscaleImageTransformation::GrayscaleImageTransformation()
-{
-}
-
 QImage GrayscaleImageTransformation::applyImageTransformation(QImage qImage)
 {
     QImage grayscaleImage = qImage.convertToFormat(QImage::Format_Grayscale8);
@@ -47,12 +43,12 @@ AutomaticRotationLymeDataImageTransformation::AutomaticRotationLymeDataImageTran
     dilationSizeMax = AUTOMATIC_ROTATION_MAX_DILATATION_SIZE;
 }
 
-float AutomaticRotationLymeDataImageTransformation::getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector)
+float AutomaticRotationLymeDataImageTransformation::getAngleBetweenVectors(const cv::Point &vector1, const cv::Point &vector2)
 {
-    float length1 = sqrt(vec1.x * vec1.x + vec1.y * vec1.y);
-    float length2 = sqrt(shapeOrientationVector.x * shapeOrientationVector.x + shapeOrientationVector.y * shapeOrientationVector.y);
+    float length1 = sqrt(vector1.x * vector1.x + vector1.y * vector1.y);
+    float length2 = sqrt(vector2.x * vector2.x + vector2.y * vector2.y);
 
-    float dot = vec1.x * shapeOrientationVector.x + vec1.y * shapeOrientationVector.y;
+    float dot = vector1.x * vector2.x + vector1.y * vector2.y;
 
     float angleRadian = dot / (length1 * length2);
 
@@ -223,8 +219,6 @@ QImage AutomaticRotationLymeDataImageTransformation::applyImageTransformation(QI
         return rotatedQImage;
     }
 }
-
-
 
 MorphologicalTransformationImageTransformation::MorphologicalTransformationImageTransformation()
 {
