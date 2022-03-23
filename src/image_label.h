@@ -4,6 +4,9 @@
 #include <QLabel>
 #include <QImage>
 
+#define MINIMUM_IMAGE_WIDTH 100
+#define MINIMUM_IMAGE_HEIGHT 100
+
 class ImageLabel : public QLabel
 {
     Q_OBJECT
@@ -11,16 +14,14 @@ class ImageLabel : public QLabel
         ImageLabel(QWidget *parent = 0);
         ~ImageLabel();
 
-        void updateContent();
+        QImage qImage;
 
-        void setImage(QImage image);
-        QImage getQImage();
+        void updateContent();
 
     protected Q_SLOTS:
         void resizeEvent(QResizeEvent *event) override;
 
     private:
-        QImage rawImage;
         QPixmap pixmap;
 };
 #endif // IMAGE_LABEL_H

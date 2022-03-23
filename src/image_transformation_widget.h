@@ -3,6 +3,7 @@
 
 #include "image_transformation.h"
 #include "integer_slider.h"
+#include "constants.h"
 
 #include <QWidget>
 #include <QPushButton>
@@ -17,13 +18,13 @@ class ImageTransformationWidget : public QWidget
 
         bool isActivated;
         ImageTransformation *imageTransformation;
-        
+
         virtual void displayUI(int indexInLayout) = 0;
         void deleteMainWidgetGroupBox();
 
         QPushButton* getDeleteImageTransformationWidgetButton();
         int getLayoutCount();
-        
+
     protected:
         QVBoxLayout *mainLayout;
         QWidget *parentWidget;
@@ -39,7 +40,7 @@ class MirrorWidget : public ImageTransformationWidget
         MirrorWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MirrorImageTransformation *mirrorImageTransformation);
 
         void displayUI(int indexInLayout);
-    
+
     private:
         QCheckBox *horizontalMirrorCheckBox;
         QCheckBox *verticalMirrorCheckBox;
@@ -67,10 +68,10 @@ class MorphologicalTransformationWidget : public ImageTransformationWidget
         MorphologicalTransformationWidget(QVBoxLayout *mainLayout, QWidget *parentWidget, MorphologicalTransformationImageTransformation *morphologicalTransformationImageTransformation);
 
         void displayUI(int indexInLayout);
-    
+
     private:
         IntegerSlider *typeMorphologicalTransformation;
         IntegerSlider *kernelSizeSlider;
-        IntegerSlider *numberIterationMorphologialTransformationSlider;
+        IntegerSlider *numberIterationMorphologicalTransformationSlider;
 };
 #endif // IMAGE_TRANSFORMATION_WIDGET_H

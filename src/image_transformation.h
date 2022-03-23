@@ -13,10 +13,10 @@
 class ImageTransformation
 {
     public:
+        virtual ~ImageTransformation() = default;
+
         void runImageTransformationOnPreviewList(std::vector<ImageLabel*> *imagePreviewList);
         virtual QImage applyImageTransformation(QImage qImage) = 0;
-        
-        virtual ~ImageTransformation() = default;
 };
 
 class MirrorImageTransformation : public ImageTransformation
@@ -29,18 +29,12 @@ class MirrorImageTransformation : public ImageTransformation
         
         void changeHorizontalMirrorMode();
         void changeVerticalMirrorMode();
-
-    private:
         QImage applyImageTransformation(QImage qImage);
-
 };
 
 class GrayscaleImageTransformation : public ImageTransformation
 {
     public:
-        GrayscaleImageTransformation();
-    
-    private:
         QImage applyImageTransformation(QImage qImage);
 };
 
@@ -49,15 +43,16 @@ class AutomaticRotationLymeDataImageTransformation : public ImageTransformation
     public:
         AutomaticRotationLymeDataImageTransformation();
 
+        QImage applyImageTransformation(QImage qImage);
+
     private:
-        int dilationSizeMax;
+        int dilatationSizeMax;
 
         float getAngleBetweenVectors(const cv::Point &vec1, const cv::Point &shapeOrientationVector);
         cv::PCA createPCAAnalysis(const std::vector<cv::Point> pointList);
         double getMinAngleRadian(cv::Point shapeCenter, cv::PCA pcaAnalysis);
         void applyDilatation(cv::Mat &imageMat, int dilatationSize);
         void centerTranslation(cv::Mat &imageMat, const cv::Point shapeCenter);
-        QImage applyImageTransformation(QImage qImage);
 };
 
 class MorphologicalTransformationImageTransformation : public ImageTransformation
@@ -74,8 +69,6 @@ class MorphologicalTransformationImageTransformation : public ImageTransformatio
         void changeTypeMorphologicalTransformation(int newTypeMorphologicalTransformation);
         void dilatation(cv::Mat &imageMat, cv::Mat structuringElement);
         void erosion(cv::Mat &imageMat, cv::Mat structuringElement);
-
-    private:
         QImage applyImageTransformation(QImage qImage);
 };
 #endif // IMAGE_TRANSFORMATION_H

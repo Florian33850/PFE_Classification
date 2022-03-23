@@ -42,6 +42,7 @@ set(SOURCES
     src/result_thread.cpp
     src/classification_training_widget.cpp
     src/integer_slider.cpp
+    src/utils.cpp
 )
 
 #add the executable

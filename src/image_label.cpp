@@ -1,40 +1,28 @@
 #include "image_label.h"
 
 ImageLabel::ImageLabel(QWidget *parent) : QLabel(parent) {
-  QSizePolicy size_policy;
-  size_policy.setVerticalPolicy(QSizePolicy::Minimum);
-  size_policy.setHorizontalPolicy(QSizePolicy::Minimum);
-  setSizePolicy(size_policy);
-  setMinimumSize(100, 100);
+    QSizePolicy size_policy;
+    size_policy.setVerticalPolicy(QSizePolicy::Minimum);
+    size_policy.setHorizontalPolicy(QSizePolicy::Minimum);
+    this->setSizePolicy(size_policy);
+    this->setMinimumSize(MINIMUM_IMAGE_WIDTH, MINIMUM_IMAGE_HEIGHT);
 }
 
 ImageLabel::~ImageLabel() {}
 
-
 void ImageLabel::updateContent()
 {
-  if (rawImage.isNull())
-  {
-    return;
-  }
-  pixmap = QPixmap::fromImage(rawImage);
-  pixmap = pixmap.scaled(this->size(), Qt::KeepAspectRatio);
-  setPixmap(pixmap);
+    if (this->qImage.isNull())
+    {
+        return;
+    }
+    this->pixmap = QPixmap::fromImage(this->qImage);
+    this->pixmap = pixmap.scaled(this->size(), Qt::KeepAspectRatio);
+    this->setPixmap(this->pixmap);
 }
 
 void ImageLabel::resizeEvent(QResizeEvent *event)
 {
-  (void)event;
-  updateContent();
-}
-
-void ImageLabel::setImage(QImage image)
-{
-  rawImage = image;
-  updateContent();
-}
-
-QImage ImageLabel::getQImage()
-{
-    return rawImage;
+    (void)event;
+    updateContent();
 }

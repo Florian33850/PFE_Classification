@@ -37,7 +37,9 @@ class ApplicationViewer : public QMainWindow
         void addDataAugmentationTab(QTabWidget *mainTabWidget);
         void addClassificationTrainingTab(QTabWidget *mainTabWidget);
         void addResultTab(QTabWidget *mainTabWidget);
-        
+
+        void updateDataHandlers();
+
         void handleOpenImageSelectionDataHandler();
         void handleOpenLymeDatabaseDataHandler();
 };

@@ -9,13 +9,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QMessageBox>
-
 #include <QCoreApplication>
 #include <QTextCodec>
 #include <QtCore>
-
-#define IMAGES_PREVIEW_MAXIMUM_ROWS 2
-#define IMAGES_PREVIEW_MAXIMUM_COLLUMNS 5
 
 class Tab : public QWidget
 {
@@ -31,8 +27,6 @@ class Tab : public QWidget
     protected:
         QGridLayout *mainLayout;
         ImageTransformationViewer *imageTransformationViewer;
-
-        void clearLayout(QLayout *layout);
 
         void handleSaveButton(QString pathToSave);
         void handleStartSave(QString pathToSave);

@@ -10,9 +10,9 @@ ResultThread::ResultThread(QString pathToPredictionFile, QString pathToModel, QS
 
 void ResultThread::run()
 {
-    this->process.setStandardOutputFile("outputResult.txt", QIODevice::ReadWrite);
-    this->process.setStandardErrorFile("errorResult.txt", QIODevice::ReadWrite);
-    this->process.start("python3" ,{this->pathToPredictionFile, this->pathToModel, this->pathToImage, this->pathToLabels});
+    this->process.setStandardOutputFile(OUTPUT_RESULT_FILE_NAME, QIODevice::ReadWrite);
+    this->process.setStandardErrorFile(ERROR_OUTPUT_RESULT_FILE_NAME, QIODevice::ReadWrite);
+    this->process.start(COMMAND_RUNNER ,{this->pathToPredictionFile, this->pathToModel, this->pathToImage, this->pathToLabels});
     this->process.waitForStarted();
     this->process.waitForFinished(-1);
 }

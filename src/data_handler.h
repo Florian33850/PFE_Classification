@@ -11,6 +11,9 @@
 #include <QDirIterator>
 #include <QDir>
 
+#define MAX_NUMBER_OF_IMAGES_TO_LOAD_IMAGESELECTION 10
+#define MAX_NUMBER_OF_IMAGES_TO_LOAD_LYMEDATABASE 10
+
 class DataHandler
 {
     public:
@@ -32,7 +35,6 @@ class DataHandler
         QWidget *parent;
         std::vector<ImageLabel*> *imagePreviewList;
 
-        QImage loadImageFromPath(QString pathToImage);
         void addImageToImagePreviewList(QImage qImage);
 };
 

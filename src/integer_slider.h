@@ -30,7 +30,10 @@ class IntegerSlider : public QWidget
         QLabel *nameLabel;
         QSlider *integerSlider;
         QLabel *valueLabel;
+        QSizePolicy sizePolicy;
 
         void updateValueLabel();
+        void initializeIntegerSlider(int minValue, int maxValue);
+        void initializeSizePolicy();
 };
 #endif // INTEGER_SLIDER_H

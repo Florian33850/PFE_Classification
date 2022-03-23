@@ -38,16 +38,16 @@ void DataHandlerTests::testImageSelectionHandlerInstantiation()
 {
     QWidget *parent = NULL;
     std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
-    ImageSelectionHandler *dataHandler = new ImageSelectionHandler(parent, imagePreviewList);
-    QVERIFY(dataHandler != NULL);
+    ImageSelectionHandler *imageSelectionHandler = new ImageSelectionHandler(parent, imagePreviewList);
+    QVERIFY(imageSelectionHandler != NULL);
 }
 
 void DataHandlerTests::testLymeDatabaseHandlerInstantiation()
 {
     QWidget *parent = NULL;
     std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
-    LymeDatabaseHandler *dataHandler = new LymeDatabaseHandler(parent, imagePreviewList);
-    QVERIFY(dataHandler != NULL);
+    LymeDatabaseHandler *lymeDatabaseHandler = new LymeDatabaseHandler(parent, imagePreviewList);
+    QVERIFY(lymeDatabaseHandler != NULL);
 }
 
 bool DataHandlerTests::createAndSaveRandomNoiseColorImage(int height, int width, std::string pathToSave)
@@ -129,7 +129,7 @@ void DataHandlerTests::testReloadPreviewSuccess()
         QFAIL("[INFO] Fail to reload");
     }
 
-    QVERIFY(dataHandler->imagePreviewList->at(0)->rawImage == qImageA);
+    QVERIFY(dataHandler->imagePreviewList->at(0)->qImage == qImageA);
 }
 
 void DataHandlerTests::testLoadNextPreviewFail()
@@ -159,14 +159,14 @@ void DataHandlerTests::testLoadNextPreviewSuccess()
 
     dataHandler->loadNextPreview();
 
-    if(dataHandler->imagePreviewList->at(0)->rawImage != imageA)
+    if(dataHandler->imagePreviewList->at(0)->qImage != imageA)
     {
         QFAIL("[INFO] Fail to load first batch\n");
     }
 
     dataHandler->loadNextPreview();
     
-    if(dataHandler->imagePreviewList->at(0)->rawImage != imageB)
+    if(dataHandler->imagePreviewList->at(0)->qImage != imageB)
     {
         QFAIL("[INFO] Fail to load second batch\n");
     }
@@ -203,14 +203,14 @@ void DataHandlerTests::testLoadPreviousPreviewSuccess()
 
     dataHandler->loadPreviousPreview();
 
-    if(dataHandler->imagePreviewList->at(0)->rawImage != imageB)
+    if(dataHandler->imagePreviewList->at(0)->qImage != imageB)
     {
         QFAIL("[INFO] Fail to load first batch\n");
     }
 
     dataHandler->loadPreviousPreview();
     
-    if(dataHandler->imagePreviewList->at(0)->rawImage != imageA)
+    if(dataHandler->imagePreviewList->at(0)->qImage != imageA)
     {
         QFAIL("[INFO] Fail to load second batch\n");
     }

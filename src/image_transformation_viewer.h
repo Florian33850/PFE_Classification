@@ -1,12 +1,15 @@
 #ifndef IMAGE_TRANSFORMATION_VIEWER_H
 #define IMAGE_TRANSFORMATION_VIEWER_H
 
+#include "image_transformation_widget.h"
+#include "data_augmentation_widget.h"
+
 #include <iostream>
 #include <QVBoxLayout>
 #include <QComboBox>
 
-#include "image_transformation_widget.h"
-#include "data_augmentation_widget.h"
+#define MAIN_LAYOUT_MARGIN 1
+#define MAIN_LAYOUT_SPACING 1
 
 class ImageTransformationViewer : public QWidget
 {
@@ -38,13 +41,11 @@ class ImageTransformationViewer : public QWidget
         void reloadPreviewSignal();
 };
 
-
-
 class PreprocessingViewer : public ImageTransformationViewer
 {
     Q_OBJECT
     public:
-        PreprocessingViewer(std::vector<ImageLabel*>* imagePreviewList, QWidget *parentWidget = nullptr);
+        PreprocessingViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parentWidget = nullptr);
     private:
         QPushButton *launchPreprocessingButton;
         QComboBox *addPreprocessingComboBox;
@@ -54,8 +55,6 @@ class PreprocessingViewer : public ImageTransformationViewer
 
         void handleImageTransformationComboBox();
 };
-
-
 
 class DataAugmentationViewer : public ImageTransformationViewer
 {
