@@ -30,7 +30,7 @@ class DataAugmentationWidget : public QWidget
         void addGrayscaleCheckBox();
         void addPreviewButton();
         void deleteImageTransformationWidget(ImageTransformationWidget *imageTransformationWidget);
-        ImageTransformationWidget* initialiseImageTransformationWidget(ImageTransformationWidget *imageTransformationWidget, transformationWidgetsEnum index);
+        ImageTransformationWidget* initialiseImageTransformationWidget(transformationWidgetsEnum index);
 
         void handleImageTransformationCheckBox(ImageTransformationWidget *imageTransformationWidget, QCheckBox *imageTransformationCheckbox, transformationWidgetsEnum index);
         void handleDeleteImageTransformationWidgetButton(ImageTransformationWidget *imageTransformationWidget, QCheckBox *imageTransformationCheckbox);

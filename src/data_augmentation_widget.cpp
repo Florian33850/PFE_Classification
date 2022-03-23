@@ -49,28 +49,27 @@ void DataAugmentationWidget::deleteImageTransformationWidget(ImageTransformation
     delete imageTransformationWidget;
 }
 
-ImageTransformationWidget* DataAugmentationWidget::initialiseImageTransformationWidget(ImageTransformationWidget *imageTransformationWidget, transformationWidgetsEnum index)
+ImageTransformationWidget* DataAugmentationWidget::initialiseImageTransformationWidget(transformationWidgetsEnum index)
 {
+    ImageTransformationWidget *imageTransformationWidget = NULL;
     if (index == transformationWidgetsEnum::mirror)
     {
         MirrorImageTransformation *mirrorImageTransformation = new MirrorImageTransformation();
         imageTransformationWidget = new MirrorWidget(this->mainLayout, this->parentWidget, mirrorImageTransformation);
-        return imageTransformationWidget;
     } 
     else if (index == transformationWidgetsEnum::grayscale)
     {
         GrayscaleImageTransformation *grayscaleImageTransformation = new GrayscaleImageTransformation();
         imageTransformationWidget = new GrayscaleWidget(this->mainLayout, this->parentWidget, grayscaleImageTransformation);
-        return imageTransformationWidget;
     }
-    return NULL;
+    return imageTransformationWidget;
 }
 
 void DataAugmentationWidget::handleImageTransformationCheckBox(ImageTransformationWidget *imageTransformationWidget, QCheckBox *imageTransformationCheckbox, transformationWidgetsEnum index)
 {
     if(imageTransformationCheckbox->isChecked())
     {
-        imageTransformationWidget = initialiseImageTransformationWidget(imageTransformationWidget, index);
+        imageTransformationWidget = initialiseImageTransformationWidget(index);
         imageTransformationWidgetList.push_back(imageTransformationWidget);
         connect(imageTransformationWidget->getDeleteImageTransformationWidgetButton(), &QPushButton::released, this,
             [=]{handleDeleteImageTransformationWidgetButton(imageTransformationWidget, imageTransformationCheckbox);});
