@@ -5,11 +5,11 @@
 #include "image_transformation_widget.h"
 
 #include <iostream>
+#include <unistd.h>
 #include <QStringList>
 #include <QFileDialog>
 #include <QDirIterator>
 #include <QDir>
-
 
 class DataHandler
 {
@@ -20,14 +20,14 @@ class DataHandler
         int maxNumberOfImagesToLoad;
         int totalNumberOfImages;
         int indexPathToImagesList;
-        
-        bool saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList);
+
         bool reloadPreview();
         bool loadNextPreview();
         bool loadPreviousPreview();
 
         virtual bool selectDataBasePath() = 0;
-        
+        virtual bool saveImagesInFile(std::vector<ImageTransformationWidget*> imageTransformationWidgetList, QString saveFolderName = "") = 0;
+
     protected:
         QWidget *parent;
         std::vector<ImageLabel*> *imagePreviewList;
@@ -42,6 +42,7 @@ class ImageSelectionHandler : public DataHandler
         ImageSelectionHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
 
         bool selectDataBasePath();
+        bool saveImagesInFile(std::vector<ImageTransformationWidget*> imageTransformationWidgetList, QString saveFolderName = "");
 };
 
 class LymeDatabaseHandler : public DataHandler
@@ -50,6 +51,7 @@ class LymeDatabaseHandler : public DataHandler
         LymeDatabaseHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList);
 
         bool selectDataBasePath();
+        bool saveImagesInFile(std::vector<ImageTransformationWidget*> imageTransformationWidgetList, QString saveFolderName = "");
 
     private:
         QString pathToDatabase;

@@ -13,7 +13,7 @@ PreprocessingTab::PreprocessingTab() : Tab()
 void PreprocessingTab::addSaveButton()
 {
     QPushButton *saveImages = new QPushButton("&Save");
-    connect(saveImages, &QPushButton::released, this, &PreprocessingTab::handleSaveButton);
+    connect(saveImages, &QPushButton::released, [=](){this->handleSaveButton("/savedData/Preprocessing");});
     this->mainLayout->addWidget(saveImages, 2, 3, 1, 1);
 }
 
@@ -23,9 +23,4 @@ void PreprocessingTab::handleNewDataHandler(DataHandler *dataHandler)
     this->dataHandler->loadNextPreview();
     addSaveButton();
     this->imagesPreviewWidget->display(this->dataHandler);
-}
-
-void PreprocessingTab::handleSaveButton()
-{
-    this->dataHandler->saveImagesInFile("Preprocessing", this->imageTransformationViewer->getImageTransformationWidgetList());
 }

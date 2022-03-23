@@ -14,7 +14,7 @@ DataAugmentationTab::DataAugmentationTab() : Tab()
 void DataAugmentationTab::addSaveButton()
 {
     QPushButton *saveImages = new QPushButton("&Save");
-    connect(saveImages, &QPushButton::released, this, &DataAugmentationTab::handleSaveButton);
+    connect(saveImages, &QPushButton::released, [=](){this->handleSaveButton("/savedData/Data_Augmentation");});
     this->mainLayout->addWidget(saveImages, 5, 3, 3, 1);
 }
 
@@ -36,9 +36,4 @@ void DataAugmentationTab::addDataBaseCountDisplay()
 
     QString numberBasicImages = QString::number(dataHandler->pathToImages.size());
     basicImagesLabel->setText("Basic images: " + numberBasicImages);
-}
-
-void DataAugmentationTab::handleSaveButton()
-{
-    this->dataHandler->saveImagesInFile("Data_augmentation", imageTransformationViewer->getImageTransformationWidgetList());
 }

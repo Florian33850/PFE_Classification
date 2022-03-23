@@ -12,12 +12,9 @@ class DataAugmentationTab : public Tab
         void handleNewDataHandler(DataHandler *dataHandler);
 
     private:
-        ImageTransformationViewer *imageTransformationViewer;
-
         QVBoxLayout *dataBaseCountLayout;
 
         void addDataBaseCountDisplay();
-        void handleSaveButton();
         void addSaveButton();
 };
 #endif // DATA_AUGMENTATION_TAB_H
