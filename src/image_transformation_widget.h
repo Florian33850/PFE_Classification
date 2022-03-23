@@ -115,6 +115,6 @@ class MorphologicalTransformationWidget : public ImageTransformationWidget
     private:
         IntegerSlider *typeMorphologicalTransformation;
         IntegerSlider *kernelSizeSlider;
-        IntegerSlider *numberIterationMorphologialTransformationSlider;
+        IntegerSlider *numberIterationMorphologicalTransformationSlider;
 };
 #endif // IMAGE_TRANSFORMATION_WIDGET_H
