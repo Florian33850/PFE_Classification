@@ -15,7 +15,7 @@ void ClassificationThread::launchClassification(QStringList arguments)
     this->process.setStandardErrorFile(ERROR_OUTPUT_TRAINING_FILE_NAME, QIODevice::ReadWrite);
     this->process.start(this->commandRunner ,arguments);
     this->process.waitForStarted();
-    this->process.waitForFinished(NO_TIME_OUT);
+    this->process.waitForFinished(QPROCESS_NO_TIME_OUT);
 }
 
 DeepLearningThread::DeepLearningThread(QString pathToClassifier, QString pathToTrainingSet, QString pathToTestingSet, QString numberOfEpochs, QString widthOfImages, QString heightOfImages)

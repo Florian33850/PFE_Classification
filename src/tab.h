@@ -9,7 +9,6 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QMessageBox>
-
 #include <QCoreApplication>
 #include <QTextCodec>
 #include <QtCore>

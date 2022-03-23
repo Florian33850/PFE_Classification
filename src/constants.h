@@ -4,6 +4,11 @@
 #define OUTPUT_TRAINING_FILE_NAME "outputTraining.txt"
 #define ERROR_OUTPUT_TRAINING_FILE_NAME "errorOutputTraining.txt"
 #define OUTPUT_RESULT_FILE_NAME "outputResult.txt"
+#define ERROR_OUTPUT_RESULT_FILE_NAME "errorOutputResult.txt"
+
+#define QPROCESS_NO_TIME_OUT -1
+
+#define COMMAND_RUNNER "python3"
 
 #define QINT_VALIDATOR_MIN 0
 
@@ -75,6 +80,12 @@
 #define ROW_SPAN_IMAGES_PREVIEW_NEXT_BUTTON 1
 #define COLUMN_SPAN_IMAGES_PREVIEW_NEXT_BUTTON 1
 
+//      ---     Tab       ---
+
+#define TAB_MAIN_LAYOUT_SPACING 1
+#define TAB_MAIN_LAYOUT_MARGIN 1
+
+
 //      ---     Preprocessing Tab       ---
 
 #define ROW_PREPROCESSING_TAB_PREVIEW_WIDGET 0
@@ -99,6 +110,8 @@
 
 #define ROW_RESULT_TAB_RESULT_OUTPUT_LAYOUT 1
 #define COLUMN_RESULT_TAB_RESULT_OUTPUT_LAYOUT 0
+
+
 
 
 #endif // CONSTANTS_H

@@ -8,9 +8,6 @@
 #include <QTextCodec>
 #include <QtCore>
 
-#define NO_TIME_OUT -1
-#define COMMAND_RUNNER "python3"
-
 class ClassificationThread : public QThread
 {
     Q_OBJECT
