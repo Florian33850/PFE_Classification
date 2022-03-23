@@ -6,21 +6,24 @@ PreprocessingTab::PreprocessingTab() : Tab()
     this->imageTransformationViewer = new PreprocessingViewer(this->imagePreviewList, this);
     this->imagesPreviewWidget = new ImagesPreviewWidget(this->imagePreviewList, this->imageTransformationViewer);
     connect(this->imageTransformationViewer, &ImageTransformationViewer::reloadPreviewSignal, this->imagesPreviewWidget, &ImagesPreviewWidget::reloadPreview);
-    this->mainLayout->addWidget(this->imagesPreviewWidget, 0, 0, 3, 3);
-    this->mainLayout->addWidget(this->imageTransformationViewer, 0, 3, 3, 1);
+    this->mainLayout->addWidget(this->imagesPreviewWidget, ROW_PREPROCESSING_TAB_PREVIEW_WIDGET, COLUMN_PREPROCESSING_TAB_PREVIEW_WIDGET,
+                                                            ROW_SPAN_PREPROCESSING_TAB_PREVIEW_WIDGET, COLUMN_SPAN_PREPROCESSING_TAB_PREVIEW_WIDGET);
+    this->mainLayout->addWidget(this->imageTransformationViewer, ROW_PREPROCESSING_TAB_TRANSFORMATION_VIEWER, COLUMN_PREPROCESSING_TAB_TRANSFORMATION_VIEWER,
+                                                                ROW_SPAN_PREPROCESSING_TAB_TRANSFORMATION_VIEWER, COLUMN_SPAN_PREPROCESSING_TAB_TRANSFORMATION_VIEWER);
 }
 
 void PreprocessingTab::addSaveButton()
 {
-    QPushButton *saveImages = new QPushButton("&Save");
-    connect(saveImages, &QPushButton::released, [=](){this->handleSaveButton("/savedData/Preprocessing");});
-    this->mainLayout->addWidget(saveImages, 2, 3, 1, 1);
+    QPushButton *saveImagesButton = new QPushButton("&Save");
+    connect(saveImagesButton, &QPushButton::released, [=](){this->handleSaveButton("/savedData/Preprocessing");});
+    this->mainLayout->addWidget(saveImagesButton, ROW_PREPROCESSING_TAB_SAVE_BUTTON, COLUMN_PREPROCESSING_TAB_SAVE_BUTTON,
+                                                    ROW_SPAN_PREPROCESSING_TAB_SAVE_BUTTON, COLUMN_SPAN_PREPROCESSING_TAB_SAVE_BUTTON);
 }
 
 void PreprocessingTab::handleNewDataHandler(DataHandler *dataHandler)
 {
     this->dataHandler = dataHandler;
     this->dataHandler->loadNextPreview();
-    addSaveButton();
+    this->addSaveButton();
     this->imagesPreviewWidget->display(this->dataHandler);
 }

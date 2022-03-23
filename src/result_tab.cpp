@@ -4,10 +4,10 @@ ResultTab::ResultTab() : Tab()
 {
     this->classificationParametersLayout = new QVBoxLayout;
     this->classificationParametersLayout->addStretch();
-    this->mainLayout->addLayout(this->classificationParametersLayout, 0, 0);
+    this->mainLayout->addLayout(this->classificationParametersLayout, ROW_RESULT_TAB_CLASSIFICATION_PARAMETERS_LAYOUT, COLUMN_RESULT_TAB_CLASSIFICATION_PARAMETERS_LAYOUT);
     this->resultOutputLayout = new QVBoxLayout;
     this->resultOutputLayout->addStretch();
-    this->mainLayout->addLayout(this->resultOutputLayout, 1, 0);
+    this->mainLayout->addLayout(this->resultOutputLayout, ROW_RESULT_TAB_RESULT_OUTPUT_LAYOUT, COLUMN_RESULT_TAB_RESULT_OUTPUT_LAYOUT);
 
     addClassificationParametersFormLayout();
     addLaunchModelButton();
@@ -15,7 +15,7 @@ ResultTab::ResultTab() : Tab()
 
 void ResultTab::readAndDisplayOutputResultFile()
 {
-    QFile outputTrainingFile("outputResult.txt");
+    QFile outputTrainingFile(OUTPUT_RESULT_FILE_NAME);
     QLabel *outputTrainingFileLabel = new QLabel(this);
     outputTrainingFileLabel->setText("Standard output : ");
 
@@ -44,31 +44,31 @@ void ResultTab::addClassificationParametersFormLayout()
     this->addPredicitonFileButton = new QPushButton("Add");
     this->predictionFileLineEdit = new QLineEdit();
     this->predictionFileLineEdit->setReadOnly(true);
-    connect(addPredicitonFileButton, &QPushButton::released, [=](){this->predictionFileLineEdit->setText(QFileDialog::getOpenFileName(this));});
+    connect(this->addPredicitonFileButton, &QPushButton::released, [=](){this->predictionFileLineEdit->setText(QFileDialog::getOpenFileName(this));});
 
     this->addModelClassifierButton = new QPushButton("Add");
     this->modelClassifierLineEdit = new QLineEdit();
     this->modelClassifierLineEdit->setReadOnly(true);
-    connect(addModelClassifierButton, &QPushButton::released, [=](){this->modelClassifierLineEdit->setText(QFileDialog::getOpenFileName(this));});
+    connect(this->addModelClassifierButton, &QPushButton::released, [=](){this->modelClassifierLineEdit->setText(QFileDialog::getOpenFileName(this));});
 
     this->addImageButton = new QPushButton("Add");
     this->imageLineEdit = new QLineEdit();
     this->imageLineEdit->setReadOnly(true);
-    connect(addImageButton, &QPushButton::released, [=](){this->imageLineEdit->setText(QFileDialog::getOpenFileName(this));});
+    connect(this->addImageButton, &QPushButton::released, [=](){this->imageLineEdit->setText(QFileDialog::getOpenFileName(this));});
 
     this->addLabelsButton = new QPushButton("Add");
     this->labelsLineEdit = new QLineEdit();
     this->labelsLineEdit->setReadOnly(true);
-    connect(addLabelsButton, &QPushButton::released, [=](){this->labelsLineEdit->setText(QFileDialog::getOpenFileName(this));});
+    connect(this->addLabelsButton, &QPushButton::released, [=](){this->labelsLineEdit->setText(QFileDialog::getOpenFileName(this));});
 
-    this->formLayout->addRow(tr("&File for prediction :"), addPredicitonFileButton);
-    this->formLayout->addRow(predictionFileLineEdit);
-    this->formLayout->addRow(tr("&Model of classification:"), addModelClassifierButton);
-    this->formLayout->addRow(modelClassifierLineEdit);
-    this->formLayout->addRow(tr("&Image to classify :"), addImageButton);
-    this->formLayout->addRow(imageLineEdit);
-    this->formLayout->addRow(tr("&File of labels :"), addLabelsButton);
-    this->formLayout->addRow(labelsLineEdit);
+    this->formLayout->addRow(tr("&File for prediction :"), this->addPredicitonFileButton);
+    this->formLayout->addRow(this->predictionFileLineEdit);
+    this->formLayout->addRow(tr("&Model of classification:"), this->addModelClassifierButton);
+    this->formLayout->addRow(this->modelClassifierLineEdit);
+    this->formLayout->addRow(tr("&Image to classify :"), this->addImageButton);
+    this->formLayout->addRow(this->imageLineEdit);
+    this->formLayout->addRow(tr("&File of labels :"), this->addLabelsButton);
+    this->formLayout->addRow(this->labelsLineEdit);
 
     this->formGroupBox->setLayout(this->formLayout);
     this->classificationParametersLayout->insertWidget(this->classificationParametersLayout->count()-1, this->formGroupBox);
@@ -96,7 +96,7 @@ void ResultTab::handleLaunchModelButton()
         imageLabel->qImage = image;
         this->resultOutputLayout->insertWidget(this->resultOutputLayout->count()-1, imageLabel);
 
-        this->resultThread = new ResultThread(pathToPredictionFile, pathToModel, pathToImage, pathToLabels);
+        ResultThread *resultThread = new ResultThread(pathToPredictionFile, pathToModel, pathToImage, pathToLabels);
         connect(resultThread, &QThread::started, this, &ResultTab::handleWaitingResult);
         connect(resultThread, &QThread::finished, this, &ResultTab::handleEndingResult);
         resultThread->start();

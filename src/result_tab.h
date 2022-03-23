@@ -25,7 +25,6 @@ class ResultTab : public Tab
     private:
         QBoxLayout *classificationParametersLayout;
         QBoxLayout *resultOutputLayout;
-
         QGroupBox *formGroupBox;
         QFormLayout *formLayout;
         QPushButton *addPredicitonFileButton;
@@ -36,11 +35,8 @@ class ResultTab : public Tab
         QLineEdit *labelsLineEdit;
         QPushButton *addImageButton;
         QLineEdit *imageLineEdit;
-
         QPushButton *launchModelButton;
 
-        ResultThread *resultThread;
-        
         void readAndDisplayOutputResultFile();
 
         void addClassificationParametersFormLayout();
