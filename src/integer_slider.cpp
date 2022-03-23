@@ -30,9 +30,9 @@ void IntegerSlider::initializeIntegerSlider(int minValue, int maxValue)
 
 void IntegerSlider::initializeSizePolicy()
 {
-    this->size_policy.setVerticalPolicy(QSizePolicy::Fixed);
-    this->size_policy.setHorizontalPolicy(QSizePolicy::Minimum);
-    this->setSizePolicy(this->size_policy);
+    this->sizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
+    this->sizePolicy.setHorizontalPolicy(QSizePolicy::Minimum);
+    this->setSizePolicy(this->sizePolicy);
 }
 
 int IntegerSlider::value()

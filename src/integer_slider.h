@@ -32,7 +32,7 @@ class IntegerSlider : public QWidget
         QLabel *nameLabel;
         QSlider *integerSlider;
         QLabel *valueLabel;
-        QSizePolicy size_policy;
+        QSizePolicy sizePolicy;
 
         void updateValueLabel();
 };
