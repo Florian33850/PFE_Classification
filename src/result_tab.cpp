@@ -40,7 +40,26 @@ void ResultTab::addClassificationParametersFormLayout()
 {
     this->formGroupBox = new QGroupBox(tr("Training parameters"));
     this->formLayout = new QFormLayout;
+    initializeFormParameters();
+    initializeFormLayout();
+    this->formGroupBox->setLayout(this->formLayout);
+    this->classificationParametersLayout->insertWidget(this->classificationParametersLayout->count()-1, this->formGroupBox);
+}
 
+void ResultTab::initializeFormLayout()
+{
+    this->formLayout->addRow(tr("&File for prediction :"), this->addPredicitonFileButton);
+    this->formLayout->addRow(this->predictionFileLineEdit);
+    this->formLayout->addRow(tr("&Model of classification:"), this->addModelClassifierButton);
+    this->formLayout->addRow(this->modelClassifierLineEdit);
+    this->formLayout->addRow(tr("&Image to classify :"), this->addImageButton);
+    this->formLayout->addRow(this->imageLineEdit);
+    this->formLayout->addRow(tr("&File of labels :"), this->addLabelsButton);
+    this->formLayout->addRow(this->labelsLineEdit);
+}
+
+void ResultTab::initializeFormParameters()
+{
     this->addPredicitonFileButton = new QPushButton("Add");
     this->predictionFileLineEdit = new QLineEdit();
     this->predictionFileLineEdit->setReadOnly(true);
@@ -60,18 +79,6 @@ void ResultTab::addClassificationParametersFormLayout()
     this->labelsLineEdit = new QLineEdit();
     this->labelsLineEdit->setReadOnly(true);
     connect(this->addLabelsButton, &QPushButton::released, [=](){this->labelsLineEdit->setText(QFileDialog::getOpenFileName(this));});
-
-    this->formLayout->addRow(tr("&File for prediction :"), this->addPredicitonFileButton);
-    this->formLayout->addRow(this->predictionFileLineEdit);
-    this->formLayout->addRow(tr("&Model of classification:"), this->addModelClassifierButton);
-    this->formLayout->addRow(this->modelClassifierLineEdit);
-    this->formLayout->addRow(tr("&Image to classify :"), this->addImageButton);
-    this->formLayout->addRow(this->imageLineEdit);
-    this->formLayout->addRow(tr("&File of labels :"), this->addLabelsButton);
-    this->formLayout->addRow(this->labelsLineEdit);
-
-    this->formGroupBox->setLayout(this->formLayout);
-    this->classificationParametersLayout->insertWidget(this->classificationParametersLayout->count()-1, this->formGroupBox);
 }
 
 void ResultTab::addLaunchModelButton()

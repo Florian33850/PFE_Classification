@@ -40,6 +40,8 @@ class ResultTab : public Tab
         void readAndDisplayOutputResultFile();
 
         void addClassificationParametersFormLayout();
+        void initializeFormLayout();
+        void initializeFormParameters();
         void addLaunchModelButton();
 
         void handleLaunchModelButton();
