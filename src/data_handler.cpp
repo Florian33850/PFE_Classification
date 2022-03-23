@@ -44,56 +44,12 @@ bool DataHandler::reloadPreview()
     return true;
 }
 
-bool DataHandler::saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList)
-{
-    QString buildPath = QDir::currentPath();
-
-    //Initialize the path for saving images next to build repository and create the repository
-    QString savedImagesPath = buildPath;
-    savedImagesPath = savedImagesPath.left(savedImagesPath.lastIndexOf(QChar('/')));
-
-    QDir saveDirectory(savedImagesPath);
-    if (!saveDirectory.exists())
-    {
-        qWarning("Cannot find the directory to save images");
-        return false;
-    }
-    
-    saveDirectory.setPath(savedImagesPath.append("/savedData/" + saveFolderName));
-
-    //Save each selected image in a repository with the same name as the original
-    QString imageSavePath, repositoryName, imageAndItsRepositoryName;
-    QString transformationsPerformed;
-
-    for(int unsigned image_index = 0 ; (int) image_index < pathToImages.size() ; image_index++)
-    {
-        QImage qImage = loadImageFromPath(pathToImages.at(image_index));
-        
-        for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
-        {
-            if(imageTransformationWidget->isActivated)
-            {
-                qImage = imageTransformationWidget->imageTransformation->applyImageTransformation(qImage);
-            }
-        }
-
-        imageAndItsRepositoryName = pathToImages[image_index].section("/", -2);
-        repositoryName = imageAndItsRepositoryName.left(imageAndItsRepositoryName.lastIndexOf(QChar('/'))+1);
-
-        saveDirectory.mkpath(repositoryName);
-
-        imageSavePath = saveDirectory.path() + "/" + imageAndItsRepositoryName;
-        
-        qImage.save(imageSavePath);
-    }
-    return true;
-}
 
 bool DataHandler::loadNextPreview()
 {
     if(this->indexPathToImagesList >= pathToImages.size())
     {
-        std::cout << "No more images to load" << std::endl;
+        std::cout << "[INFO] No more images to load" << std::endl;
         return false;
     }
     else
@@ -118,7 +74,7 @@ bool DataHandler::loadPreviousPreview()
     int previousIndex = this->indexPathToImagesList - 2*this->maxNumberOfImagesToLoad;
     if(previousIndex < 0)
     {
-        std::cout << "No more images to load" << std::endl;
+        std::cout << "[INFO] No more images to load" << std::endl;
         return false;
     }
     else
@@ -134,6 +90,22 @@ bool DataHandler::loadPreviousPreview()
     }
 }
 
+QDir getGlobalSavingDirectory()
+{
+    QString buildPath = QDir::currentPath();
+
+    //Initialize the path for saving images next to build repository and create the repository
+    QString applicationPath = buildPath;
+    applicationPath = applicationPath.left(applicationPath.lastIndexOf(QChar('/')));
+
+    QDir globalSaveDirectory(applicationPath);
+    if (!globalSaveDirectory.exists())
+    {
+        qWarning("Cannot find the directory to save images");
+    }
+    return globalSaveDirectory;
+}
+
 
 
 ImageSelectionHandler::ImageSelectionHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
@@ -147,10 +119,44 @@ bool ImageSelectionHandler::selectDataBasePath()
     QStringList newPathToImages = QFileDialog::getOpenFileNames(this->parent, "Select images to open", "Images (*.jpg *.jpeg *.png *.tiff)");
     if (newPathToImages.size() == 0)
     {
-        std::cerr << "Loading problem, cannot open selected files.\n" << std::endl;
+        std::cerr << "[INFO] Loading problem, cannot open selected files.\n" << std::endl;
         return false;
     }
     this->pathToImages = newPathToImages;
+    return true;
+}
+
+bool ImageSelectionHandler::saveImagesInFile(std::vector<ImageTransformationWidget*> imageTransformationWidgetList, QString saveFolderName)
+{
+    QDir globalSaveDirectory = getGlobalSavingDirectory();
+    globalSaveDirectory.setPath(globalSaveDirectory.path().append(saveFolderName));
+
+    QString imageSavePath, repositoryName, imageAndItsRepositoryName;
+
+    for(int unsigned image_index = 0 ; (int) image_index < pathToImages.size() ; image_index++)
+    {
+        QImage qImage = loadImageFromPath(pathToImages.at(image_index));
+        
+        for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+        {
+            if(imageTransformationWidget->isActivated)
+            {
+                qImage = imageTransformationWidget->imageTransformation->applyImageTransformation(qImage);
+            }
+        }
+
+        imageAndItsRepositoryName = pathToImages[image_index].section("/", -2);
+        repositoryName = imageAndItsRepositoryName.left(imageAndItsRepositoryName.lastIndexOf(QChar('/'))+1);
+        if(!repositoryName.isEmpty())
+        {
+            globalSaveDirectory.mkpath(repositoryName);
+        }
+        imageSavePath = globalSaveDirectory.path() + "/" + imageAndItsRepositoryName;
+        if(!qImage.save(imageSavePath))
+        {
+            std::cout << "[INFO] Save error for file: " << imageSavePath.toUtf8().constData() << "\n" << std::endl;
+        }
+    }
     return true;
 }
 
@@ -167,7 +173,7 @@ bool LymeDatabaseHandler::selectDataBasePath()
     QString newPathToDatabase = QFileDialog::getExistingDirectory(this->parent, "Select lyme database to open");
     if (newPathToDatabase.size() == 0)
     {
-        printf("Loading problem, cannot open selected files.\n");
+        printf("[INFO] Loading problem, cannot open selected files.\n");
         return false;
     }
     this->pathToDatabase = newPathToDatabase;
@@ -181,5 +187,49 @@ bool LymeDatabaseHandler::selectDataBasePath()
         }
     } while (files.next() != "");
 
+    return true;
+}
+
+bool LymeDatabaseHandler::saveImagesInFile(std::vector<ImageTransformationWidget*> imageTransformationWidgetList, QString saveFolderName)
+{
+    QDir globalSaveDirectory = getGlobalSavingDirectory();
+    globalSaveDirectory.setPath(globalSaveDirectory.path().append(saveFolderName));
+
+    QString imageSavePath, repositoryName, imageAndItsRepositoryName, groupName;
+
+    for(int unsigned image_index = 0 ; (int) image_index < pathToImages.size() ; image_index++)
+    {
+        QImage qImage = loadImageFromPath(pathToImages.at(image_index));
+
+        for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+        {
+            if(imageTransformationWidget->isActivated)
+            {
+                qImage = imageTransformationWidget->imageTransformation->applyImageTransformation(qImage);
+            }
+        }
+
+        imageAndItsRepositoryName = pathToImages[image_index].section("/", -4);
+        groupName = imageAndItsRepositoryName.left(imageAndItsRepositoryName.indexOf(QChar('/')));
+        imageAndItsRepositoryName = imageAndItsRepositoryName.right(imageAndItsRepositoryName.length() - imageAndItsRepositoryName.indexOf(QChar('/')) - 1);
+        std::replace(imageAndItsRepositoryName.begin(), imageAndItsRepositoryName.end(), '/', '_');
+        QDir imageSaveDirectory(globalSaveDirectory.path().append("/" + groupName));
+
+        if(imageSaveDirectory.exists())
+        {
+            imageSaveDirectory.setPath(imageSaveDirectory.path().append("*"));
+            imageSaveDirectory.mkpath(imageSaveDirectory.path());
+        }
+        else
+        {
+            imageSaveDirectory.mkpath(imageSaveDirectory.path());
+        }
+
+        imageSavePath = imageSaveDirectory.path() + "/" + imageAndItsRepositoryName;
+        if(!qImage.save(imageSavePath))
+        {
+            std::cout << "save error for file: " << imageSavePath.toUtf8().constData() << "\n" << std::endl;
+        }
+    }
     return true;
 }

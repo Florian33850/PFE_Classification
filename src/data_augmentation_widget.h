@@ -8,7 +8,7 @@ class DataAugmentationWidget : public QWidget
     Q_OBJECT
     public:
         explicit DataAugmentationWidget(QWidget *parentWidget);
-    
+
         enum transformationWidgetsEnum{mirror=0, grayscale=1};
         std::vector<ImageTransformationWidget*> imageTransformationWidgetList;
 

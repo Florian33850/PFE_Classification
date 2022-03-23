@@ -77,11 +77,10 @@ void DataAugmentationWidget::handleImageTransformationCheckBox(ImageTransformati
     }
     else
     {
-        // segfault when trying to call the next commented function and imageTransformationCheckbox try to uncheck
+        // Segfault when trying to call the next commented function and imageTransformationCheckbox try to uncheck
         //this->deleteImageTransformationWidget(imageTransformationWidget);
     }
 }
-
 
 void DataAugmentationWidget::handleDeleteImageTransformationWidgetButton(ImageTransformationWidget *imageTransformationWidget, QCheckBox *imageTransformationCheckbox)
 {

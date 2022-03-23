@@ -32,15 +32,11 @@ class DataAugmentationTab : public Tab
         void handleNewDataHandler(DataHandler *dataHandler);
 
     private:
-        ImageTransformationViewer *imageTransformationViewer;
-
         QVBoxLayout *dataBaseCountLayout;
         QLabel *originalImagesLabel;
 
         void addDataBaseCountDisplay();
         void refreshDataBaseCountDisplay();
         void addSaveButton();
-        
-        void handleSaveButton();
 };
 #endif // DATA_AUGMENTATION_TAB_H
