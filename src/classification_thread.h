@@ -1,27 +1,32 @@
 #ifndef CLASSIFICATION_THREAD_H
 #define CLASSIFICATION_THREAD_H
 
+#include "constants.h"
+
 #include <QProcess>
 #include <QCoreApplication>
 #include <QTextCodec>
 #include <QtCore>
 
+#define NO_TIME_OUT -1
+#define COMMAND_RUNNER "python3"
+
 class ClassificationThread : public QThread
 {
     Q_OBJECT
     public:
-        ClassificationThread(QString pathToClassifier);
+        ClassificationThread(QString pathToClassifier, QString pathToTrainingSet, QString widthOfImages, QString heightOfImages);
 
-        void launchClassification(QString command, QStringList arguments);
+        void launchClassification(QStringList arguments);
     
     protected:
         QString pathToClassifier;
+        QString pathToTrainingSet; 
+        QString widthOfImages;
+        QString heightOfImages;
+        QString commandRunner = COMMAND_RUNNER;
         QProcess process;
 };
-#endif // CLASSIFICATION_THREAD_H
-
-#ifndef DEEP_LEARNING_THREAD_H
-#define DEEP_LEARNING_THREAD_H
 
 class DeepLearningThread : public ClassificationThread
 {
@@ -32,16 +37,9 @@ class DeepLearningThread : public ClassificationThread
         void run();
     
     private:
-        QString pathToTrainingSet;
         QString pathToTestingSet;
         QString numberOfEpochs;
-        QString widthOfImages;
-        QString heightOfImages;
 };
-#endif // DEEP_LEARNING_THREAD_H
-
-#ifndef RANDOM_FOREST_THREAD_H
-#define RANDOM_FOREST_THREAD_H
 
 class RandomForestThread : public ClassificationThread
 {
@@ -52,9 +50,6 @@ class RandomForestThread : public ClassificationThread
         void run();
     
     private:
-        QString pathToTrainingSet; 
         QString numberOfTrees;
-        QString widthOfImages;
-        QString heightOfImages;
 };
-#endif // RANDOM_FOREST_THREAD_H
+#endif // CLASSIFICATION_THREAD_H

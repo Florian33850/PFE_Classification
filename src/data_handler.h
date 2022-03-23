@@ -20,14 +20,14 @@ class DataHandler
         int maxNumberOfImagesToLoad;
         int totalNumberOfImages;
         int indexPathToImagesList;
-        
+
         bool saveImagesInFile(QString saveFolderName, std::vector<ImageTransformationWidget*> imageTransformationWidgetList);
         bool reloadPreview();
         bool loadNextPreview();
         bool loadPreviousPreview();
 
         virtual bool selectDataBasePath() = 0;
-        
+
     protected:
         QWidget *parent;
         std::vector<ImageLabel*> *imagePreviewList;

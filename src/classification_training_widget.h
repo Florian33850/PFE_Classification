@@ -2,6 +2,7 @@
 #define CLASSIFICATION_TRAINING_WIDGET_H
 
 #include "classification_thread.h"
+#include "constants.h"
 
 #include <QGroupBox>
 #include <QFormLayout>
@@ -25,20 +26,23 @@ class ClassificationTrainingWidget : public QWidget
 
         QGroupBox *formGroupBox;
         QFormLayout *formLayout;
-
+        QPushButton *addClassifierButton;
+        QLineEdit *classifierLineEdit;
+        QPushButton *addTrainingSetButton;
+        QLineEdit *trainingSetLineEdit;
+        QLineEdit *heightOfImagesLineEdit;
+        QLineEdit *widthOfImagesLineEdit;
         QPushButton *launchTrainingClassifierButton;
 
         void readAndDisplayOutputTrainingFile();
+        void initializeFormParameters();
+        void initializeFormLayout();
 
         void handleWaitingClassification();
         void handleEndingClassification();
 
         virtual void handleLaunchTrainingClassifierButton() = 0;
 };
-#endif // CLASSIFICATION_TRAINING_WIDGET_H
-
-#ifndef DEEP_LEARNING_WIDGET_H
-#define DEEP_LEARNING_WIDGET_H
 
 class DeepLearningWidget : public ClassificationTrainingWidget
 {
@@ -47,22 +51,12 @@ class DeepLearningWidget : public ClassificationTrainingWidget
         DeepLearningWidget(QVBoxLayout *parametersLayout, QVBoxLayout *trainingOutputLayout);
     
     private:
-        QPushButton *addClassifierButton;
-        QLineEdit *classifierLineEdit;
-        QPushButton *addTrainingSetButton;
-        QLineEdit *trainingSetLineEdit;
         QPushButton *addTestingSetButton;
         QLineEdit *testingSetLineEdit;
         QLineEdit *numberOfEpochsLineEdit;
-        QLineEdit *heightOfImagesLineEdit;
-        QLineEdit *widthOfImagesLineEdit;
 
         void handleLaunchTrainingClassifierButton();
 };
-#endif // DEEP_LEARNING_WIDGET_H
-
-#ifndef RANDOM_FOREST_WIDGET_H
-#define RANDOM_FOREST_WIDGET_H
 
 class RandomForestWidget : public ClassificationTrainingWidget
 {
@@ -71,14 +65,9 @@ class RandomForestWidget : public ClassificationTrainingWidget
         RandomForestWidget(QVBoxLayout *parametersLayout, QVBoxLayout *trainingOutputLayout);
 
     protected:
-        QPushButton *addClassifierButton;
-        QLineEdit *classifierLineEdit;
-        QPushButton *addTrainingSetButton;
-        QLineEdit *trainingSetLineEdit;
         QLineEdit *numberOfTreesLineEdit;
-        QLineEdit *heightOfImagesLineEdit;
-        QLineEdit *widthOfImagesLineEdit;
 
         void handleLaunchTrainingClassifierButton();
 };
-#endif // RANDOM_FOREST_WIDGET_H
+
+#endif // CLASSIFICATION_TRAINING_WIDGET_H

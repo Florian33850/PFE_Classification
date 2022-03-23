@@ -33,48 +33,47 @@ void ApplicationViewer::addSettingMenu(ApplicationViewer *applicationViewer)
 
 void ApplicationViewer::addPreprocessingTab(QTabWidget *mainTabWidget)
 {
-    preprocessingTab = new PreprocessingTab();
-    mainTabWidget->addTab(preprocessingTab, tr("Preprocessing"));
+    this->preprocessingTab = new PreprocessingTab();
+    mainTabWidget->addTab(this->preprocessingTab, tr("Preprocessing"));
 }
 
 void ApplicationViewer::addDataAugmentationTab(QTabWidget *mainTabWidget)
 {
-    dataAugmentationTab = new DataAugmentationTab();
-    mainTabWidget->addTab(dataAugmentationTab, tr("Data Augmentation"));
+    this->dataAugmentationTab = new DataAugmentationTab();
+    mainTabWidget->addTab(this->dataAugmentationTab, tr("Data Augmentation"));
 }
 
 void ApplicationViewer::addClassificationTrainingTab(QTabWidget *mainTabWidget)
 {
-    classificationTrainingTab = new ClassificationTrainingTab();
-    mainTabWidget->addTab(classificationTrainingTab, tr("Classification Training"));
+    this->classificationTrainingTab = new ClassificationTrainingTab();
+    mainTabWidget->addTab(this->classificationTrainingTab, tr("Classification Training"));
 }
 
 void ApplicationViewer::addResultTab(QTabWidget *mainTabWidget)
 {
-    resultTab = new ResultTab();
-    mainTabWidget->addTab(resultTab, tr("Result"));
+    this->resultTab = new ResultTab();
+    mainTabWidget->addTab(this->resultTab, tr("Result"));
+}
+
+void ApplicationViewer::updateDataHandlers()
+{
+    this->preprocessingDataHandler->selectDataBasePath();
+    this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;
+
+    this->preprocessingTab->handleNewDataHandler(this->preprocessingDataHandler);
+    this->dataAugmentationTab->handleNewDataHandler(this->dataAugmentationDataHandler);
 }
 
 void ApplicationViewer::handleOpenImageSelectionDataHandler()
 {
-    this->preprocessingDataHandler = new ImageSelectionHandler(mainWidget, preprocessingTab->imagePreviewList);
-    this->dataAugmentationDataHandler = new ImageSelectionHandler(mainWidget, dataAugmentationTab->imagePreviewList);
-
-    this->preprocessingDataHandler->selectDataBasePath();
-    this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;
-
-    this->preprocessingTab->handleNewDataHandler(this->preprocessingDataHandler);
-    this->dataAugmentationTab->handleNewDataHandler(this->dataAugmentationDataHandler);
+    this->preprocessingDataHandler = new ImageSelectionHandler(this->mainWidget, this->preprocessingTab->imagePreviewList);
+    this->dataAugmentationDataHandler = new ImageSelectionHandler(this->mainWidget, this->dataAugmentationTab->imagePreviewList);
+    this->updateDataHandlers();
 }
 
 void ApplicationViewer::handleOpenLymeDatabaseDataHandler()
 {
-    this->preprocessingDataHandler = new LymeDatabaseHandler(mainWidget, preprocessingTab->imagePreviewList);
-    this->dataAugmentationDataHandler = new LymeDatabaseHandler(mainWidget, dataAugmentationTab->imagePreviewList);
-    
-    this->preprocessingDataHandler->selectDataBasePath();
-    this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;
-
-    this->preprocessingTab->handleNewDataHandler(this->preprocessingDataHandler);
-    this->dataAugmentationTab->handleNewDataHandler(this->dataAugmentationDataHandler);
+    this->preprocessingDataHandler = new LymeDatabaseHandler(this->mainWidget, this->preprocessingTab->imagePreviewList);
+    this->dataAugmentationDataHandler = new LymeDatabaseHandler(this->mainWidget, this->dataAugmentationTab->imagePreviewList);
+    this->updateDataHandlers();
 }

@@ -16,7 +16,7 @@ void ImageTransformationWidget::deleteMainWidgetGroupBox()
 
 QPushButton* ImageTransformationWidget::getDeleteImageTransformationWidgetButton()
 {
-    return deleteImageTransformationWidgetButton;
+    return this->deleteImageTransformationWidgetButton;
 }
 
 int ImageTransformationWidget::getLayoutCount()
