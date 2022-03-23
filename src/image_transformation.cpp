@@ -5,8 +5,8 @@ void ImageTransformation::runImageTransformationOnPreviewList(std::vector<ImageL
 {
     for(int imageNumber=0; imageNumber < (int) imagePreviewList->size(); imageNumber++)
     {
-        QImage qImage = applyImageTransformation(imagePreviewList->at(imageNumber)->getQImage());
-        imagePreviewList->at(imageNumber)->setImage(qImage);
+        QImage qImage = applyImageTransformation(imagePreviewList->at(imageNumber)->qImage);
+        imagePreviewList->at(imageNumber)->qImage = qImage;
     }
 }
 

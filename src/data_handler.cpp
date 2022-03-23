@@ -19,7 +19,7 @@ QImage loadImageFromPath(QString pathToImage)
 void DataHandler::addImageToImagePreviewList(QImage qImage)
 {
     ImageLabel *newImageLabel = new ImageLabel();
-    newImageLabel->setImage(qImage);
+    newImageLabel->qImage = qImage;
     this->imagePreviewList->push_back(newImageLabel);
 }
 

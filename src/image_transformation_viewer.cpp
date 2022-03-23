@@ -5,8 +5,8 @@ ImageTransformationViewer::ImageTransformationViewer(std::vector<ImageLabel*> *i
 {
     this->mainLayout = new QVBoxLayout;
     this->setLayout(mainLayout);
-    this->mainLayout->setSpacing(1);
-    this->mainLayout->setMargin(1);
+    this->mainLayout->setSpacing(MAIN_LAYOUT_SPACING);
+    this->mainLayout->setMargin(MAIN_LAYOUT_MARGIN);
 
     this->imagePreviewList = imagePreviewList;
 
@@ -19,7 +19,7 @@ void ImageTransformationViewer::launchActivatedPreprocesses()
     {
         if(imageTransformationWidget->isActivated)
         {
-            imageTransformationWidget->imageTransformation->runImageTransformationOnPreviewList(imagePreviewList);
+            imageTransformationWidget->imageTransformation->runImageTransformationOnPreviewList(this->imagePreviewList);
         }
     }
 }
@@ -27,10 +27,10 @@ void ImageTransformationViewer::launchActivatedPreprocesses()
 MirrorWidget* ImageTransformationViewer::createMirrorImageTransformation()
 {
     MirrorImageTransformation *newMirrorImageTransformation = new MirrorImageTransformation();
-    imageTransformationList.push_back(newMirrorImageTransformation);
+    this->imageTransformationList.push_back(newMirrorImageTransformation);
 
-    MirrorWidget *newMirrorWidget = new MirrorWidget(mainLayout, this, newMirrorImageTransformation);
-    imageTransformationWidgetList.push_back(newMirrorWidget);
+    MirrorWidget *newMirrorWidget = new MirrorWidget(this->mainLayout, this, newMirrorImageTransformation);
+    this->imageTransformationWidgetList.push_back(newMirrorWidget);
 
     newMirrorWidget->displayUI(newMirrorWidget->getLayoutCount()-1);
     return newMirrorWidget;
@@ -39,10 +39,10 @@ MirrorWidget* ImageTransformationViewer::createMirrorImageTransformation()
 GrayscaleWidget* ImageTransformationViewer::createGrayscaleImageTransformation()
 {
     GrayscaleImageTransformation *newGrayscaleImageTransformation = new GrayscaleImageTransformation();
-    imageTransformationList.push_back(newGrayscaleImageTransformation);
+    this->imageTransformationList.push_back(newGrayscaleImageTransformation);
 
-    GrayscaleWidget *newGrayscaleWidget = new GrayscaleWidget(mainLayout, this, newGrayscaleImageTransformation);
-    imageTransformationWidgetList.push_back(newGrayscaleWidget);
+    GrayscaleWidget *newGrayscaleWidget = new GrayscaleWidget(this->mainLayout, this, newGrayscaleImageTransformation);
+    this->imageTransformationWidgetList.push_back(newGrayscaleWidget);
 
     newGrayscaleWidget->displayUI(newGrayscaleWidget->getLayoutCount()-1);
     return newGrayscaleWidget;
@@ -51,10 +51,10 @@ GrayscaleWidget* ImageTransformationViewer::createGrayscaleImageTransformation()
 AutomaticRotationLymeDataWidget* ImageTransformationViewer::createAutomaticRotationLymeDataImageTransformation()
 {
     AutomaticRotationLymeDataImageTransformation *newAutomaticRotationImageTransformation = new AutomaticRotationLymeDataImageTransformation();
-    imageTransformationList.push_back(newAutomaticRotationImageTransformation);
+    this->imageTransformationList.push_back(newAutomaticRotationImageTransformation);
 
-    AutomaticRotationLymeDataWidget *newAutomaticRotationWidget = new AutomaticRotationLymeDataWidget(mainLayout, this, newAutomaticRotationImageTransformation);
-    imageTransformationWidgetList.push_back(newAutomaticRotationWidget);
+    AutomaticRotationLymeDataWidget *newAutomaticRotationWidget = new AutomaticRotationLymeDataWidget(this->mainLayout, this, newAutomaticRotationImageTransformation);
+    this->imageTransformationWidgetList.push_back(newAutomaticRotationWidget);
 
     newAutomaticRotationWidget->displayUI(newAutomaticRotationWidget->getLayoutCount()-1);
     return newAutomaticRotationWidget;
@@ -63,10 +63,10 @@ AutomaticRotationLymeDataWidget* ImageTransformationViewer::createAutomaticRotat
 MorphologicalTransformationWidget* ImageTransformationViewer::createMorphologicalTransformationImageTransformation()
 {
     MorphologicalTransformationImageTransformation *newMorphologicalTransformationImageTransformation = new MorphologicalTransformationImageTransformation();
-    imageTransformationList.push_back(newMorphologicalTransformationImageTransformation);
+    this->imageTransformationList.push_back(newMorphologicalTransformationImageTransformation);
 
-    MorphologicalTransformationWidget *newMorphologicalTransformationWidget = new MorphologicalTransformationWidget(mainLayout, this, newMorphologicalTransformationImageTransformation);
-    imageTransformationWidgetList.push_back(newMorphologicalTransformationWidget);
+    MorphologicalTransformationWidget *newMorphologicalTransformationWidget = new MorphologicalTransformationWidget(this->mainLayout, this, newMorphologicalTransformationImageTransformation);
+    this->imageTransformationWidgetList.push_back(newMorphologicalTransformationWidget);
 
     newMorphologicalTransformationWidget->displayUI(newMorphologicalTransformationWidget->getLayoutCount()-1);
     return newMorphologicalTransformationWidget;
@@ -82,7 +82,7 @@ void ImageTransformationViewer::handleLaunchImageTransformationButton()
     {
         imageTransformationWidget->isActivated = true;
     }
-    launchActivatedPreprocesses();
+    this->launchActivatedPreprocesses();
 }
 
 std::vector<ImageTransformationWidget*> ImageTransformationViewer::getImageTransformationWidgetList(){
@@ -104,8 +104,6 @@ void ImageTransformationViewer::handleDeleteImageTransformationWidgetButton(Imag
         index++;
     }
 }
-
-
 
 PreprocessingViewer::PreprocessingViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parentWidget)
     : ImageTransformationViewer(imagePreviewList, parentWidget)
@@ -156,8 +154,6 @@ void PreprocessingViewer::handleImageTransformationComboBox()
     connect(imageTransformationWidget->getDeleteImageTransformationWidgetButton(), &QPushButton::released, 
         [=](){this->handleDeleteImageTransformationWidgetButton(imageTransformationWidget);});
 }
-
-
 
 DataAugmentationViewer::DataAugmentationViewer(std::vector<ImageLabel*> *imagePreviewList, QWidget *parentWidget)
     : ImageTransformationViewer(imagePreviewList, parentWidget)

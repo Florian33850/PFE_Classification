@@ -94,7 +94,7 @@ void ResultTab::handleLaunchModelButton()
         QImage image;
         image.load(pathToImage);
         ImageLabel *imageLabel = new ImageLabel();
-        imageLabel->setImage(image);
+        imageLabel->qImage = image;
         this->resultOutputLayout->insertWidget(this->resultOutputLayout->count()-1, imageLabel);
 
         this->resultThread = new ResultThread(pathToPredictionFile, pathToModel, pathToImage, pathToLabels);
