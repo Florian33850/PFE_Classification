@@ -3,13 +3,12 @@
 
 #include "data_handler.h"
 #include "image_transformation_viewer.h"
+#include "constants.h"
+#include "utils.h"
 
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QPushButton>
-
-#define IMAGES_PREVIEW_MAXIMUM_ROWS 2
-#define IMAGES_PREVIEW_MAXIMUM_COLLUMNS 5
 
 class ImagesPreviewWidget : public QWidget
 {
@@ -19,8 +18,6 @@ class ImagesPreviewWidget : public QWidget
 
         DataHandler *dataHandler;
         std::vector<ImageLabel*> *imagePreviewList;
-
-        void clearImagesLayout();
 
         void display(DataHandler *dataHandler);
         void reloadPreview();

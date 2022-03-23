@@ -3,6 +3,7 @@
 
 #include "tab.h"
 #include "classification_training_widget.h"
+#include "utils.h"
 
 #include <QLabel>
 #include <QCheckBox>

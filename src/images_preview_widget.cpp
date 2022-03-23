@@ -2,11 +2,12 @@
 
 ImagesPreviewWidget::ImagesPreviewWidget(std::vector<ImageLabel*> *imagePreviewList, ImageTransformationViewer *imageTransformationViewer){
     this->mainLayout = new QGridLayout();
-    this->mainLayout->setSpacing(1);
-    this->mainLayout->setMargin(1);
+    this->mainLayout->setSpacing(IMAGES_PREVIEW_MAIN_LAYOUT_SPACING);
+    this->mainLayout->setMargin(IMAGES_PREVIEW_MAIN_LAYOUT_MARGIN);
 
     this->imagesLayout = new QGridLayout();
-    this->mainLayout->addLayout(imagesLayout, 0, 0, 3, 3);
+    this->mainLayout->addLayout(imagesLayout, ROW_IMAGES_PREVIEW_IMAGES_LAYOUT, COLUMN_IMAGES_PREVIEW_IMAGES_LAYOUT,
+                                            ROW_SPAN_IMAGES_PREVIEW_IMAGES_LAYOUT, COLUMN_SPAN_IMAGES_PREVIEW_IMAGES_LAYOUT);
 
     this->imageTransformationViewer = imageTransformationViewer;
     this->imagePreviewList = imagePreviewList;
@@ -17,21 +18,10 @@ ImagesPreviewWidget::ImagesPreviewWidget(std::vector<ImageLabel*> *imagePreviewL
 void ImagesPreviewWidget::display(DataHandler *dataHandler)
 {
     this->dataHandler = dataHandler;
-    clearImagesLayout();
+    clearLayout(this->imagesLayout);
     displayDataBasePreview();
     addPreviousPreviewButton();
     addNextPreviewButton();
-}
-
-void ImagesPreviewWidget::clearImagesLayout()
-{
-    QLayoutItem *item;
-    while ((item = imagesLayout->takeAt(0)) != 0)
-    {
-        imagesLayout->removeItem(item);
-        delete item->widget();
-        delete item;
-    }
 }
 
 void ImagesPreviewWidget::displayDataBasePreview()
@@ -56,20 +46,22 @@ void ImagesPreviewWidget::addPreviousPreviewButton()
 {
     QPushButton *previousDataBasePreview = new QPushButton("Prev");
     connect(previousDataBasePreview, &QPushButton::released, this, &ImagesPreviewWidget::handleLoadPreviousPreviewButton);
-    this->mainLayout->addWidget(previousDataBasePreview, 3, 0, 1, 1);
+    this->mainLayout->addWidget(previousDataBasePreview, ROW_IMAGES_PREVIEW_PREVIOUS_BUTTON, COLUMN_IMAGES_PREVIEW_PREVIOUS_BUTTON,
+                                                        ROW_SPAN_IMAGES_PREVIEW_PREVIOUS_BUTTON, COLUMN_SPAN_IMAGES_PREVIEW_PREVIOUS_BUTTON);
 }
 
 void ImagesPreviewWidget::addNextPreviewButton()
 {
     QPushButton *nextDataBasePreview = new QPushButton("Next");
     connect(nextDataBasePreview, &QPushButton::released, this, &ImagesPreviewWidget::handleLoadNextPreviewButton);
-    this->mainLayout->addWidget(nextDataBasePreview, 3, 2, 1, 1);
+    this->mainLayout->addWidget(nextDataBasePreview, ROW_IMAGES_PREVIEW_NEXT_BUTTON, COLUMN_IMAGES_PREVIEW_NEXT_BUTTON,
+                                                    ROW_SPAN_IMAGES_PREVIEW_NEXT_BUTTON, COLUMN_SPAN_IMAGES_PREVIEW_NEXT_BUTTON);
 }
 
 void ImagesPreviewWidget::reloadPreview()
 {
     this->dataHandler->reloadPreview();
-    clearImagesLayout();
+    clearLayout(this->imagesLayout);
     displayDataBasePreview();
 }
 
@@ -77,7 +69,7 @@ void ImagesPreviewWidget::handleLoadNextPreviewButton()
 {
     if(this->dataHandler->loadNextPreview())
     {
-        clearImagesLayout();
+        clearLayout(this->imagesLayout);
         this->imageTransformationViewer->launchActivatedPreprocesses();
         displayDataBasePreview();
     }    
@@ -87,7 +79,7 @@ void ImagesPreviewWidget::handleLoadPreviousPreviewButton()
 {
     if(this->dataHandler->loadPreviousPreview())
     {
-        clearImagesLayout();
+        clearLayout(this->imagesLayout);
         this->imageTransformationViewer->launchActivatedPreprocesses();
         displayDataBasePreview();
     }
