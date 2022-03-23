@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+//      ---     GENERAL CONSTANTS      ---
+
 #define OUTPUT_TRAINING_FILE_NAME "outputTraining.txt"
 #define ERROR_OUTPUT_TRAINING_FILE_NAME "errorOutputTraining.txt"
 #define OUTPUT_RESULT_FILE_NAME "outputResult.txt"
@@ -14,9 +16,8 @@
 
 #define FIRST_WIDGET_INDEX 0
 
-//      ---     WIDGET POSITION     ---
-
-//MIRROR WIDGET
+//      ===     WIDGETS     ===
+//      ---     Mirror Transformation     ---
 #define ROW_MIRROR_WIDGET_TITLE 0
 #define COLUMN_MIRROR_WIDGET_TITLE 0
 #define ROW_SPAN_MIRROR_WIDGET_TITLE 1
@@ -37,7 +38,7 @@
 #define ROW_SPAN_DELETE_WIDGET_BUTTON 1
 #define COLUMN_SPAN_DELETE_WIDGET_BUTTON 1
 
-//MORPHOLOGICAL_TRANSFORMATION WIDGET
+//      ---     Morphological Transformation      ---
 #define MORPHOLOGICAL_TRANSFORMATION_MINIMUM_KERNEL_SIZE 1
 #define MORPHOLOGICAL_TRANSFORMATION_MAXIMUM_KERNEL_SIZE 20
 
@@ -59,7 +60,7 @@
 #define ROW_MORPHOLOGICAL_TRANSFORMATION_DELETE_WIDGET_BUTTON 0
 #define COLUMN_MORPHOLOGICAL_TRANSFORMATION_DELETE_WIDGET_BUTTON 1
 
-//      ---     IMAGES_PREVIEW      ---
+//      ---     Image Preview      ---
 
 #define IMAGES_PREVIEW_MAXIMUM_ROWS 2
 #define IMAGES_PREVIEW_MAXIMUM_COLLUMNS 5
@@ -85,7 +86,6 @@
 #define TAB_MAIN_LAYOUT_SPACING 1
 #define TAB_MAIN_LAYOUT_MARGIN 1
 
-
 //      ---     Preprocessing Tab       ---
 
 #define ROW_PREPROCESSING_TAB_PREVIEW_WIDGET 0
@@ -110,8 +110,5 @@
 
 #define ROW_RESULT_TAB_RESULT_OUTPUT_LAYOUT 1
 #define COLUMN_RESULT_TAB_RESULT_OUTPUT_LAYOUT 0
-
-
-
 
 #endif // CONSTANTS_H
