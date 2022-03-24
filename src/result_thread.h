@@ -1,6 +1,8 @@
 #ifndef RESULT_THREAD_H
 #define RESULT_THREAD_H
 
+#include "constants.h"
+
 #include <QProcess>
 #include <QCoreApplication>
 #include <QTextCodec>
