@@ -1,8 +1,6 @@
 #ifndef TAB_H
 #define TAB_H
 
-#include "data_handler.h"
-#include "image_transformation_viewer.h"
 #include "images_preview_widget.h"
 
 #include <QWidget>

@@ -2,13 +2,13 @@
 #define IMAGE_TRANSFORMATION_H
 
 #include "image_label.h"
-#include <stdio.h>
-#include <iostream>
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
+#include "constants.h"
 
-#define AUTOMATIC_ROTATION_MAX_DILATATION_SIZE 20;
+#include <stdio.h>
+#include <iostream>
 
 class ImageTransformation
 {

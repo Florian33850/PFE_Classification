@@ -5,7 +5,7 @@ ImageLabel::ImageLabel(QWidget *parent) : QLabel(parent) {
     size_policy.setVerticalPolicy(QSizePolicy::Minimum);
     size_policy.setHorizontalPolicy(QSizePolicy::Minimum);
     this->setSizePolicy(size_policy);
-    this->setMinimumSize(MINIMUM_IMAGE_WIDTH, MINIMUM_IMAGE_HEIGHT);
+    this->setMinimumSize(MINIMUM_IMAGE_WIDTH_IMAGE_LABEL, MINIMUM_IMAGE_HEIGHT_IMAGE_LABEL);
 }
 
 ImageLabel::~ImageLabel() {}

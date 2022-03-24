@@ -1,8 +1,8 @@
 #ifndef data_handler_H
 #define data_handler_H
 
-#include "image_label.h"
 #include "image_transformation_widget.h"
+#include "constants.h"
 
 #include <iostream>
 #include <unistd.h>
@@ -10,9 +10,6 @@
 #include <QFileDialog>
 #include <QDirIterator>
 #include <QDir>
-
-#define MAX_NUMBER_OF_IMAGES_TO_LOAD_IMAGESELECTION 10
-#define MAX_NUMBER_OF_IMAGES_TO_LOAD_LYMEDATABASE 10
 
 class DataHandler
 {

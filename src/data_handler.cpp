@@ -108,7 +108,7 @@ QDir getGlobalSavingDirectory()
 ImageSelectionHandler::ImageSelectionHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
 {
     this->indexPathToImagesList = 0;
-    this->maxNumberOfImagesToLoad = MAX_NUMBER_OF_IMAGES_TO_LOAD_IMAGESELECTION;
+    this->maxNumberOfImagesToLoad = MAX_NUMBER_OF_IMAGES_TO_LOAD_DATA_HANDLER_IMAGESELECTION;
 }
 
 bool ImageSelectionHandler::selectDataBasePath()
@@ -162,7 +162,7 @@ bool ImageSelectionHandler::saveImagesInFile(std::vector<ImageTransformationWidg
 LymeDatabaseHandler::LymeDatabaseHandler(QWidget *parent, std::vector<ImageLabel*> *imagePreviewList) : DataHandler::DataHandler(parent, imagePreviewList)
 {
     this->indexPathToImagesList = 0;
-    this->maxNumberOfImagesToLoad = MAX_NUMBER_OF_IMAGES_TO_LOAD_LYMEDATABASE;
+    this->maxNumberOfImagesToLoad = MAX_NUMBER_OF_IMAGES_TO_LOAD_DATA_HANDLER_LYMEDATABASE;
 }
 
 bool LymeDatabaseHandler::selectDataBasePath()

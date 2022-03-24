@@ -5,8 +5,8 @@ ImageTransformationViewer::ImageTransformationViewer(std::vector<ImageLabel*> *i
 {
     this->mainLayout = new QVBoxLayout;
     this->setLayout(mainLayout);
-    this->mainLayout->setSpacing(MAIN_LAYOUT_SPACING);
-    this->mainLayout->setMargin(MAIN_LAYOUT_MARGIN);
+    this->mainLayout->setSpacing(MAIN_LAYOUT_SPACING_IMAGE_TRANSFORMATION_VIEWER);
+    this->mainLayout->setMargin(MAIN_LAYOUT_MARGIN_IMAGE_TRANSFORMATION_VIEWER);
 
     this->imagePreviewList = imagePreviewList;
 

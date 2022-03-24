@@ -2,8 +2,6 @@
 #define PREPROCESSING_TAB_H
 
 #include "tab.h"
-#include "image_transformation_viewer.h"
-#include "data_handler.h"
 
 #include <QFileDialog>
 

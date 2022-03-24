@@ -1,11 +1,10 @@
 #ifndef IMAGE_LABEL_H
 #define IMAGE_LABEL_H
 
+#include "constants.h"
+
 #include <QLabel>
 #include <QImage>
-
-#define MINIMUM_IMAGE_WIDTH 100
-#define MINIMUM_IMAGE_HEIGHT 100
 
 class ImageLabel : public QLabel
 {

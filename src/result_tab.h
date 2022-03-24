@@ -2,7 +2,6 @@
 #define RESULT_TAB_H
 
 #include "tab.h"
-#include "image_label.h"
 #include "result_thread.h"
 
 #include <QPushButton>

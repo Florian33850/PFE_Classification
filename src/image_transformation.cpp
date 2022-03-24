@@ -40,7 +40,7 @@ QImage GrayscaleImageTransformation::applyImageTransformation(QImage qImage)
 
 AutomaticRotationLymeDataImageTransformation::AutomaticRotationLymeDataImageTransformation()
 {
-    dilatationSizeMax = AUTOMATIC_ROTATION_MAX_DILATATION_SIZE;
+    dilatationSizeMax = AUTOMATIC_ROTATION_IMAGE_TRANSFORMATION_MAX_DILATATION_SIZE;
 }
 
 float AutomaticRotationLymeDataImageTransformation::getAngleBetweenVectors(const cv::Point &vector1, const cv::Point &vector2)

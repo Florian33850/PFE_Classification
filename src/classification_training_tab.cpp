@@ -5,10 +5,10 @@ ClassificationTrainingTab::ClassificationTrainingTab() : Tab()
     addChooseTrainingMethodComboBox();
     
     this->parametersLayout = new QVBoxLayout;
-    this->mainLayout->addLayout(this->parametersLayout, ROW_PARAMETERS_LAYOUT, COLUMN_PARAMETERS_LAYOUT);
+    this->mainLayout->addLayout(this->parametersLayout, ROW_CLASSIFICATION_TRAINING_TAB_PARAMETERS_LAYOUT, COLUMN_CLASSIFICATION_TRAINING_TAB_PARAMETERS_LAYOUT);
 
     this->trainingOutputLayout = new QVBoxLayout;
-    this->mainLayout->addLayout(this->trainingOutputLayout, ROW_TRAINING_OUTPUT_LAYOUT, COLUMN_TRAINING_OUTPUT_LAYOUT);
+    this->mainLayout->addLayout(this->trainingOutputLayout, ROW_CLASSIFICATION_TRAINING_TAB_TRAINING_OUTPUT_LAYOUT, COLUMN_CLASSIFICATION_TRAINING_TAB_TRAINING_OUTPUT_LAYOUT);
 
     this->parametersLayout->addStretch();
     this->trainingOutputLayout->addStretch();
@@ -19,7 +19,7 @@ void ClassificationTrainingTab::addChooseTrainingMethodComboBox()
     this->chooseTrainingMethodComboBox = new QComboBox();
     this->chooseTrainingMethodComboBox->addItems(this->trainingMethodStringList);
     connect(this->chooseTrainingMethodComboBox, QOverload<int>::of(&QComboBox::activated), this, &ClassificationTrainingTab::handleTrainingMethodComboBox);
-    this->mainLayout->addWidget(this->chooseTrainingMethodComboBox, ROW_COMBO_BOX, COLUMN_COMBO_BOX);
+    this->mainLayout->addWidget(this->chooseTrainingMethodComboBox, ROW_CLASSIFICATION_TRAINING_TAB_COMBO_BOX, COLUMN_CLASSIFICATION_TRAINING_TAB_COMBO_BOX);
 }
 
 void ClassificationTrainingTab::handleTrainingMethodComboBox()
