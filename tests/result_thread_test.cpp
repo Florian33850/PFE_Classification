@@ -43,7 +43,7 @@ TEST(FilesExistTest, TestIfOutputFilesOfResultThreadAreCreatedAfterRunFunction)
     resultThread->run();
     bool isCreated = true;
     FILE *file1, *file2;
-    if((file1 = fopen("outputResult.txt", "r")) && (file2 = fopen("errorResult.txt", "r")))
+    if((file1 = fopen(OUTPUT_RESULT_FILE_NAME, "r")) && (file2 = fopen(ERROR_OUTPUT_RESULT_FILE_NAME, "r")))
     {
       fclose(file1);
       fclose(file2);
@@ -53,7 +53,7 @@ TEST(FilesExistTest, TestIfOutputFilesOfResultThreadAreCreatedAfterRunFunction)
     {
         isCreated = false;
     }
-    std::remove("outputResult.txt");
-    std::remove("errorResult.txt");
+    std::remove(OUTPUT_RESULT_FILE_NAME);
+    std::remove(ERROR_OUTPUT_RESULT_FILE_NAME);
     EXPECT_TRUE(isCreated == true);
 }
