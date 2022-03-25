@@ -74,7 +74,7 @@ MorphologicalTransformationWidget* ImageTransformationViewer::createMorphologica
 
 void ImageTransformationViewer::handleLaunchImageTransformationButton()
 {
-    if(!this->imageTransformationWidgetList.empty())
+    if(!this->imageTransformationWidgetList.empty() && !this->imagePreviewList->empty())
     {
         Q_EMIT reloadPreviewSignal();
     }
