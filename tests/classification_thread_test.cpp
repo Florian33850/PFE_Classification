@@ -2,6 +2,7 @@
 #define private public
 #define protected public
 #include "../src/classification_thread.h"
+#include "../src/constants.h"
 #include<stdio.h>
 
 TEST(InstantiationTest, TestIfInstantiationOfClassificationThreadIsNotNull)
@@ -71,7 +72,7 @@ TEST(FilesExistTest, TestIfOutputFilesOfDeepLearningThreadAreCreatedAfterRunFunc
     deepLearningThread->run();
     bool isCreated = true;
     FILE *file1, *file2;
-    if((file1 = fopen("outputTraining.txt", "r")) && (file2 = fopen("errorTraining.txt", "r")))
+    if((file1 = fopen(OUTPUT_TRAINING_FILE_NAME, "r")) && (file2 = fopen(ERROR_OUTPUT_TRAINING_FILE_NAME, "r")))
     {
       fclose(file1);
       fclose(file2);
@@ -82,8 +83,8 @@ TEST(FilesExistTest, TestIfOutputFilesOfDeepLearningThreadAreCreatedAfterRunFunc
         isCreated = false;
     }
     EXPECT_TRUE(isCreated == true);
-    std::remove("outputTraining.txt");
-    std::remove("errorTraining.txt");
+    std::remove(OUTPUT_TRAINING_FILE_NAME);
+    std::remove(ERROR_OUTPUT_TRAINING_FILE_NAME);
 }
 
 TEST(FilesExistTest, TestIfOutputFilesOfRandomForestThreadAreCreatedAfterRunFunction)
@@ -97,7 +98,7 @@ TEST(FilesExistTest, TestIfOutputFilesOfRandomForestThreadAreCreatedAfterRunFunc
     randomForestThread->run();
     bool isCreated = true;
     FILE *file1, *file2;
-    if((file1 = fopen("outputTraining.txt", "r")) && (file2 = fopen("errorTraining.txt", "r")))
+    if((file1 = fopen(OUTPUT_TRAINING_FILE_NAME, "r")) && (file2 = fopen(ERROR_OUTPUT_TRAINING_FILE_NAME, "r")))
     {
       fclose(file1);
       fclose(file2);
@@ -108,6 +109,6 @@ TEST(FilesExistTest, TestIfOutputFilesOfRandomForestThreadAreCreatedAfterRunFunc
         isCreated = false;
     }
     EXPECT_TRUE(isCreated == true);
-    std::remove("outputTraining.txt");
-    std::remove("errorTraining.txt");
+    std::remove(OUTPUT_TRAINING_FILE_NAME);
+    std::remove(ERROR_OUTPUT_TRAINING_FILE_NAME);
 }
