@@ -212,12 +212,7 @@ bool LymeDatabaseHandler::saveImagesInFile(std::vector<ImageTransformationWidget
         std::replace(imageAndItsRepositoryName.begin(), imageAndItsRepositoryName.end(), '/', '_');
         QDir imageSaveDirectory(globalSaveDirectory.path().append("/" + groupName));
 
-        if(imageSaveDirectory.exists())
-        {
-            imageSaveDirectory.setPath(imageSaveDirectory.path().append("*"));
-            imageSaveDirectory.mkpath(imageSaveDirectory.path());
-        }
-        else
+        if(!imageSaveDirectory.exists())
         {
             imageSaveDirectory.mkpath(imageSaveDirectory.path());
         }

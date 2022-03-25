@@ -7,7 +7,10 @@
 TEST(InstantiationTest, TestIfInstantiationOfClassificationThreadIsNotNull)
 {
     QString pathToClassifier = "";
-    ClassificationThread *classificationThread = new ClassificationThread(pathToClassifier);
+    QString pathToTrainingSet = ""; 
+    QString widthOfImages = "";
+    QString heightOfImages = "";
+    ClassificationThread *classificationThread = new ClassificationThread(pathToClassifier, pathToTrainingSet, widthOfImages, heightOfImages);
     ASSERT_TRUE(classificationThread != NULL);
 }
 
@@ -37,17 +40,22 @@ TEST(InstantiationTest, TestIfInstantiationOfRandomForestThreadIsNotNull)
 TEST(NotRunningBeforeTest, TestIfQProcessOfClassificationThreadNotRunningBeforeRunFunction)
 {
     QString pathToClassifier = "";
-    ClassificationThread *classificationThread = new ClassificationThread(pathToClassifier);
+    QString pathToTrainingSet = ""; 
+    QString widthOfImages = "";
+    QString heightOfImages = "";
+    ClassificationThread *classificationThread = new ClassificationThread(pathToClassifier, pathToTrainingSet, widthOfImages, heightOfImages);
     ASSERT_TRUE(classificationThread->process.state() == QProcess::NotRunning);
 }
 
 TEST(NotRunningAfterTest, TestIfQProcessOfClassificationThreadNotRunningAfterRunFunction)
 {
     QString pathToClassifier = "";
-    ClassificationThread *classificationThread = new ClassificationThread(pathToClassifier);
-    QString command = "";
+    QString pathToTrainingSet = ""; 
+    QString widthOfImages = "";
+    QString heightOfImages = "";
+    ClassificationThread *classificationThread = new ClassificationThread(pathToClassifier, pathToTrainingSet, widthOfImages, heightOfImages);
     QStringList arguments = {"", ""};
-    classificationThread->launchClassification(command, arguments);
+    classificationThread->launchClassification(arguments);
     ASSERT_TRUE(classificationThread->process.state() == QProcess::NotRunning);
 }
 

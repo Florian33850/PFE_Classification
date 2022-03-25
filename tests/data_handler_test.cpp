@@ -15,6 +15,7 @@ class DataHandlerTests: public QObject
     Q_OBJECT
 
     private:
+        QImage loadImageFromPath(QString pathToImage);
         bool createAndSaveRandomNoiseColorImage(int height, int width, std::string pathToSave);
         ImageSelectionHandler* createImageSelectionHandler();
         std::vector<ImageTransformationWidget*> createFullAndActivatedImageTransformationWidgetList();
@@ -22,8 +23,6 @@ class DataHandlerTests: public QObject
     private Q_SLOTS:
         void testImageSelectionHandlerInstantiation();
         void testLymeDatabaseHandlerInstantiation();
-        void testLoadImageFromPathFail();
-        void testLoadImageFromPathSuccess();
         void testAddImageToImagePreviewList();
         void testReloadPreviewFail();
         void testReloadPreviewSuccess();
@@ -33,6 +32,16 @@ class DataHandlerTests: public QObject
         void testLoadPreviousPreviewSuccess();
         void testSaveImagesInFile();
 };
+
+QImage DataHandlerTests::loadImageFromPath(QString pathToImage)
+{
+    QImage qImage;
+    if(qImage.load(pathToImage) == false)
+    {
+        std::cout << "Cannot open image : " << pathToImage.toUtf8().constData() << std::endl;
+    }
+    return qImage;
+}
 
 void DataHandlerTests::testImageSelectionHandlerInstantiation()
 {
@@ -72,25 +81,6 @@ ImageSelectionHandler* DataHandlerTests::createImageSelectionHandler()
     return dataHandler;
 }
 
-void DataHandlerTests::testLoadImageFromPathFail()
-{
-    ImageSelectionHandler *dataHandler = createImageSelectionHandler();
-    QVERIFY(dataHandler->loadImageFromPath("").isNull());
-}
-
-void DataHandlerTests::testLoadImageFromPathSuccess()
-{
-    ImageSelectionHandler *dataHandler = createImageSelectionHandler();
-
-    if(createAndSaveRandomNoiseColorImage(200, 200, "testImage.png") == false)
-    {
-        QFAIL("[INFO] Cannot create Image to correctly execute the test.\n");
-    }
-
-    QImage emptyImage;
-    QVERIFY(dataHandler->loadImageFromPath("testImage.png") != emptyImage);
-}
-
 void DataHandlerTests::testAddImageToImagePreviewList()
 {
     ImageSelectionHandler *dataHandler = createImageSelectionHandler();
@@ -120,8 +110,8 @@ void DataHandlerTests::testReloadPreviewSuccess()
     QString pathToImage = "testImage.png";
     dataHandler->pathToImages.push_back(pathToImage);
 
-    QImage qImageA = dataHandler->loadImageFromPath(pathToImage);
-    QImage qImageTransform = dataHandler->loadImageFromPath(pathToImage).convertToFormat(QImage::Format_Grayscale8);
+    QImage qImageA = loadImageFromPath(pathToImage);
+    QImage qImageTransform = loadImageFromPath(pathToImage).convertToFormat(QImage::Format_Grayscale8);
     dataHandler->addImageToImagePreviewList(qImageTransform);
 
     if(dataHandler->reloadPreview() != true)
@@ -152,8 +142,8 @@ void DataHandlerTests::testLoadNextPreviewSuccess()
     createAndSaveRandomNoiseColorImage(100, 100, "testImageA.png");
     createAndSaveRandomNoiseColorImage(200, 200, "testImageB.png");
 
-    QImage imageA = dataHandler->loadImageFromPath(pathToImageA);
-    QImage imageB = dataHandler->loadImageFromPath(pathToImageB);
+    QImage imageA = loadImageFromPath(pathToImageA);
+    QImage imageB = loadImageFromPath(pathToImageB);
 
     dataHandler->addImageToImagePreviewList(imageA);
 
@@ -196,8 +186,8 @@ void DataHandlerTests::testLoadPreviousPreviewSuccess()
     createAndSaveRandomNoiseColorImage(100, 100, "testImageA.png");
     createAndSaveRandomNoiseColorImage(200, 200, "testImageB.png");
 
-    QImage imageA = dataHandler->loadImageFromPath(pathToImageA);
-    QImage imageB = dataHandler->loadImageFromPath(pathToImageB);
+    QImage imageA = loadImageFromPath(pathToImageA);
+    QImage imageB = loadImageFromPath(pathToImageB);
 
     dataHandler->addImageToImagePreviewList(imageA);
 
@@ -250,7 +240,7 @@ void DataHandlerTests::testSaveImagesInFile()
     createAndSaveRandomNoiseColorImage(100, 100, "testImage.png");
     dataHandler->pathToImages.push_back("testImage.png");
 
-    QImage imageA = dataHandler->loadImageFromPath("testImage.png");
+    QImage imageA = loadImageFromPath("testImage.png");
     std::vector<ImageTransformationWidget*> imageTransformationWidgetList = createFullAndActivatedImageTransformationWidgetList();
     for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
     {
@@ -258,7 +248,7 @@ void DataHandlerTests::testSaveImagesInFile()
     }
 
     dataHandler->saveImagesInFile(imageTransformationWidgetList, "/build");
-    QImage imageB = dataHandler->loadImageFromPath("testImage.png");
+    QImage imageB = loadImageFromPath("testImage.png");
 
     QVERIFY(imageA == imageB);
 }

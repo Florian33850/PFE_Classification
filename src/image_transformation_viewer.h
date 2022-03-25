@@ -31,7 +31,6 @@ class ImageTransformationViewer : public QWidget
         MorphologicalTransformationWidget* createMorphologicalTransformationImageTransformation();
 
         void handleLaunchImageTransformationButton();
-        void handleImageTransformationComboBox();
         void handleDeleteImageTransformationWidgetButton(ImageTransformationWidget* imageTransformationWidget);
 
     Q_SIGNALS:
