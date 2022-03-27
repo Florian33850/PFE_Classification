@@ -18,6 +18,7 @@ class DataHandlerTests: public QObject
         QImage loadImageFromPath(QString pathToImage);
         bool createAndSaveRandomNoiseColorImage(int height, int width, std::string pathToSave);
         ImageSelectionHandler* createImageSelectionHandler();
+        LymeDatabaseHandler* createLymeDatabaseHandler();
         std::vector<ImageTransformationWidget*> createFullAndActivatedImageTransformationWidgetList();
 
     private Q_SLOTS:
@@ -30,7 +31,8 @@ class DataHandlerTests: public QObject
         void testLoadNextPreviewSuccess();
         void testLoadPreviousPreviewFail();
         void testLoadPreviousPreviewSuccess();
-        void testSaveImagesInFile();
+        void testImageSelectionSaveImagesInFile();
+        void testLymeDatabaseSaveImagesInFile();
 };
 
 QImage DataHandlerTests::loadImageFromPath(QString pathToImage)
@@ -78,6 +80,14 @@ ImageSelectionHandler* DataHandlerTests::createImageSelectionHandler()
     QWidget *parent = NULL;
     std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
     ImageSelectionHandler *dataHandler = new ImageSelectionHandler(parent, imagePreviewList);
+    return dataHandler;
+}
+
+LymeDatabaseHandler* DataHandlerTests::createLymeDatabaseHandler()
+{
+    QWidget *parent = NULL;
+    std::vector<ImageLabel*> *imagePreviewList = new std::vector<ImageLabel*>();
+    LymeDatabaseHandler *dataHandler = new LymeDatabaseHandler(parent, imagePreviewList);
     return dataHandler;
 }
 
@@ -234,7 +244,7 @@ std::vector<ImageTransformationWidget*> DataHandlerTests::createFullAndActivated
     return imageTransformationWidgetList;
 }
 
-void DataHandlerTests::testSaveImagesInFile()
+void DataHandlerTests::testImageSelectionSaveImagesInFile()
 {
     ImageSelectionHandler *dataHandler = createImageSelectionHandler();
     createAndSaveRandomNoiseColorImage(100, 100, "testImage.png");
@@ -249,6 +259,29 @@ void DataHandlerTests::testSaveImagesInFile()
 
     dataHandler->saveImagesInFile(imageTransformationWidgetList, "/build");
     QImage imageB = loadImageFromPath("testImage.png");
+
+    QVERIFY(imageA == imageB);
+}
+
+void DataHandlerTests::testLymeDatabaseSaveImagesInFile()
+{
+    QDir dir("database/malade/1/main_droite");
+    dir.mkpath(".");
+    LymeDatabaseHandler *dataHandler = createLymeDatabaseHandler();
+    createAndSaveRandomNoiseColorImage(100, 100, "database/malade/1/main_droite/testImage.png");
+    dataHandler->pathToImages.push_back("database/malade/1/main_droite/testImage.png");
+
+    QImage imageA = loadImageFromPath("database/malade/1/main_droite/testImage.png");
+    std::vector<ImageTransformationWidget*> imageTransformationWidgetList = createFullAndActivatedImageTransformationWidgetList();
+    for(ImageTransformationWidget *imageTransformationWidget : imageTransformationWidgetList)
+    {
+        imageA = imageTransformationWidget->imageTransformation->applyImageTransformation(imageA);
+    }
+
+    dataHandler->saveImagesInFile(imageTransformationWidgetList, "/build");
+    QImage imageB = loadImageFromPath("malade/1_main_droite_testImage.png");
+    QDir("database").removeRecursively();
+    QDir("malade").removeRecursively();
 
     QVERIFY(imageA == imageB);
 }
