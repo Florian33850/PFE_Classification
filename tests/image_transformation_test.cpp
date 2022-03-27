@@ -77,5 +77,5 @@ TEST(MorphologicalTransformationTest, TestIfMorphologicalTransformationErodeIsCo
     QImage qImage2;
     qImage2.load("testErodeImage.png");
 
-    ASSERT_TRUE(true == true);
+    ASSERT_TRUE(qImage1 == qImage2);
 }
