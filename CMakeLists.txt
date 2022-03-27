@@ -1,3 +1,22 @@
+#     PFE_Classification --- Generic classification software
+#     Copyright © <2022> Florian Dayre <florian.dayre33850@gmail.com>
+#     Copyright © <2022> Élodie Gaudry <elodie.gaudry@etu.u-bordeaux.fr>
+#     Copyright © <2022> Hugo Lecomte <hugolecomte932@protonmail.com>
+#     Copyright © <2022> Hugo Trarieux <htrarieux@gmail.com>
+
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     any later version.
+
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 #set the project name
@@ -115,11 +134,6 @@ add_executable(UnitTests
     
 include(GoogleTest)
 gtest_discover_tests(UnitTests)
-    
-add_executable(qtTest_TestGUI
-   tests/testgui.cpp
-   ${SOURCES}
-)
 
 add_executable(qtTest_DataHandlerTest
     tests/data_handler_test.cpp
@@ -171,7 +185,6 @@ add_executable(qtTest_ClassificationTrainingWidgetTest
     ${SOURCES}
 )
 
-add_test(NAME qtTest_TestGUI COMMAND qtTest_TestGUI)
 add_test(NAME qtTest_DataHandlerTest COMMAND qtTest_DataHandlerTest)
 add_test(NAME qtTest_ClassificationTrainingTabTest COMMAND qtTest_ClassificationTrainingTabTest)
 add_test(NAME qtTest_ResultTabTest COMMAND qtTest_ResultTabTest)
@@ -183,7 +196,6 @@ add_test(NAME qtTest_DataAugmentationWidgetTest COMMAND qtTest_DataAugmentationW
 add_test(NAME qtTest_DataAugmentationTabTest COMMAND qtTest_DataAugmentationTabTest)
 add_test(NAME qtTest_ClassificationTrainingWidgetTest COMMAND qtTest_ClassificationTrainingWidgetTest)
 
-target_link_libraries(qtTest_TestGUI Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
 target_link_libraries(qtTest_DataHandlerTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
 target_link_libraries(qtTest_ClassificationTrainingTabTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})
 target_link_libraries(qtTest_ResultTabTest Qt5::Widgets Qt5::Test ${OpenCV_LIBS})

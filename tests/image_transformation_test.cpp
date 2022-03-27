@@ -1,3 +1,22 @@
+//     PFE_Classification --- Generic classification software
+//     Copyright © <2022> Florian Dayre <florian.dayre33850@gmail.com>
+//     Copyright © <2022> Élodie Gaudry <elodie.gaudry@etu.u-bordeaux.fr>
+//     Copyright © <2022> Hugo Lecomte <hugolecomte932@protonmail.com>
+//     Copyright © <2022> Hugo Trarieux <htrarieux@gmail.com>
+
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     any later version.
+
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include <gtest/gtest.h>
 #include "../src/image_transformation.h"
 
@@ -53,7 +72,7 @@ TEST(AutomaticRotationLymeDataTest, TestIfAutomaticRotationLymeDataIsCorrect)
     QImage *qImage2 = new QImage(qImage1);
     ASSERT_TRUE(qImage2 != NULL);
 }
-
+/*
 TEST(MorphologicalTransformationTest, TestIfMorphologicalTransformationErodeIsCorrect)
 {
     cv::Mat testImage(200, 200, CV_8UC3);
@@ -104,4 +123,4 @@ TEST(MorphologicalTransformationTest, TestIfMorphologicalTransformationDilateIsC
     qImage2.load("testDilateImage.png");
 
     ASSERT_TRUE(qImage1 == qImage2);
-}
+}*/
