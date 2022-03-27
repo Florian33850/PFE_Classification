@@ -79,3 +79,29 @@ TEST(MorphologicalTransformationTest, TestIfMorphologicalTransformationErodeIsCo
 
     ASSERT_TRUE(qImage1 == qImage2);
 }
+
+TEST(MorphologicalTransformationTest, TestIfMorphologicalTransformationDilateIsCorrect)
+{
+    cv::Mat testImage(200, 200, CV_8UC3);
+    cv::randu(testImage, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 255));
+    cv::imwrite("testMorphologicalTranformation.png", testImage);
+
+    MorphologicalTransformationImageTransformation *morphologicalTransformationImageTransformation = new MorphologicalTransformationImageTransformation();
+    morphologicalTransformationImageTransformation->changeKernelSize(2);
+    morphologicalTransformationImageTransformation->changeNumberIterationMorphologicalTransformation(1);
+    morphologicalTransformationImageTransformation->changeTypeMorphologicalTransformation(1);
+    QImage qImage1;
+    qImage1.load("testMorphologicalTranformation.png");
+    qImage1 = morphologicalTransformationImageTransformation->applyImageTransformation(qImage1);
+
+    int kernelSize = 2;
+    cv::Mat structuringElement = getStructuringElement(cv::MORPH_RECT,
+                                                                cv::Size(2*kernelSize+1, 2*kernelSize+1),
+                                                                cv::Point(kernelSize, kernelSize));
+    cv::dilate(testImage, testImage, structuringElement);
+    cv::imwrite("testDilateImage.png", testImage);
+    QImage qImage2;
+    qImage2.load("testDilateImage.png");
+
+    ASSERT_TRUE(qImage1 == qImage2);
+}
