@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#define private public
 #include "../src/image_transformation.h"
 
 TEST(InstantiationTest, TestIfInstantiationOfMirrorImageTransformationIsNotNull)
@@ -40,4 +39,17 @@ TEST(MirrorModeTest, TestIfChangeVerticalMirrorModeIsCorrect)
     mirrorImageTransformation->verticalMirror = false;
     mirrorImageTransformation->changeVerticalMirrorMode();
     ASSERT_TRUE(mirrorImageTransformation->verticalMirror == true);
+}
+
+TEST(AutomaticRotationLymeDataTest, TestIfAutomaticRotationLymeDataIsCorrect)
+{
+    AutomaticRotationLymeDataImageTransformation *automaticRotationImageTransformation = new AutomaticRotationLymeDataImageTransformation();
+    cv::Mat testImage(200, 200, CV_8UC4);
+    cv::randu(testImage, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 255));
+    cv::imwrite("testAutomaticRotation.tiff", testImage);
+    QImage qImage1;
+    qImage1.load("testAutomaticRotation.tiff");
+    qImage1 = automaticRotationImageTransformation->applyImageTransformation(qImage1);
+    QImage *qImage2 = new QImage(qImage1);
+    ASSERT_TRUE(qImage2 != NULL);
 }
