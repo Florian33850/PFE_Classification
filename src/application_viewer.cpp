@@ -58,10 +58,13 @@ void ApplicationViewer::addResultTab(QTabWidget *mainTabWidget)
 void ApplicationViewer::updateDataHandlers()
 {
     this->preprocessingDataHandler->selectDataBasePath();
+    if(this->preprocessingDataHandler->pathToImages.size() !=0)
+    {
     this->dataAugmentationDataHandler->pathToImages = this->preprocessingDataHandler->pathToImages;
 
     this->preprocessingTab->handleNewDataHandler(this->preprocessingDataHandler);
     this->dataAugmentationTab->handleNewDataHandler(this->dataAugmentationDataHandler);
+    }
 }
 
 void ApplicationViewer::handleOpenImageSelectionDataHandler()
